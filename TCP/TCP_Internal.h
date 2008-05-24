@@ -1,0 +1,25 @@
+//
+//  TCP_Internal.h
+//  MYNetwork
+//
+//  Created by Jens Alfke on 5/18/08.
+//  Copyright 2008 Jens Alfke. All rights reserved.
+//
+
+
+#import "TCPWriter.h"
+#import "TCPConnection.h"
+#import "TCPListener.h"
+
+/* Private declarations and APIs for TCP client/server implementation. */
+
+
+
+@interface TCPConnection ()
+- (void) _setStreamProperty: (id)value forKey: (NSString*)key;
+- (void) _streamOpened: (TCPStream*)stream;
+- (BOOL) _streamPeerCertAvailable: (TCPStream*)stream;
+- (void) _stream: (TCPStream*)stream gotError: (NSError*)error;
+- (void) _streamGotEOF: (TCPStream*)stream;
+- (void) _streamClosed: (TCPStream*)stream;
+@end

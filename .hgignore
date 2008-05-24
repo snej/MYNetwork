@@ -1,0 +1,9 @@
+syntax: glob
+.DS_Store
+build
+.svn
+(*)
+*.pbxuser
+*.perspectivev3
+*.mpkg
+*.framework
