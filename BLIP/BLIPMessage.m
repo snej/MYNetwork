@@ -11,6 +11,8 @@
 #import "BLIPReader.h"
 #import "BLIPWriter.h"
 
+#import "Logging.h"
+#import "Test.h"
 #import "ExceptionUtils.h"
 #import "Target.h"
 

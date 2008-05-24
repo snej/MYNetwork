@@ -9,6 +9,8 @@
 #import "TCP_Internal.h"
 #import "IPAddress.h"
 
+#import "Logging.h"
+#import "Test.h"
 #import "ExceptionUtils.h"
 
 

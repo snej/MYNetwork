@@ -10,6 +10,8 @@
 #import "Target.h"
 #import "BLIPRequest.h"
 #import "BLIPProperties.h"
+#import "Logging.h"
+#import "Test.h"
 
 
 @implementation BLIPDispatcher

@@ -9,6 +9,9 @@
 #import "TCPWriter.h"
 #import "TCP_Internal.h"
 
+#import "Logging.h"
+#import "Test.h"
+
 
 @implementation TCPWriter
 

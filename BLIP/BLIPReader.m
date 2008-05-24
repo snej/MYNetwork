@@ -11,6 +11,10 @@
 #import "BLIPWriter.h"
 #import "BLIPDispatcher.h"
 
+#import "Logging.h"
+#import "Test.h"
+#import "CollectionUtils.h"
+
 
 @interface BLIPReader ()
 - (BOOL) _receivedFrameWithHeader: (const BLIPFrameHeader*)header body: (NSData*)body;

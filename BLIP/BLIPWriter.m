@@ -10,6 +10,9 @@
 #import "BLIPWriter.h"
 #import "BLIP_Internal.h"
 
+#import "Logging.h"
+#import "Test.h"
+
 
 #define kDefaultFrameSize 4096
 

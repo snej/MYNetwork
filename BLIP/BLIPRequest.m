@@ -10,7 +10,10 @@
 #import "BLIP_Internal.h"
 #import "BLIPWriter.h"
 #import "BLIPReader.h"
+
 #import "Target.h"
+#import "Logging.h"
+#import "Test.h"
 #import "ExceptionUtils.h"
 
 

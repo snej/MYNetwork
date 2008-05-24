@@ -7,12 +7,16 @@
 //
 
 #import "IPAddress.h"
+
+#import "Logging.h"
+#import "Test.h"
+
 #import <sys/types.h>
 #import <sys/socket.h>
 #import <net/if.h>
 #import <netinet/in.h>
 #import <ifaddrs.h>
-#include <netdb.h>
+#import <netdb.h>
 
 
 @implementation IPAddress

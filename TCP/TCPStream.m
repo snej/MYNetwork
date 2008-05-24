@@ -9,6 +9,9 @@
 #import "TCPStream.h"
 #import "TCP_Internal.h"
 
+#import "Logging.h"
+#import "Test.h"
+
 
 extern const CFStringRef _kCFStreamPropertySSLClientSideAuthentication; // in CFNetwork
 

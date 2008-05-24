@@ -7,6 +7,8 @@
 //
 
 #import "BLIPProperties.h"
+#import "Logging.h"
+#import "Test.h"
 
 
 /** Common strings are abbreviated as single-byte strings in the packed form.
