@@ -57,8 +57,10 @@
 
 
 /** The delegate messages that BLIPConnection will send,
-    in addition to the ones inherited from TCPConnectionDelegate. */
+    in addition to the ones inherited from TCPConnectionDelegate.
+    All methods are optional. */
 @protocol BLIPConnectionDelegate <TCPConnectionDelegate>
+@optional
 
 /** Called when a BLIPRequest is received from the peer, if there is no BLIPDispatcher
     rule to handle it.
@@ -68,10 +70,8 @@
     to prevent this, call -deferResponse on the request if you want to send a response later. */
 - (void) connection: (BLIPConnection*)connection receivedRequest: (BLIPRequest*)request;
 
-@optional
 /** Called when a BLIPResponse (to one of your requests) is received from the peer.
-    This is called <i>after</i> the response object's onComplete target, if any, is invoked.
-    (This method is optional.) */
+    This is called <i>after</i> the response object's onComplete target, if any, is invoked.*/
 - (void) connection: (BLIPConnection*)connection receivedResponse: (BLIPResponse*)response;
 @end
 

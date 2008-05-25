@@ -82,6 +82,10 @@ enum {
 /** Appends data to the body. */
 - (void) addToBody: (NSData*)data;
 
+/** The message body as an NSString.
+    The UTF-8 character encoding is used to convert. */
+@property (copy) NSString *bodyString;
+
 #pragma mark PROPERTIES:
 
 /** The message's properties, a dictionary-like object.

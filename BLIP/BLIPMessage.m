@@ -144,6 +144,22 @@
 }
 
 
+- (NSString*) bodyString
+{
+    NSData *body = self.body;
+    if( body )
+        return [[[NSString alloc] initWithData: body encoding: NSUTF8StringEncoding] autorelease];
+    else
+        return nil;
+}
+
+- (void) setBodyString: (NSString*)string
+{
+    self.body = [string dataUsingEncoding: NSUTF8StringEncoding];
+    self.contentType = @"text/plain; charset=UTF-8";
+}
+
+
 - (BLIPProperties*) properties
 {
     return _properties;
