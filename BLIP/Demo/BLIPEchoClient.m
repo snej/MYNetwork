@@ -4,7 +4,8 @@
 //
 //  Created by Jens Alfke on 5/24/08.
 //  Copyright 2008 Jens Alfke. All rights reserved.
-//  Adapted from Apple sample code "CocoaEcho".
+//  Adapted from Apple sample code "CocoaEcho":
+//  http://developer.apple.com/samplecode/CocoaEcho/index.html
 //
 
 #import "BLIPEchoClient.h"
@@ -29,12 +30,14 @@
 #pragma mark -
 #pragma mark BLIPConnection support
 
+/* Opens a BLIP connection to the given address. */
 - (void)openConnection: (IPAddress*)address 
 {
     _connection = [[BLIPConnection alloc] initToAddress: address];
     [_connection open];
 }
 
+/* Closes the currently open BLIP connection. */
 - (void)closeConnection
 {
     [_connection close];
@@ -66,6 +69,7 @@
 #pragma mark -
 #pragma mark NSNetService delegate methods
 
+/* Stop any current Bonjour address resolution */
 - (void)stopResolving
 {
     if( _resolvingService ) {
@@ -76,6 +80,7 @@
     }
 }    
 
+/* Ask Bonjour to resolve (look up) the IP address of the given service. */
 - (void)startResolving: (NSNetService*)service
 {
     [self stopResolving];
@@ -85,9 +90,11 @@
     
 }
 
+/* NSNetService delegate method that will be called when address resolution finishes. */
 - (void)netServiceDidResolveAddress:(NSNetService *)sender
 {
     if( sender == _resolvingService ) {
+        // Get the first address, which is an NSData containing a struct sockaddr:
         NSArray *addresses = _resolvingService.addresses;
         if( addresses.count > 0 ) {
             NSData *addressData = [addresses objectAtIndex: 0];
@@ -114,6 +121,7 @@
     }
 }
 
+/* Send a BLIP request containing the string in the textfield */
 - (IBAction)sendText:(id)sender 
 {
     BLIPRequest *r = [_connection requestWithBody: nil];
@@ -122,6 +130,7 @@
     response.onComplete = $target(self,gotResponse:);
 }
 
+/* Receive the response to the BLIP request, and put its contents into the response field */
 - (void) gotResponse: (BLIPResponse*)response
 {
     [responseField setObjectValue: response.bodyString];

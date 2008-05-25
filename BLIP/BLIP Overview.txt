@@ -22,7 +22,7 @@ WIRE FORMAT
 
 All multi-byte numbers are encoded in network byte-order (big-endian).
 
-Each message is packed into a series of bytes consisting of the properties followed by the body. The properties are encoded as a 16-bit byte-count followed by a series of NUL-terminated C strings alternating keys and values.
+Each message is first packed into a series of bytes consisting of the properties followed by the body. The properties are encoded as a 16-bit byte-count followed by a series of NUL-terminated C strings alternating keys and values.
 
 The message is then broken up into "frames", usually 4k to 12k bytes. Each frame is prefixed with a 12-byte header containing its length in bytes, message number, and some flags.
 
