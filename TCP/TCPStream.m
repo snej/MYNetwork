@@ -8,6 +8,7 @@
 
 #import "TCPStream.h"
 #import "TCP_Internal.h"
+#import "IPAddress.h"
 
 #import "Logging.h"
 #import "Test.h"
@@ -46,11 +47,20 @@ static NSError* fixStreamError( NSError *error );
 
 - (id) propertyForKey: (CFStringRef)cfStreamProperty
 {
-    return nil; // abstract -- overridden by TCPReader and TCPWriter
+    return [_stream propertyForKey: (NSString*)cfStreamProperty];
 }
 
 - (void) setProperty: (id)value forKey: (CFStringRef)cfStreamProperty
-{ // abstract -- overridden by TCPReader and TCPWriter
+{
+    if( ! [_stream setProperty: value forKey: (NSString*)cfStreamProperty] )
+        Warn(@"Failed to set property %@ on %@",cfStreamProperty,self);
+}
+
+
+- (IPAddress*) peerAddress
+{
+    const CFSocketNativeHandle *socketPtr = [[self propertyForKey: kCFStreamPropertySocketNativeHandle] bytes];
+    return socketPtr ?[IPAddress addressOfSocket: *socketPtr] :nil;
 }
 
 
@@ -224,20 +234,6 @@ static NSError* fixStreamError( NSError *error );
 {
     return _conn.writer;
 }
-
-
-- (id) propertyForKey: (CFStringRef)cfStreamProperty
-{
-    CFTypeRef value = CFReadStreamCopyProperty((CFReadStreamRef)_stream,cfStreamProperty);
-    return [(id)CFMakeCollectable(value) autorelease];
-}
-
-- (void) setProperty: (id)value forKey: (CFStringRef)cfStreamProperty
-{
-    if( ! CFReadStreamSetProperty((CFReadStreamRef)_stream,cfStreamProperty,(CFTypeRef)value) )
-        Warn(@"%@ didn't accept property '%@'", self,cfStreamProperty);
-}
-
 
 - (NSInteger) read: (void*)dst maxLength: (NSUInteger)maxLength
 {

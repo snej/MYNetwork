@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-@class TCPConnection, TCPWriter;
+@class TCPConnection, TCPWriter, IPAddress;
 
 
 /** Abstract superclass for data streams, used by TCPConnection. */
@@ -19,6 +19,9 @@
 }
 
 - (id) initWithConnection: (TCPConnection*)conn stream: (NSStream*)stream;
+
+/** The IP address this stream is connected to. */
+@property (readonly) IPAddress *peerAddress;
 
 /** The connection's security level as reported by the underlying CFStream. */
 @property (readonly) NSString *securityLevel;

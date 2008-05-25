@@ -46,6 +46,10 @@ typedef enum {
 - (id) initToAddress: (IPAddress*)address
            localPort: (UInt16)localPort;
 
+/** Initializes a TCPConnection to the given NSNetService's address and port.
+    If the service's address cannot be resolved, nil is returned. */
+- (id) initToNetService: (NSNetService*)service;
+
 /** Initializes a TCPConnection from an incoming TCP socket.
     You don't usually need to call this; TCPListener does it automatically. */
 - (id) initIncomingFromSocket: (CFSocketNativeHandle)socket listener: (TCPListener*)listener;
@@ -79,7 +83,7 @@ typedef enum {
 + (void) waitTillAllClosed;
 
 /** The IP address of the other peer. */
-@property (readonly) IPAddress *address;
+@property (readonly,retain) IPAddress *address;
 
 /** The TCPListener that created this incoming connection, or nil */
 @property (readonly) TCPListener *server;

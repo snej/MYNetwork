@@ -30,19 +30,6 @@
 }
 
 
-- (id) propertyForKey: (CFStringRef)cfStreamProperty
-{
-    CFTypeRef value = CFWriteStreamCopyProperty((CFWriteStreamRef)_stream,cfStreamProperty);
-    return [(id)CFMakeCollectable(value) autorelease];
-}
-
-- (void) setProperty: (id)value forKey: (CFStringRef)cfStreamProperty
-{
-    if( ! CFWriteStreamSetProperty((CFWriteStreamRef)_stream,cfStreamProperty,(CFTypeRef)value) )
-        Warn(@"%@ didn't accept property '%@'", self,cfStreamProperty);
-}
-
-
 - (BOOL) isBusy
 {
     return _currentData || _queue.count > 0;

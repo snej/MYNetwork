@@ -19,6 +19,7 @@ NSString* const TCPErrorDomain = @"TCP";
 
 @interface TCPConnection ()
 @property TCPConnectionStatus status;
+@property (retain) IPAddress *address;
 - (BOOL) _checkIfClosed;
 - (void) _closed;
 @end
@@ -40,7 +41,7 @@ static NSMutableArray *sAllConnections;
 {
     self = [super init];
     if (self != nil) {
-        if( !address || !input || !output ) {
+        if( !input || !output ) {
             LogTo(TCP,@"Failed to create %@: addr=%@, in=%@, out=%@",
                   self.class,address,input,output);
             [self release];
@@ -49,7 +50,7 @@ static NSMutableArray *sAllConnections;
         _address = [address copy];
         _reader = [[[self readerClass] alloc] initWithConnection: self stream: input];
         _writer = [[[self writerClass] alloc] initWithConnection: self stream: output];
-        LogTo(TCP,@"%@ initialized",self);
+        LogTo(TCP,@"%@ initialized, address=%@",self,address);
     }
     return self;
 }
@@ -72,6 +73,22 @@ static NSMutableArray *sAllConnections;
 - (id) initToAddress: (IPAddress*)address
 {
     return [self initToAddress: address localPort: 0];
+}
+
+- (id) initToNetService: (NSNetService*)service
+{
+    IPAddress *address = nil;
+    NSInputStream *input;
+    NSOutputStream *output;
+    if( [service getInputStream: &input outputStream: &output] ) {
+        NSArray *addresses = service.addresses;
+        if( addresses.count > 0 )
+            address = [[[IPAddress alloc] initWithSockAddr: [[addresses objectAtIndex: 0] bytes]] autorelease];
+    } else {
+        input = nil;
+        output = nil;
+    }
+    return [self _initWithAddress: address inputStream: input outputStream: output];
 }
 
 
@@ -253,8 +270,10 @@ static NSMutableArray *sAllConnections;
 
 - (void) _streamOpened: (TCPStream*)stream
 {
+    if( ! _address )
+        self.address = stream.peerAddress;
     if( _status==kTCP_Opening && _reader.isOpen && _writer.isOpen ) {
-        LogTo(TCP,@"%@ opened",self);
+        LogTo(TCP,@"%@ opened; address=%@",self,_address);
         self.status = kTCP_Open;
         [self tellDelegate: @selector(connectionDidOpen:) withObject: nil];
     }

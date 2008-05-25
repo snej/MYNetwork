@@ -20,7 +20,7 @@
     
     NSNetServiceBrowser * _serviceBrowser;
     NSMutableArray * _serviceList;
-    NSNetService *_resolvingService;
+
     BLIPConnection *_connection;
 }
 
