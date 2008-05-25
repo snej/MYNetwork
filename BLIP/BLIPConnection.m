@@ -81,9 +81,9 @@ NSError *BLIPMakeError( int errorCode, NSString *message, ... )
 }
 
 
-- (BLIPRequest*) requestWithBody: (NSData*)body
+- (BLIPRequest*) request
 {
-    return [[[BLIPRequest alloc] _initWithConnection: self body: body properties: nil] autorelease];
+    return [[[BLIPRequest alloc] _initWithConnection: self body: nil properties: nil] autorelease];
 }
 
 - (BLIPRequest*) requestWithBody: (NSData*)body

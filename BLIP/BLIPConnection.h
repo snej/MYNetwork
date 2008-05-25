@@ -12,7 +12,7 @@
 @protocol BLIPConnectionDelegate;
 
 
-/** Represents a connection to a peer, using the BLIP protocol over a TCP socket.
+/** Represents a connection to a peer, using the <a href=".#blipdesc">BLIP</a> protocol over a TCP socket.
     Outgoing connections are made simply by instantiating a BLIPConnection via -initToAddress:.
     Incoming connections are usually set up by a BLIPListener and passed to the listener's
     delegate.
@@ -34,14 +34,14 @@
     a generic error response will be returned. */
 @property (readonly) BLIPDispatcher *dispatcher;
 
-/** Creates an outgoing request, with no properties.
-    The body may be nil.
-    To send it, call -send. */
-- (BLIPRequest*) requestWithBody: (NSData*)body;
+/** Creates a new, empty outgoing request.
+    You should add properties and/or body data to the request, before sending it by
+    calling its -send method. */
+- (BLIPRequest*) request;
 
-/** Creates an outgoing request.
-    The body or properties may be nil.
-    To send it, call -send. */
+/** Creates a new outgoing request.
+    The body or properties may be nil; you can add additional data or properties by calling
+    methods on the request itself, before sending it by calling its -send method. */
 - (BLIPRequest*) requestWithBody: (NSData*)body
                       properties: (NSDictionary*)properies;
 
@@ -78,7 +78,7 @@
 
 
 
-/** A "server" that listens on a TCP socket for incoming BLIP connections and creates
+/** A "server" that listens on a TCP socket for incoming <a href=".#blipdesc">BLIP</a> connections and creates
     BLIPConnection instances to handle them.
     Most of the API is inherited from TCPListener. */
 @interface BLIPListener : TCPListener

@@ -31,7 +31,7 @@ enum {
 };
 
 
-/** Abstract superclass for BLIP requests and responses. */
+/** Abstract superclass for <a href=".#blipdesc">BLIP</a> requests and responses. */
 @interface BLIPMessage : NSObject 
 {
     BLIPConnection *_connection;

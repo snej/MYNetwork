@@ -10,7 +10,7 @@
 @class BLIPResponse, MYTarget;
 
 
-/** A Request, or initiating message. */
+/** A Request, or initiating message, in the <a href=".#blipdesc">BLIP</a> protocol. */
 @interface BLIPRequest : BLIPMessage
 {
     @private
@@ -80,7 +80,7 @@
 
 
 
-/** A reply to a BLIPRequest. */
+/** A reply to a BLIPRequest, in the <a href=".#blipdesc">BLIP</a> protocol. */
 @interface BLIPResponse : BLIPMessage
 {
     @private

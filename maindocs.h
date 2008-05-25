@@ -8,7 +8,9 @@
 // This file just contains the Doxygen comments that generate the main (index.html) page content.
 
 
-/*! \mainpage MYNetwork: Mooseyard Networking library, including BLIP protocol implementation. 
+/*! \mainpage MYNetwork: Mooseyard Networking Library, With BLIP Protocol Implementation
+ 
+    <center><b>By <a href="/Jens/">Jens Alfke</a></b></center>
  
 \section intro_sec Introduction
  
@@ -18,12 +20,22 @@
     <li>Networking utility classes (presently only IPAddress);
     <li>A generic TCP client/server implementation,
         useful for implementing your own network protocols; (see TCPListener and TCPConnection)
-    <li>An implementation of BLIP, a lightweight network protocol I've invented as an easy way
+    <li>An implementation of <a href="#blipdesc">BLIP</a>, a lightweight network protocol I've invented as an easy way
         to send request and response messages between peers. (see BLIPListener, BLIPConnection, BLIPRequest, etc.)
     </ul>
  
-    MYNetwork is released under a BSD license, which means you can freely use it in open-source
-    or commercial projects, provided you give credit in your documentation or About box.
+\section license License and Disclaimer
+ 
+ MYNetwork is released under a BSD license, which means you can freely use it in open-source
+ or commercial projects, provided you give credit in your documentation or About box.
+ 
+ As I write this (May 2008), MYNetwork is still very much under development. I am using it as the foundation of my own commercial products, at least one of which is currently at about the alpha stage. I'm making changes to this code as I see fit, fairly often.
+ 
+That's good, in that the code is getting real-world use. But it also means that APIs and functionality are subject to change. (Of course, the entire revision tree is always available, so you're free to stick with any revision you like, and even "cherry-pick" desired changes from future ones.)
+ 
+Not all of this code gets thoroughly exercised by my test cases or my applications, so some things may not work. Obviously, this code comes with no warranty nor any guarantee of tech support, though I will try to do my best to help out. Hopefully the source code is clear enough to let you figure out what's going on.
+ 
+If you come across bugs, please tell me about them. If you fix them, I would love to get your fixes and incorporate them. If you add features I would love to know about them, and I will incorporate them if I think they make sense for the project. Thanks!
 
 \section blipdesc What's BLIP?
  
@@ -31,7 +43,7 @@ BLIP is a message-oriented network protocol that lets the two peers on either en
  
 BLIP was inspired by <a
 href="http://beepcore.org">BEEP</a> (in fact BLIP stands for "BEEP-LIke Protocol") but is
-deliberately simpler and somewhat more limited. That translates to a smaller and cleaner implemenation, especially since it takes advantage of Cocoa's and CFNetwork's existing support for network streams, SSL and Bonjour.
+deliberately simpler and somewhat more limited. That results in a smaller and cleaner implementation, especially since it takes advantage of Cocoa's and CFNetwork's existing support for network streams, SSL and Bonjour. (BLIP is currently a bit under 2,000 lines of code, and the rest of the MYNetwork classes it builds on add up to another 1,500. That's at least an order of magnitude smaller than existing native-code BEEP libraries.)
  
 \subsection blipfeatures BLIP Features:
 
