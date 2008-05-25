@@ -162,7 +162,7 @@ static SecIdentityRef GetListenerIdentity(void) {
 - (void) connection: (BLIPConnection*)connection receivedRequest: (BLIPRequest*)request
 {
     Log(@"***** %@ received %@",connection,request);
-    [request respondWithData: request.body];
+    [request respondWithData: request.body contentType: request.contentType];
 }
 
 - (void) connection: (BLIPConnection*)connection receivedResponse: (BLIPResponse*)response
@@ -307,7 +307,7 @@ TestCase(BLIPConnection) {
     AssertEqual([request valueOfProperty: @"User-Agent"], @"BLIPConnectionTester");
     AssertEq([[request valueOfProperty: @"Size"] intValue], size);
 
-    [request respondWithData: body];
+    [request respondWithData: body contentType: request.contentType];
 }
 
 

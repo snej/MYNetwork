@@ -10,7 +10,7 @@
 @class TCPConnection, TCPWriter;
 
 
-/** INTERNAL abstract superclass for data streams, used by TCPConnection. */
+/** Abstract superclass for data streams, used by TCPConnection. */
 @interface TCPStream : NSObject 
 {
     TCPConnection *_conn;
@@ -55,8 +55,15 @@
 
 /** Input stream for a TCPConnection. */
 @interface TCPReader : TCPStream
+
 /** The connection's TCPWriter. */
 @property (readonly) TCPWriter *writer;
+
+/** Reads bytes from the stream, like the corresponding method of NSInputStream.
+    The number of bytes actually read is returned, or zero if no data is available.
+    If an error occurs, it will call its -_gotError method, and return a negative number. */
+- (NSInteger) read: (void*)dst maxLength: (NSUInteger)maxLength;
+
 @end
 
 

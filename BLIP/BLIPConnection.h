@@ -25,6 +25,13 @@
 /** The delegate object that will be called when the connection opens, closes or receives messages. */
 @property (assign) id<BLIPConnectionDelegate> delegate;
 
+/** The connection's request dispatcher. By default it's not configured to do anything; but you
+    can add rules to the dispatcher to call specific target methods based on properties of the
+    incoming requests.
+ 
+    Requests that aren't handled by the dispatcher (i.e. all of them, by default) will be
+    passed to the delegate's connection:receivedRequest: method; or if there's no delegate,
+    a generic error response will be returned. */
 @property (readonly) BLIPDispatcher *dispatcher;
 
 /** Creates an outgoing request, with no properties.
@@ -63,7 +70,8 @@
 
 @optional
 /** Called when a BLIPResponse (to one of your requests) is received from the peer.
-    This is called <i>after</i> the response object's onComplete target, if any, is invoked. */
+    This is called <i>after</i> the response object's onComplete target, if any, is invoked.
+    (This method is optional.) */
 - (void) connection: (BLIPConnection*)connection receivedResponse: (BLIPResponse*)response;
 @end
 
@@ -78,6 +86,10 @@
     BLIPDispatcher *_dispatcher;
 }
 
+/** The default request dispatcher that will be inherited by all BLIPConnections opened by this
+    listener.
+    If a connection's own dispatcher doesn't have a rule to match a message, this inherited
+    dispatcher will be checked next. Only if it fails too will the delegate be called. */
 @property (readonly) BLIPDispatcher *dispatcher;
 
 @end

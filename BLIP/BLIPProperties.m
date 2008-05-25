@@ -20,7 +20,7 @@ static const char* kAbbreviations[] = {
     "Error-Code"
     "Error-Domain",
     "application/octet-stream",
-    "text/plain",
+    "text/plain; charset=UTF-8",
     "text/xml",
     "text/yaml",
     "application/x-cloudy-signed+yaml",

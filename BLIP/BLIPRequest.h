@@ -39,8 +39,8 @@
 
 /** Sends this request over its connection.
     (Actually, the connection queues it to be sent; this method always returns immediately.)
-    If this request has not been assigned to a connection, an exception will be raised.
-    Its matching response object will be returned, or nil if the request couldn't be sent. */
+    Its matching response object will be returned, or nil if the request couldn't be sent.
+    If this request has not been assigned to a connection, an exception will be raised. */
 - (BLIPResponse*) send;
 
 /** Does this request not need a response?
@@ -58,8 +58,9 @@
     It will prevent a default empty response from being sent upon return from the request handler. */
 - (void) deferResponse;
 
-/** Shortcut to respond to this request with the given data. */
-- (void) respondWithData: (NSData*)data;
+/** Shortcut to respond to this request with the given data.
+    The contentType, if not nil, is stored in the "Content-Type" property. */
+- (void) respondWithData: (NSData*)data contentType: (NSString*)contentType;
 
 /** Shortcut to respond to this request with the given string (which will be encoded in UTF-8). */
 - (void) respondWithString: (NSString*)string;

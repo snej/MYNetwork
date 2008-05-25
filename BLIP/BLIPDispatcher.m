@@ -84,6 +84,12 @@
 }
 
 
+- (MYTarget*) asTarget;
+{
+    return $target(self,dispatchMessage:);
+}
+
+
 @end
 
 

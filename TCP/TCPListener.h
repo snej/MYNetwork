@@ -11,11 +11,17 @@
 
 
 /** Generic TCP-based server that listens for incoming connections on a port.
+
     For each incoming connection, it creates an instance of (a subclass of) the generic TCP
     client class TCPClient. The -connectionClass property lets you customize which subclass
     to use.
-    TCPListener supports Bonjour advertisements for the service, and automatic port renumbering
-    if there are conflicts. */
+ 
+    TCPListener supports SSL, Bonjour advertisements for the service, and automatic port renumbering
+    if there are conflicts. (The SSL related methods are inherited from TCPEndpoint.) 
+ 
+    You will almost always need to implement the TCPListenerDelegate protocol in your own
+    code, and set an instance as the listener's delegate property, in order to be informed
+    of important events such as incoming connections. */
 @interface TCPListener : TCPEndpoint 
 {
     @private
@@ -40,6 +46,8 @@
 /** The subclass of TCPConnection that will be instantiated. */
 @property Class connectionClass;
 
+/** Delegate object that will be called when interesting things happen to the listener --
+    most importantly, when a new incoming connection is accepted. */
 @property (assign) id<TCPListenerDelegate> delegate;
 
 /** Should the server listen for IPv6 connections (on the same port number)? Defaults to NO. */
@@ -58,6 +66,9 @@
     changes are ignored while the server is open.) */
 - (BOOL) open: (NSError **)error;
 
+/** Opens the server, without returning a specific error code.
+    (In case of error the delegate's -listener:failedToOpen: method will be called with the
+    error code, anyway.) */
 - (BOOL) open;
 
 /** Closes the server. */
@@ -94,14 +105,30 @@
 
 #pragma mark -
 
-/** The delegate messages sent by TCPListener. */
+/** The delegate messages sent by TCPListener.
+    All are optional except -listener:didAcceptConnection:. */
 @protocol TCPListenerDelegate <NSObject>
 
+/** Called after an incoming connection arrives and is opened;
+    the connection is now ready to send and receive data.
+    To control whether or not a connection should be accepted, implement the
+    -listener:shouldAcceptConnectionFrom: method.
+    To use a different class than TCPConnection, set the listener's -connectionClass property.
+    (This is the only required delegate method; the others are optional to implement.) */
 - (void) listener: (TCPListener*)listener didAcceptConnection: (TCPConnection*)connection;
 
 @optional
+/** Called after the listener successfully opens. */
 - (void) listenerDidOpen: (TCPListener*)listener;
+/** Called if the listener fails to open due to an error. */
 - (void) listener: (TCPListener*)listener failedToOpen: (NSError*)error;
+/** Called after the listener closes. */
 - (void) listenerDidClose: (TCPListener*)listener;
+/** Called when an incoming connection request arrives, but before the conncetion is opened;
+    return YES to accept the connection, NO to refuse it.
+    This method can only use criteria like the peer IP address, or the number of currently
+    open connections, to determine whether to accept. If you also want to check the
+    peer's SSL certificate, then return YES from this method, and use the TCPConnection
+    delegate method -connection:authorizeSSLPeer: to examine the certificate. */
 - (BOOL) listener: (TCPListener*)listener shouldAcceptConnectionFrom: (IPAddress*)address;
 @end

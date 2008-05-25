@@ -66,7 +66,7 @@ NSError *BLIPMakeError( int errorCode, NSString *message, ... )
             [self tellDelegate: @selector(connection:receivedRequest:) withObject: request];
         if( ! request.noReply && ! request.repliedTo ) {
             LogTo(BLIP,@"Returning default empty response to %@",request);
-            [request respondWithData: nil];
+            [request respondWithData: nil contentType: nil];
         }
     }@catch( NSException *x ) {
         MYReportException(x,@"Dispatching BLIP request");

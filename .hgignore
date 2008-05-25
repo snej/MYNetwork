@@ -1,6 +1,9 @@
 syntax: glob
 .DS_Store
 build
+Documentation
+Doxyfile
+uploadDocs
 .svn
 (*)
 *.pbxuser

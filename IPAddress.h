@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 
 
-/** Represents an Internet Protocol address and port number (similar to a sockaddr_in.)
+/** Represents an Internet Protocol address and port number (similar to a sockaddr_in).
     IPAddress itself only remembers the raw 32-bit IPv4 address; the subclass HostAddress
     also remembers the DNS host-name. */
 @interface IPAddress : NSObject <NSCoding, NSCopying>
@@ -35,7 +35,7 @@
 /** Initializes an IPAddress from a BSD struct sockaddr. */
 - (id) initWithSockAddr: (const struct sockaddr*)sockaddr;
 
-/** Returns the IP address of this host (with a socket number of zero.)
+/** Returns the IP address of this host (with a port number of zero).
     If multiple network interfaces are active, the main one's address is returned. */
 + (IPAddress*) localAddress;
 

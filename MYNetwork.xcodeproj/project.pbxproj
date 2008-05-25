@@ -93,6 +93,7 @@
 		270462C00DE4A639003D9D3F /* MYUtilities_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MYUtilities_Prefix.pch; sourceTree = "<group>"; };
 		270462C10DE4A64B003D9D3F /* MYUtilitiesTest_main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MYUtilitiesTest_main.m; sourceTree = "<group>"; };
 		270462C30DE4A65B003D9D3F /* BLIP Overview.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "BLIP Overview.txt"; path = "BLIP/BLIP Overview.txt"; sourceTree = "<group>"; wrapsLines = 1; };
+		277903830DE8C2DD00C6D295 /* maindocs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = maindocs.h; sourceTree = "<group>"; wrapsLines = 1; };
 		27D5EC050DE5FEDE00CD84FA /* BLIPRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLIPRequest.h; sourceTree = "<group>"; };
 		27D5EC060DE5FEDE00CD84FA /* BLIPRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLIPRequest.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -115,6 +116,7 @@
 			isa = PBXGroup;
 			children = (
 				270462C30DE4A65B003D9D3F /* BLIP Overview.txt */,
+				277903830DE8C2DD00C6D295 /* maindocs.h */,
 				270460F00DE49030003D9D3F /* MYNetwork */,
 				270461220DE49055003D9D3F /* MYUtilities */,
 				2704616D0DE492C9003D9D3F /* google-toolbox */,

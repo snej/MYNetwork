@@ -239,6 +239,15 @@ static NSError* fixStreamError( NSError *error );
 }
 
 
+- (NSInteger) read: (void*)dst maxLength: (NSUInteger)maxLength
+{
+    NSInteger bytesRead = [(NSInputStream*)_stream read:dst maxLength: maxLength];
+    if( bytesRead < 0 )
+        [self _gotError];
+    return bytesRead;
+}
+
+
 @end
 
 

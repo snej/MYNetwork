@@ -31,7 +31,7 @@ enum {
 };
 
 
-/** Abstract superclass for both requests and responses. */
+/** Abstract superclass for BLIP requests and responses. */
 @interface BLIPMessage : NSObject 
 {
     BLIPConnection *_connection;
@@ -65,12 +65,12 @@ enum {
 /** Has the entire message, including the body, arrived? */
 @property (readonly) BOOL complete;
 
-/** Should the message body be compressed using gzip?
-    This property can only be set before sending the message. */
+/** Should the message body be compressed with gzip?
+    This property can only be set <i>before</i> sending the message. */
 @property BOOL compressed;
 
 /** Should the message be sent ahead of normal-priority messages?
-    This property can only be set before sending the message. */
+    This property can only be set <i>before</i> sending the message. */
 @property BOOL urgent;
 
 /** Can this message be changed? (Only true for outgoing messages, before you send them.) */
@@ -84,7 +84,8 @@ enum {
 
 #pragma mark PROPERTIES:
 
-/** The message's properties, a dictionary-like object. */
+/** The message's properties, a dictionary-like object.
+    Message properties are much like the headers in HTTP, MIME and RFC822. */
 @property (readonly) BLIPProperties* properties;
 
 /** Mutable version of the message's properties; only available if this mesage is mutable. */

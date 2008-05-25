@@ -103,9 +103,25 @@
     return _response != nil;
 }
 
-- (void) respondWithData: (NSData*)data                   {self.response.body = data; [self.response send];}
-- (void) respondWithString: (NSString*)string             {[self respondWithData: [string dataUsingEncoding: NSUTF8StringEncoding]];}
-- (void) respondWithError: (NSError*)error                {self.response.error = error; [self.response send];}
+- (void) respondWithData: (NSData*)data contentType: (NSString*)contentType
+{
+    BLIPResponse *response = self.response;
+    response.body = data;
+    response.contentType = contentType;
+    [response send];
+}
+
+- (void) respondWithString: (NSString*)string
+{
+    [self respondWithData: [string dataUsingEncoding: NSUTF8StringEncoding]
+              contentType: @"text/plain; charset=UTF-8"];
+}
+
+- (void) respondWithError: (NSError*)error
+{
+    self.response.error = error; 
+    [self.response send];
+}
 
 - (void) respondWithErrorCode: (int)errorCode message: (NSString*)errorMessage
 {

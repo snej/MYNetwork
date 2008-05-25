@@ -9,7 +9,7 @@
 #import "TCPStream.h"
 
 
-/** INTERNAL class that writes a queue of arbitrary data blobs to the socket. */
+/** Output stream for a TCPConnection. Writes a queue of arbitrary data blobs to the socket. */
 @interface TCPWriter : TCPStream 
 {
     NSMutableArray *_queue;

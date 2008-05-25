@@ -102,11 +102,9 @@
     SInt32 headerLeft = sizeof(BLIPFrameHeader) - _curBytesRead;
     if( headerLeft > 0 ) {
         // Read (more of) the header:
-        NSInteger bytesRead = [(NSInputStream*)_stream read: (uint8_t*)&_curHeader +_curBytesRead
-                                                  maxLength: headerLeft];
-        if( bytesRead < 0 ) {
-            [self _gotError];
-        } else {
+        NSInteger bytesRead = [self read: (uint8_t*)&_curHeader +_curBytesRead
+                               maxLength: headerLeft];
+        if( bytesRead > 0 ) {
             _curBytesRead += bytesRead;
             if( _curBytesRead < sizeof(BLIPFrameHeader) ) {
                 // Incomplete header:
@@ -135,10 +133,8 @@
         if( bodyRemaining > 0 ) {
             uint8_t *dst = _curBody.mutableBytes;
             dst += _curBody.length - bodyRemaining;
-            NSInteger bytesRead = [(NSInputStream*)_stream read: dst maxLength: bodyRemaining];
-            if( bytesRead < 0 )
-                return (void)[self _gotError];
-            else if( bytesRead > 0 ) {
+            NSInteger bytesRead = [self read: dst maxLength: bodyRemaining];
+            if( bytesRead > 0 ) {
                 _curBytesRead += bytesRead;
                 bodyRemaining -= bytesRead;
                 LogTo(BLIPVerbose,@"%@: Read %u bytes of frame body (%u left)",self,bytesRead,bodyRemaining);

@@ -23,7 +23,8 @@ typedef enum {
 
 /** A generic class that manages a TCP socket connection.
     It creates a TCPReader and a TCPWriter to handle I/O.
-    TCPConnection itself mostly deals with SSL setup and opening/closing the socket. */
+    TCPConnection itself mostly deals with SSL setup and opening/closing the socket.
+    (The SSL related methods are inherited from TCPEndpoint.) */
 @interface TCPConnection : TCPEndpoint
 {
     @private
@@ -108,7 +109,8 @@ typedef enum {
 
 
 
-/** The delegate messages sent by TCPConnection. */
+/** The delegate messages sent by TCPConnection.
+    All methods are optional. */
 @protocol TCPConnectionDelegate <NSObject>
 @optional
 /** Called after the connection successfully opens. */
