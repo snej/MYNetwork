@@ -39,11 +39,13 @@
 @synthesize parent=_parent;
 
 
+#if ! TARGET_OS_IPHONE
 - (void) addTarget: (MYTarget*)target forPredicate: (NSPredicate*)predicate
 {
     [_targets addObject: target];
     [_predicates addObject: predicate];
 }
+#endif
 
 
 - (void) removeTarget: (MYTarget*)target
@@ -58,12 +60,29 @@
 
 - (void) addTarget: (MYTarget*)target forValueOfProperty: (NSString*)value forKey: (NSString*)key
 {
+#if TARGET_OS_IPHONE
+    Assert(target);
+    [_predicates addObject: $array(key,value)];
+    [_targets addObject: target];
+#else
     [self addTarget: target 
        forPredicate: [NSComparisonPredicate predicateWithLeftExpression: [NSExpression expressionForKeyPath: key]
                                                         rightExpression: [NSExpression expressionForConstantValue: value]
                                                                modifier: NSDirectPredicateModifier
                                                                    type: NSEqualToPredicateOperatorType
                                                                 options: 0]];
+#endif
+}
+
+
+static BOOL testPredicate( id predicate, NSDictionary *properties ) {
+#if TARGET_OS_IPHONE
+    NSString *key = [predicate objectAtIndex: 0];
+    NSString *value = [predicate objectAtIndex: 1];
+    return $equal( [properties objectForKey: key], value );
+#else
+    return [(NSPredicate*)predicate evaluateWithObject: properties];
+#endif
 }
 
 
@@ -72,8 +91,8 @@
     NSDictionary *properties = message.properties.allProperties;
     NSUInteger n = _predicates.count;
     for( NSUInteger i=0; i<n; i++ ) {
-        NSPredicate *p = [_predicates objectAtIndex: i];
-        if( [p evaluateWithObject: properties] ) {
+        id p = [_predicates objectAtIndex: i];
+        if( testPredicate(p, properties) ) {
             MYTarget *target = [_targets objectAtIndex: i];
             LogTo(BLIP,@"Dispatcher matched %@ -- calling %@",p,target);
             [target invokeWithSender: message];

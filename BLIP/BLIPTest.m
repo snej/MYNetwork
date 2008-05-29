@@ -233,7 +233,7 @@ TestCase(BLIPConnection) {
             Assert(listenerIdentity);
             _listener.SSLProperties = $mdict({kTCPPropertySSLCertificates, $array((id)listenerIdentity)},
                                              {kTCPPropertySSLAllowsAnyRoot,$true},
-            {kTCPPropertySSLClientSideAuthentication, $object(kTryAuthenticate)});
+                            {kTCPPropertySSLClientSideAuthentication, $object(kTCPTryAuthenticate)});
         }
         Assert( [_listener open] );
         Log(@"%@ is listening...",self);

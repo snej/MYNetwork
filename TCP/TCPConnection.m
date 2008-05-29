@@ -14,6 +14,15 @@
 #import "ExceptionUtils.h"
 
 
+#if TARGET_OS_IPHONE
+// SecureTransport.h is missing on iPhone, with its SSL constants:
+enum{
+    errSSLClosedAbort 			= -9806,	/* connection closed via error */
+};
+#endif
+
+
+
 NSString* const TCPErrorDomain = @"TCP";
 
 
@@ -62,10 +71,20 @@ static NSMutableArray *sAllConnections;
 {
     NSInputStream *input = nil;
     NSOutputStream *output = nil;
+#if TARGET_OS_IPHONE
+    // +getStreamsToHost: is missing for some stupid reason on iPhone. Grrrrrrrrrr.
+    CFStreamCreatePairWithSocketToHost(NULL, (CFStringRef)address.hostname, address.port,
+                                       (CFReadStreamRef*)&input, (CFWriteStreamRef*)&output);
+    if( input )
+        [(id)CFMakeCollectable(input) autorelease];
+    if( output )
+        [(id)CFMakeCollectable(output) autorelease];
+#else
     [NSStream getStreamsToHost: [NSHost hostWithAddress: address.ipv4name]
                           port: address.port 
                    inputStream: &input 
                   outputStream: &output];
+#endif
     return [self _initWithAddress: address inputStream: input outputStream: output];
     //FIX: Support localPort!
 }

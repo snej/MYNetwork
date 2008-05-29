@@ -63,10 +63,10 @@
 - (NSString*) _validateHeader
 {
     // Convert header to native byte order:
-    _curHeader.magic = EndianU32_BtoN(_curHeader.magic);
-    _curHeader.number= EndianU32_BtoN(_curHeader.number);
-    _curHeader.flags = EndianU16_BtoN(_curHeader.flags);
-    _curHeader.size  = EndianU16_BtoN(_curHeader.size);
+    _curHeader.magic = NSSwapBigIntToHost(_curHeader.magic);
+    _curHeader.number= NSSwapBigIntToHost(_curHeader.number);
+    _curHeader.flags = NSSwapBigShortToHost(_curHeader.flags);
+    _curHeader.size  = NSSwapBigShortToHost(_curHeader.size);
     
     if( _curHeader.magic != kBLIPFrameHeaderMagicNumber )
         return $sprintf(@"Incorrect magic number (%08X not %08X)",

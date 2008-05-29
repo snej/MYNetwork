@@ -129,7 +129,7 @@ static CFSocketRef closeSocket( CFSocketRef socket ) {
         if( ! _ipv4socket ) {
             if( error.code==EADDRINUSE && _pickAvailablePort && _port<0xFFFF ) {
                 LogTo(BLIPVerbose,@"%@: port busy, trying %hu...",self,_port+1);
-                self.port++;        // try the next port
+                self.port += 1;        // try the next port
             } else {
                 if( outError ) *outError = error;
                 return [self _failedToOpen: error];

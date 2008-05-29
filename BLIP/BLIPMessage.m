@@ -247,10 +247,10 @@
     }
         
     // First write the frame header:
-    BLIPFrameHeader header = {  EndianU32_NtoB(kBLIPFrameHeaderMagicNumber),
-                                EndianU32_NtoB(_number),
-                                EndianU16_NtoB(flags),
-                                EndianU16_NtoB(sizeof(BLIPFrameHeader) + lengthToWrite) };
+    BLIPFrameHeader header = {  NSSwapHostIntToBig(kBLIPFrameHeaderMagicNumber),
+                                NSSwapHostIntToBig(_number),
+                                NSSwapHostShortToBig(flags),
+                                NSSwapHostShortToBig(sizeof(BLIPFrameHeader) + lengthToWrite) };
     
     [writer writeData: [NSData dataWithBytes: &header length: sizeof(header)]];
     

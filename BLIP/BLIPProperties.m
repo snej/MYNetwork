@@ -56,7 +56,7 @@ static const char* kAbbreviations[] = {
     
     // Read the length:
     const char *bytes = data.bytes;
-    size_t length = EndianU16_BtoN( *(UInt16*)bytes ) + sizeof(UInt16);
+    size_t length = NSSwapBigShortToHost( *(UInt16*)bytes ) + sizeof(UInt16);
     if( length > available ) {
         // Properties not complete yet.
         *usedLength = 0;
@@ -307,7 +307,7 @@ static void appendStr( NSMutableData *data, NSString *str ) {
     NSUInteger length = data.length - sizeof(UInt16);
     if( length > 0xFFFF )
         return nil;
-    *(UInt16*)[data mutableBytes] = EndianU16_NtoB((UInt16)length);
+    *(UInt16*)[data mutableBytes] = NSSwapHostShortToBig((UInt16)length);
     return data;
 }
 

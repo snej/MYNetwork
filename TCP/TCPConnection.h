@@ -7,6 +7,7 @@
 //
 
 #import "TCPEndpoint.h"
+#import <Security/Security.h>
 @class IPAddress;
 @class TCPReader, TCPWriter, TCPListener;
 @protocol TCPConnectionDelegate;

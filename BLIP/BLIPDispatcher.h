@@ -10,8 +10,9 @@
 @class MYTarget, BLIPMessage;
 
 
-/** Routes BLIP messages to targets based on a series of rule predicates.
-    Every BLIPConnection has a BLIPDispatcher, which is initially empty but you can add rules
+/** Routes BLIP messages to targets based on a series of rules.
+ 
+    Every BLIPConnection has a BLIPDispatcher, which is initially empty, but you can add rules
     to it.
  
     Every BLIPListener also has a dispatcher, which is inherited as the parent by every
@@ -33,11 +34,13 @@
     the parent, if there is one. */
 @property (retain) BLIPDispatcher *parent;
 
-/** Adds a new rule, to call a given target method if a given predicate matches the message. */
-- (void) addTarget: (MYTarget*)target forPredicate: (NSPredicate*)predicate;
-
 /** Convenience method that adds a rule that compares a property against a string. */
 - (void) addTarget: (MYTarget*)target forValueOfProperty: (NSString*)value forKey: (NSString*)key;
+
+#if ! TARGET_OS_IPHONE      /* NSPredicate is not available on iPhone, unfortunately */
+/** Adds a new rule, to call a given target method if a given predicate matches the message. */
+- (void) addTarget: (MYTarget*)target forPredicate: (NSPredicate*)predicate;
+#endif
 
 /** Removes all rules with the given target method. */
 - (void) removeTarget: (MYTarget*)target;

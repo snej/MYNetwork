@@ -11,7 +11,9 @@
 /*! \mainpage MYNetwork: Mooseyard Networking Library, With BLIP Protocol Implementation
  
     <center><b>By <a href="/Jens/">Jens Alfke</a></b></center>
- 
+
+    <img src="BLIP.png">
+
 \section intro_sec Introduction
  
     MYNetwork is a set of Objective-C networking classes for Cocoa applications on Mac OS X.
@@ -38,6 +40,19 @@ Not all of this code gets thoroughly exercised by my test cases or my applicatio
 If you come across bugs, please tell me about them. If you fix them, I would love to get your fixes and incorporate them. If you add features I would love to know about them, and I will incorporate them if I think they make sense for the project. Thanks!
 
 \section blipdesc What's BLIP?
+ 
+ <table style="background-color: #fff; padding: 5px; float: right" cellspacing=0>
+ <tr><td>
+ <img src="http://groups.google.com/groups/img/3nb/groups_bar.gif"
+ height=26 width=132 alt="Google Groups">
+ </td></tr>
+ <tr><td style="padding-left: 5px;font-size: 125%">
+ <b>BLIP Protocol</b>
+ </td></tr>
+ <tr><td style="padding-left: 5px">
+ <a href="http://groups.google.com/group/blip-protocol">Visit this group</a>
+ </td></tr>
+ </table>
  
 BLIP is a message-oriented network protocol that lets the two peers on either end of a TCP socket send request and response messages to each other. It's a generic protocol, in that the requests and responses can contain any kind of data you like. 
  
@@ -77,7 +92,7 @@ invisibly to client code.
  
 <li>The implementation supports SSL connections (with optional client-side certificates), and Bonjour service advertising.
 </ul>
- 
+  
 \section config Configuration
  
     MYNetwork requires Mac OS X 10.5 or later, since it uses Objective-C 2 features like

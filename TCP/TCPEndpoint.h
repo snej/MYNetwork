@@ -7,13 +7,23 @@
 //
 
 #import <Foundation/Foundation.h>
+#if TARGET_OS_IPHONE
+#include <CFNetwork/CFSocketStream.h>
+#else
 #import <CoreServices/CoreServices.h>
+#endif
 
 
 // SSL properties:
 #define kTCPPropertySSLCertificates  ((NSString*)kCFStreamSSLCertificates)
 #define kTCPPropertySSLAllowsAnyRoot ((NSString*)kCFStreamSSLAllowsAnyRoot)
-extern NSString* const kTCPPropertySSLClientSideAuthentication;    // value is SSLAuthenticate enum
+
+extern NSString* const kTCPPropertySSLClientSideAuthentication;    // value is TCPAuthenticate enum
+typedef enum {
+	kTCPNeverAuthenticate,			/* skip client authentication */
+	kTCPAlwaysAuthenticate,         /* require it */
+	kTCPTryAuthenticate             /* try to authenticate, but not error if client has no cert */
+} TCPAuthenticate; // these MUST have same values as SSLAuthenticate enum in SecureTransport.h!
 
 
 /** Abstract base class of TCPConnection and TCPListener.
