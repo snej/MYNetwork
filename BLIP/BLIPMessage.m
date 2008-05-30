@@ -256,9 +256,8 @@
     
     // Then write the body:
     if( lengthToWrite > 0 ) {
-        [writer writeData: [NSData dataWithBytesNoCopy: (UInt8*)_encodedBody.bytes + _bytesWritten
-                                              length: lengthToWrite
-                                        freeWhenDone: NO]];
+        [writer writeData: [NSData dataWithBytes: (UInt8*)_encodedBody.bytes + _bytesWritten
+                                          length: lengthToWrite]];
         _bytesWritten += lengthToWrite;
     }
     return (flags & kBLIP_MoreComing) != 0;
