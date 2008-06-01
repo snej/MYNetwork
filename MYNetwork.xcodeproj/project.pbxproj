@@ -23,7 +23,6 @@
 		2704612D0DE49088003D9D3F /* Logging.m in Sources */ = {isa = PBXBuildFile; fileRef = 2704612A0DE49088003D9D3F /* Logging.m */; };
 		270461370DE4918D003D9D3F /* ExceptionUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 270461350DE4918D003D9D3F /* ExceptionUtils.m */; };
 		270461470DE491A6003D9D3F /* Target.m in Sources */ = {isa = PBXBuildFile; fileRef = 270461460DE491A6003D9D3F /* Target.m */; };
-		270461700DE492F3003D9D3F /* GTMNSData+zlib.m in Sources */ = {isa = PBXBuildFile; fileRef = 2704616F0DE492F3003D9D3F /* GTMNSData+zlib.m */; };
 		270461890DE49634003D9D3F /* CollectionUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 270461870DE49634003D9D3F /* CollectionUtils.m */; };
 		2704618C0DE49652003D9D3F /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 2704618B0DE49652003D9D3F /* libz.dylib */; };
 		270461920DE4975D003D9D3F /* CoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 270461910DE4975C003D9D3F /* CoreServices.framework */; };
@@ -63,7 +62,6 @@
 		2779051E0DE9E5BC00C6D295 /* Logging.m in Sources */ = {isa = PBXBuildFile; fileRef = 2704612A0DE49088003D9D3F /* Logging.m */; };
 		2779051F0DE9E5BC00C6D295 /* ExceptionUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 270461350DE4918D003D9D3F /* ExceptionUtils.m */; };
 		277905200DE9E5BC00C6D295 /* Target.m in Sources */ = {isa = PBXBuildFile; fileRef = 270461460DE491A6003D9D3F /* Target.m */; };
-		277905210DE9E5BC00C6D295 /* GTMNSData+zlib.m in Sources */ = {isa = PBXBuildFile; fileRef = 2704616F0DE492F3003D9D3F /* GTMNSData+zlib.m */; };
 		277905220DE9E5BC00C6D295 /* CollectionUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 270461870DE49634003D9D3F /* CollectionUtils.m */; };
 		277905230DE9E5BC00C6D295 /* BLIPRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 27D5EC060DE5FEDE00CD84FA /* BLIPRequest.m */; };
 		277905240DE9E5BC00C6D295 /* BLIPEchoServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 277903D60DE8EE4800C6D295 /* BLIPEchoServer.m */; };
@@ -73,6 +71,9 @@
 		277905300DE9ED9100C6D295 /* MYUtilitiesTest_main.m in Sources */ = {isa = PBXBuildFile; fileRef = 270462C10DE4A64B003D9D3F /* MYUtilitiesTest_main.m */; };
 		2779053B0DE9EDAA00C6D295 /* BLIPTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 270460FE0DE49030003D9D3F /* BLIPTest.m */; };
 		27D5EC070DE5FEDE00CD84FA /* BLIPRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 27D5EC060DE5FEDE00CD84FA /* BLIPRequest.m */; };
+		27E0DBF00DF3450F00E7F648 /* GTMNSData+zlib.m in Sources */ = {isa = PBXBuildFile; fileRef = 27E0DBEF0DF3450F00E7F648 /* GTMNSData+zlib.m */; };
+		27E0DBF10DF3450F00E7F648 /* GTMNSData+zlib.m in Sources */ = {isa = PBXBuildFile; fileRef = 27E0DBEF0DF3450F00E7F648 /* GTMNSData+zlib.m */; };
+		27E0DBF20DF3450F00E7F648 /* GTMNSData+zlib.m in Sources */ = {isa = PBXBuildFile; fileRef = 27E0DBEF0DF3450F00E7F648 /* GTMNSData+zlib.m */; };
 		8DD76F9C0486AA7600D96B5E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 08FB779EFE84155DC02AAC07 /* Foundation.framework */; };
 /* End PBXBuildFile section */
 
@@ -110,7 +111,7 @@
 		270460FB0DE49030003D9D3F /* BLIPProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLIPProperties.m; sourceTree = "<group>"; };
 		270460FC0DE49030003D9D3F /* BLIPReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLIPReader.h; sourceTree = "<group>"; };
 		270460FD0DE49030003D9D3F /* BLIPReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLIPReader.m; sourceTree = "<group>"; };
-		270460FE0DE49030003D9D3F /* BLIPTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLIPTest.m; sourceTree = "<group>"; };
+		270460FE0DE49030003D9D3F /* BLIPTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BLIPTest.m; path = BLIP/BLIPTest.m; sourceTree = "<group>"; };
 		270460FF0DE49030003D9D3F /* BLIPWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLIPWriter.h; sourceTree = "<group>"; };
 		270461000DE49030003D9D3F /* BLIPWriter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLIPWriter.m; sourceTree = "<group>"; };
 		270461010DE49030003D9D3F /* IPAddress.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IPAddress.h; sourceTree = "<group>"; };
@@ -134,14 +135,11 @@
 		270461360DE4918D003D9D3F /* ExceptionUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExceptionUtils.h; sourceTree = "<group>"; };
 		270461450DE491A6003D9D3F /* Target.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Target.h; sourceTree = "<group>"; };
 		270461460DE491A6003D9D3F /* Target.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Target.m; sourceTree = "<group>"; };
-		2704616E0DE492F3003D9D3F /* GTMNSData+zlib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "GTMNSData+zlib.h"; path = "Foundation/GTMNSData+zlib.h"; sourceTree = "<group>"; };
-		2704616F0DE492F3003D9D3F /* GTMNSData+zlib.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "GTMNSData+zlib.m"; path = "Foundation/GTMNSData+zlib.m"; sourceTree = "<group>"; };
 		270461720DE49340003D9D3F /* MYNetwork */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = MYNetwork; sourceTree = BUILT_PRODUCTS_DIR; };
 		270461870DE49634003D9D3F /* CollectionUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CollectionUtils.m; sourceTree = "<group>"; };
 		270461880DE49634003D9D3F /* CollectionUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CollectionUtils.h; sourceTree = "<group>"; };
 		2704618B0DE49652003D9D3F /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = /usr/lib/libz.dylib; sourceTree = "<absolute>"; };
 		270461910DE4975C003D9D3F /* CoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreServices.framework; path = /System/Library/Frameworks/CoreServices.framework; sourceTree = "<absolute>"; };
-		2704620E0DE4A221003D9D3F /* GTMDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMDefines.h; sourceTree = "<group>"; };
 		270462C00DE4A639003D9D3F /* MYUtilities_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MYUtilities_Prefix.pch; sourceTree = "<group>"; };
 		270462C10DE4A64B003D9D3F /* MYUtilitiesTest_main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MYUtilitiesTest_main.m; sourceTree = "<group>"; };
 		270462C30DE4A65B003D9D3F /* BLIP Overview.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "BLIP Overview.txt"; path = "BLIP/BLIP Overview.txt"; sourceTree = "<group>"; wrapsLines = 1; };
@@ -157,6 +155,9 @@
 		2779052D0DE9E5BC00C6D295 /* BLIPEchoServer */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = BLIPEchoServer; sourceTree = BUILT_PRODUCTS_DIR; };
 		27D5EC050DE5FEDE00CD84FA /* BLIPRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLIPRequest.h; sourceTree = "<group>"; };
 		27D5EC060DE5FEDE00CD84FA /* BLIPRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLIPRequest.m; sourceTree = "<group>"; };
+		27E0DBED0DF3450F00E7F648 /* GTMDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMDefines.h; sourceTree = "<group>"; };
+		27E0DBEE0DF3450F00E7F648 /* GTMNSData+zlib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GTMNSData+zlib.h"; sourceTree = "<group>"; };
+		27E0DBEF0DF3450F00E7F648 /* GTMNSData+zlib.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSData+zlib.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -197,7 +198,8 @@
 				277903830DE8C2DD00C6D295 /* maindocs.h */,
 				270460F00DE49030003D9D3F /* MYNetwork */,
 				270461220DE49055003D9D3F /* MYUtilities */,
-				2704616D0DE492C9003D9D3F /* google-toolbox */,
+				270460FE0DE49030003D9D3F /* BLIPTest.m */,
+				277903E70DE8F05F00C6D295 /* Demo */,
 				08FB779DFE84155DC02AAC07 /* External Frameworks and Libraries */,
 				1AB674ADFE9D54B511CA2CBB /* Products */,
 			);
@@ -253,9 +255,7 @@
 				270460FD0DE49030003D9D3F /* BLIPReader.m */,
 				270460FF0DE49030003D9D3F /* BLIPWriter.h */,
 				270461000DE49030003D9D3F /* BLIPWriter.m */,
-				270460FE0DE49030003D9D3F /* BLIPTest.m */,
 				270460F70DE49030003D9D3F /* BLIP_Internal.h */,
-				277903E70DE8F05F00C6D295 /* Demo */,
 			);
 			path = BLIP;
 			sourceTree = "<group>";
@@ -293,20 +293,11 @@
 				270461460DE491A6003D9D3F /* Target.m */,
 				270461290DE49088003D9D3F /* Test.h */,
 				270461280DE49088003D9D3F /* Test.m */,
+				27E0DBEC0DF3450F00E7F648 /* GoogleToolboxSubset */,
 			);
 			name = MYUtilities;
 			path = ../MYUtilities;
 			sourceTree = "<group>";
-		};
-		2704616D0DE492C9003D9D3F /* google-toolbox */ = {
-			isa = PBXGroup;
-			children = (
-				2704620E0DE4A221003D9D3F /* GTMDefines.h */,
-				2704616E0DE492F3003D9D3F /* GTMNSData+zlib.h */,
-				2704616F0DE492F3003D9D3F /* GTMNSData+zlib.m */,
-			);
-			name = "google-toolbox";
-			sourceTree = "google-toolbox";
 		};
 		277903E70DE8F05F00C6D295 /* Demo */ = {
 			isa = PBXGroup;
@@ -318,7 +309,18 @@
 				2779048A0DE9204300C6D295 /* BLIPEchoClient.xib */,
 				277904280DE91C7900C6D295 /* BLIP Echo Client-Info.plist */,
 			);
-			path = Demo;
+			name = Demo;
+			path = BLIP/Demo;
+			sourceTree = "<group>";
+		};
+		27E0DBEC0DF3450F00E7F648 /* GoogleToolboxSubset */ = {
+			isa = PBXGroup;
+			children = (
+				27E0DBED0DF3450F00E7F648 /* GTMDefines.h */,
+				27E0DBEE0DF3450F00E7F648 /* GTMNSData+zlib.h */,
+				27E0DBEF0DF3450F00E7F648 /* GTMNSData+zlib.m */,
+			);
+			path = GoogleToolboxSubset;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -431,6 +433,7 @@
 				277904460DE91E3700C6D295 /* Logging.m in Sources */,
 				277904480DE91E3900C6D295 /* Target.m in Sources */,
 				277904490DE91E3A00C6D295 /* Test.m in Sources */,
+				27E0DBF00DF3450F00E7F648 /* GTMNSData+zlib.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -454,10 +457,10 @@
 				2779051E0DE9E5BC00C6D295 /* Logging.m in Sources */,
 				2779051F0DE9E5BC00C6D295 /* ExceptionUtils.m in Sources */,
 				277905200DE9E5BC00C6D295 /* Target.m in Sources */,
-				277905210DE9E5BC00C6D295 /* GTMNSData+zlib.m in Sources */,
 				277905220DE9E5BC00C6D295 /* CollectionUtils.m in Sources */,
 				277905230DE9E5BC00C6D295 /* BLIPRequest.m in Sources */,
 				277905240DE9E5BC00C6D295 /* BLIPEchoServer.m in Sources */,
+				27E0DBF20DF3450F00E7F648 /* GTMNSData+zlib.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -481,11 +484,11 @@
 				2704612D0DE49088003D9D3F /* Logging.m in Sources */,
 				270461370DE4918D003D9D3F /* ExceptionUtils.m in Sources */,
 				270461470DE491A6003D9D3F /* Target.m in Sources */,
-				270461700DE492F3003D9D3F /* GTMNSData+zlib.m in Sources */,
 				270461890DE49634003D9D3F /* CollectionUtils.m in Sources */,
 				27D5EC070DE5FEDE00CD84FA /* BLIPRequest.m in Sources */,
 				277905300DE9ED9100C6D295 /* MYUtilitiesTest_main.m in Sources */,
 				2779053B0DE9EDAA00C6D295 /* BLIPTest.m in Sources */,
+				27E0DBF10DF3450F00E7F648 /* GTMNSData+zlib.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -497,7 +500,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				COPY_PHASE_STRIP = NO;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
 				GCC_MODEL_TUNING = G5;
@@ -515,7 +518,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = MYNetwork_Prefix.pch;
@@ -528,7 +531,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = DEBUG;
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
@@ -545,7 +548,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;

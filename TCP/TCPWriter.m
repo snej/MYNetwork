@@ -55,6 +55,7 @@
         }
         _currentData = [[_queue objectAtIndex: 0] retain];
         _currentDataPos = 0;
+        LogTo(TCPVerbose,@"%@ using _currentData %p (%u bytes)", self,_currentData,_currentData.length);
         [_queue removeObjectAtIndex: 0];
     }
     
@@ -65,10 +66,10 @@
     if( written < 0 )
         [self _gotError];
     else if( written < len ) {
-        LogTo(TCPVerbose,@"%@ wrote %i bytes (of %u)", self,written,len);
+        LogTo(TCPVerbose,@"%@ wrote %i bytes (of %u) from %p", self,written,len,_currentData);
         _currentDataPos += written;
     } else {
-        LogTo(TCPVerbose,@"%@ wrote %i bytes", self,written);
+        LogTo(TCPVerbose,@"%@ wrote %i bytes, released %p", self,written,_currentData);
         setObj(&_currentData,nil);
     }
 }
