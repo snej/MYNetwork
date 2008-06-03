@@ -13,12 +13,12 @@
 @interface BLIPWriter : TCPWriter
 {
     NSMutableArray *_outBox;
-    UInt32 _numQueriesSent;
+    UInt32 _numRequestsSent;
 }
 
 - (BOOL) sendRequest: (BLIPRequest*)request response: (BLIPResponse*)response;
 - (BOOL) sendMessage: (BLIPMessage*)message;
 
-@property (readonly) UInt32 numQueriesSent;
+@property (readonly) UInt32 numRequestsSent;
 
 @end

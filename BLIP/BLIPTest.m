@@ -25,6 +25,7 @@
 #endif
 
 
+#define kListenerHost               @"localhost"
 #define kListenerPort               46353
 #define kSendInterval               0.5
 #define kNBatchedMessages           20
@@ -66,7 +67,7 @@ static SecIdentityRef GetListenerIdentity(void) {
     if (self != nil) {
         Log(@"** INIT %@",self);
         _pending = [[NSMutableDictionary alloc] init];
-        IPAddress *addr = [[IPAddress alloc] initWithHostname: @"localhost" port: kListenerPort];
+        IPAddress *addr = [[IPAddress alloc] initWithHostname: kListenerHost port: kListenerPort];
         _conn = [[BLIPConnection alloc] initToAddress: addr];
         if( ! _conn ) {
             [self release];
@@ -99,30 +100,34 @@ static SecIdentityRef GetListenerIdentity(void) {
 
 - (void) sendAMessage
 {
-    Log(@"** Sending another %i messages...", kNBatchedMessages);
-    for( int i=0; i<kNBatchedMessages; i++ ) {
-        size_t size = random() % 32768;
-        NSMutableData *body = [NSMutableData dataWithLength: size];
-        UInt8 *bytes = body.mutableBytes;
-        for( size_t i=0; i<size; i++ )
-            bytes[i] = i % 256;
-        
-        BLIPRequest *q = [_conn requestWithBody: body
-                                     properties: $dict({@"Content-Type", @"application/octet-stream"},
-                                                       {@"User-Agent", @"BLIPConnectionTester"},
-                                                       {@"Date", [[NSDate date] description]},
-                                                       {@"Size",$sprintf(@"%u",size)})];
-        Assert(q);
-        if( kUseCompression && (random()%2==1) )
-            q.compressed = YES;
-        if( random()%16 > 12 )
-            q.urgent = YES;
-        BLIPResponse *response = [q send];
-        Assert(response);
-        Assert(q.number>0);
-        Assert(response.number==q.number);
-        [_pending setObject: $object(size) forKey: $object(q.number)];
-        response.onComplete = $target(self,responseArrived:);
+    if(_pending.count<100) {
+        Log(@"** Sending another %i messages...", kNBatchedMessages);
+        for( int i=0; i<kNBatchedMessages; i++ ) {
+            size_t size = random() % 32768;
+            NSMutableData *body = [NSMutableData dataWithLength: size];
+            UInt8 *bytes = body.mutableBytes;
+            for( size_t i=0; i<size; i++ )
+                bytes[i] = i % 256;
+            
+            BLIPRequest *q = [_conn requestWithBody: body
+                                         properties: $dict({@"Content-Type", @"application/octet-stream"},
+                                                           {@"User-Agent", @"BLIPConnectionTester"},
+                                                           {@"Date", [[NSDate date] description]},
+                                                           {@"Size",$sprintf(@"%u",size)})];
+            Assert(q);
+            if( kUseCompression && (random()%2==1) )
+                q.compressed = YES;
+            if( random()%16 > 12 )
+                q.urgent = YES;
+            BLIPResponse *response = [q send];
+            Assert(response);
+            Assert(q.number>0);
+            Assert(response.number==q.number);
+            [_pending setObject: $object(size) forKey: $object(q.number)];
+            response.onComplete = $target(self,responseArrived:);
+        }
+    } else {
+        Warn(@"There are %u pending messages; waiting for the listener to catch up...",_pending.count);
     }
     [self performSelector: @selector(sendAMessage) withObject: nil afterDelay: kSendInterval];
 }
@@ -184,7 +189,6 @@ static SecIdentityRef GetListenerIdentity(void) {
     Assert(sizeObj);
     [_pending removeObjectForKey: $object(response.number)];
     Log(@"Now %u replies pending", _pending.count);
-    Assert(_pending.count<100);
 }
 
 

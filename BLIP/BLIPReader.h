@@ -18,8 +18,8 @@
     UInt32 _curBytesRead;
     NSMutableData *_curBody;
 
-    UInt32 _numQueriesReceived;
-    NSMutableDictionary *_pendingQueries, *_pendingReplies;
+    UInt32 _numRequestsReceived;
+    NSMutableDictionary *_pendingRequests, *_pendingResponses;
 }
 
 - (void) _addPendingResponse: (BLIPResponse*)response;

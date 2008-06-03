@@ -521,7 +521,7 @@
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = MYNetwork_Prefix.pch;
+				GCC_PREFIX_HEADER = ../MYUtilities/MYUtilities_Prefix.pch;
 				INSTALL_PATH = /usr/local/bin;
 				PRODUCT_NAME = MYNetwork;
 			};

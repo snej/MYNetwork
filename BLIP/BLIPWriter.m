@@ -33,7 +33,7 @@
     [super disconnect];
 }
 
-@synthesize numQueriesSent=_numQueriesSent;
+@synthesize numRequestsSent=_numRequestsSent;
 
 
 - (BOOL) isBusy
@@ -92,9 +92,9 @@
 - (BOOL) sendRequest: (BLIPRequest*)q response: (BLIPResponse*)response
 {
     if( !_shouldClose ) {
-        [q _assignedNumber: ++_numQueriesSent];
+        [q _assignedNumber: ++_numRequestsSent];
         if( response ) {
-            [response _assignedNumber: _numQueriesSent];
+            [response _assignedNumber: _numRequestsSent];
             [(BLIPReader*)self.reader _addPendingResponse: response];
         }
     }

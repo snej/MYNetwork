@@ -31,27 +31,27 @@
 {
     self = [super initWithConnection: conn stream: stream];
     if (self != nil) {
-        _pendingQueries = [[NSMutableDictionary alloc] init];
-        _pendingReplies = [[NSMutableDictionary alloc] init];
+        _pendingRequests = [[NSMutableDictionary alloc] init];
+        _pendingResponses = [[NSMutableDictionary alloc] init];
     }
     return self;
 }
 
 - (void) dealloc
 {
-    [_pendingQueries release];
-    [_pendingReplies release];
+    [_pendingRequests release];
+    [_pendingResponses release];
     [_curBody release];
     [super dealloc];
 }
 
 - (void) disconnect
 {
-    for( BLIPResponse *response in [_pendingReplies allValues] ) {
+    for( BLIPResponse *response in [_pendingResponses allValues] ) {
         [response _connectionClosed];
         [_conn tellDelegate: @selector(connection:receivedResponse:) withObject: response];
     }
-    setObj(&_pendingReplies,nil);
+    setObj(&_pendingResponses,nil);
     [super disconnect];
 }
 
@@ -154,7 +154,7 @@
 
 - (void) _addPendingResponse: (BLIPResponse*)response
 {
-    [_pendingReplies setObject: response forKey: $object(response.number)];
+    [_pendingResponses setObject: response forKey: $object(response.number)];
 }
 
 
@@ -169,14 +169,14 @@
     switch(type) {
         case kBLIP_MSG: {
             // Incoming request:
-            BLIPRequest *request = [_pendingQueries objectForKey: key];
+            BLIPRequest *request = [_pendingRequests objectForKey: key];
             if( request ) {
                 // Continuation frame of a request:
                 if( complete ) {
                     [[request retain] autorelease];
-                    [_pendingQueries removeObjectForKey: key];
+                    [_pendingRequests removeObjectForKey: key];
                 }
-            } else if( header->number == _numQueriesReceived+1 ) {
+            } else if( header->number == _numRequestsReceived+1 ) {
                 // Next new request:
                 request = [[[BLIPRequest alloc] _initWithConnection: _blipConn
                                                          isMine: NO
@@ -185,12 +185,12 @@
                                                            body: nil]
                                 autorelease];
                 if( ! complete )
-                    [_pendingQueries setObject: request forKey: key];
-                _numQueriesReceived++;
+                    [_pendingRequests setObject: request forKey: key];
+                _numRequestsReceived++;
             } else
                 return [self _gotError: BLIPMakeError(kBLIPError_BadFrame, 
                                                @"Received bad request frame #%u (next is #%u)",
-                                               header->number,_numQueriesReceived+1)];
+                                               header->number,_numRequestsReceived+1)];
             
             if( ! [request _receivedFrameWithHeader: header body: body] )
                 return [self _gotError: BLIPMakeError(kBLIPError_BadFrame, 
@@ -203,11 +203,11 @@
             
         case kBLIP_RPY:
         case kBLIP_ERR: {
-            BLIPResponse *response = [_pendingReplies objectForKey: key];
+            BLIPResponse *response = [_pendingResponses objectForKey: key];
             if( response ) {
                 if( complete ) {
                     [[response retain] autorelease];
-                    [_pendingReplies removeObjectForKey: key];
+                    [_pendingResponses removeObjectForKey: key];
                 }
                 
                 if( ! [response _receivedFrameWithHeader: header body: body] ) {
@@ -217,7 +217,7 @@
                     [_blipConn _dispatchResponse: response];
                 
             } else {
-                if( header->number <= ((BLIPWriter*)self.writer).numQueriesSent )
+                if( header->number <= ((BLIPWriter*)self.writer).numRequestsSent )
                     LogTo(BLIP,@"??? %@ got unexpected response frame to my msg #%u",
                           self,header->number); //benign
                 else

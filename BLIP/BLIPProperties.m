@@ -16,14 +16,13 @@
 static const char* kAbbreviations[] = {
     "Content-Type",
     "Profile",
-    "Channel"
-    "Error-Code"
-    "Error-Domain",
     "application/octet-stream",
     "text/plain; charset=UTF-8",
     "text/xml",
     "text/yaml",
-    "application/x-cloudy-signed+yaml",
+    "Channel",
+    "Error-Code",
+    "Error-Domain",
 };
 #define kNAbbreviations ((sizeof(kAbbreviations)/sizeof(const char*)))  // cannot exceed 31!
 
