@@ -308,7 +308,7 @@ TestCase(BLIPConnection) {
         AssertEq(bytes[i],i % 256);
     
     AssertEqual([request valueOfProperty: @"Content-Type"], @"application/octet-stream");
-    AssertEqual([request valueOfProperty: @"User-Agent"], @"BLIPConnectionTester");
+    Assert([request valueOfProperty: @"User-Agent"] != nil);
     AssertEq([[request valueOfProperty: @"Size"] intValue], size);
 
     [request respondWithData: body contentType: request.contentType];
