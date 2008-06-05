@@ -17,7 +17,9 @@ import random
 import unittest
 
 
-kSendInterval = 2.0
+kSendInterval = 0.2
+kNBatchedMessages = 10
+kUrgentEvery = 4
 
 def randbool():
     return random.randint(0,1) == 1
@@ -27,6 +29,7 @@ class BLIPConnectionTest(unittest.TestCase):
 
     def setUp(self):
         self.connection = Connection( ('localhost',46353) )
+        self.nRepliesPending = 0
    
     def sendRequest(self):
         size = random.randint(0,32767)
@@ -41,28 +44,31 @@ class BLIPConnectionTest(unittest.TestCase):
                                                      'Date': datetime.now(),
                                                      'Size': size})
         req.compressed = randbool()
-        req.urgent     = randbool()
+        req.urgent     = (random.randint(0,kUrgentEvery-1)==0)
         req.response.onComplete = self.gotResponse
         return req.send()
     
     def gotResponse(self, response):
-        logging.info("Got response!: %s",response)
+        self.nRepliesPending -= 1
+        logging.info("Got response!: %s (%i pending)",response,self.nRepliesPending)
         request = response.request
         assert response.body == request.body
 
     def testClient(self):
         lastReqTime = None
-        nRequests = 0
-        while nRequests < 10:
+        nIterations = 0
+        while nIterations < 10:
             asyncore.loop(timeout=kSendInterval,count=1)
             
             now = datetime.now()
-            if self.connection.status!=kOpening and not lastReqTime or (now-lastReqTime).seconds >= kSendInterval:
+            if self.connection.status!=kOpening and (not lastReqTime or (now-lastReqTime).microseconds >= kSendInterval*1.0e6):
                 lastReqTime = now
-                if not self.sendRequest():
-                    logging.warn("Couldn't send request (connection is probably closed)")
-                    break;
-                nRequests += 1
+                for i in xrange(0,kNBatchedMessages):
+                    if not self.sendRequest():
+                        logging.warn("Couldn't send request (connection is probably closed)")
+                        break;
+                    self.nRepliesPending += 1
+                nIterations += 1
     
     def tearDown(self):
         self.connection.close()

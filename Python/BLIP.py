@@ -110,6 +110,7 @@ class Connection (asynchat.async_chat):
         self.outBox = []
         self.inMessage = None
         self.inNumRequests = self.outNumRequests = 0
+        self.sending = False
         self._endOfFrame()
     
     def close(self):
@@ -149,6 +150,10 @@ class Connection (asynchat.async_chat):
     def _sendMessage(self, msg):
         if self.canSend:
             self._outQueueMessage(msg,True)
+            if not self.sending:
+                log.debug("Waking up the output stream")
+                self.sending = True
+                self.push_with_producer(self)
             return True
         else:
             return False
@@ -175,7 +180,7 @@ class Connection (asynchat.async_chat):
                     if index<n:
                         index += 1
                     break
-                elif isNew and otherMsg._bytesWritten==0:
+                elif isNew and otherMsg.bytesSent==0:
                     break
                 index -= 1
             else:
@@ -184,24 +189,26 @@ class Connection (asynchat.async_chat):
         self.outBox.insert(index,msg)
         if isNew:
             log.info("Queuing %s at index %i",msg,index)
-            if n==0:
-                self._sendNextFrame()
         else:
             log.debug("Re-queueing outgoing message at index %i of %i",index,len(self.outBox))
     
-    def _sendNextFrame(self):
-        while self.outBox:              #FIX: Don't send everything at once; only as space becomes available!
-            n = len(self.outBox)
-            if n > 0:
-                msg = self.outBox.pop(0)
-                frameSize = 4096
-                if msg.urgent or n==1 or not self.outBox[0].urgent:
-                    frameSize *= 4
-                if msg._sendNextFrame(self,frameSize):
-                    self._outQueueMessage(msg,isNew=False)
-                else:
-                    log.info("Finished sending %s",msg)
-    
+    def more(self):
+        n = len(self.outBox)
+        if n > 0:
+            msg = self.outBox.pop(0)
+            frameSize = 4096
+            if msg.urgent or n==1 or not self.outBox[0].urgent:
+                frameSize *= 4
+            data = msg._sendNextFrame(frameSize)
+            if msg._moreComing:
+                self._outQueueMessage(msg,isNew=False)
+            else:
+                log.info("Finished sending %s",msg)
+            return data
+        else:
+            log.debug("Nothing more to send")
+            self.sending = False
+            return None
     
     ### RECEIVING:
     
@@ -440,7 +447,7 @@ class OutgoingMessage (Message):
         log.debug("Encoded %s into %u bytes", self,len(self.encoded))
         self.bytesSent = 0
     
-    def _sendNextFrame(self, conn,maxLen):
+    def _sendNextFrame(self, maxLen):
         pos = self.bytesSent
         payload = self.encoded[pos:pos+maxLen]
         pos += len(payload)
@@ -449,14 +456,12 @@ class OutgoingMessage (Message):
             self.encoded = None
         log.debug("Sending frame of %s; bytes %i--%i", self,pos-len(payload),pos)
         
-        conn.push( struct.pack(kFrameHeaderFormat, kFrameMagicNumber,
+        header = struct.pack(kFrameHeaderFormat, kFrameMagicNumber,
                                                    self.requestNo,
                                                    self.flags,
-                                                   kFrameHeaderSize+len(payload)) )
-        conn.push( payload )
-        
+                                                   kFrameHeaderSize+len(payload))
         self.bytesSent = pos
-        return self._moreComing
+        return header + payload
 
 
 class Request (object):
