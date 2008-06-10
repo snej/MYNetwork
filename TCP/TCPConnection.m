@@ -255,8 +255,12 @@ static NSMutableArray *sAllConnections;
 {
     if( _status != kTCP_Closed && _status != kTCP_Disconnected ) {
         LogTo(TCP,@"%@ is now closed",self);
-        self.status = (_status==kTCP_Closing ?kTCP_Closed :kTCP_Disconnected);
-        [self tellDelegate: @selector(connectionDidClose:) withObject: nil];
+        TCPConnectionStatus prevStatus = _status;
+        self.status = (prevStatus==kTCP_Closing ?kTCP_Closed :kTCP_Disconnected);
+        if( prevStatus==kTCP_Opening )
+            [self tellDelegate: @selector(connection:failedToOpen:) withObject: self.error];
+        else
+            [self tellDelegate: @selector(connectionDidClose:) withObject: nil];
     }
     [NSObject cancelPreviousPerformRequestsWithTarget: self
                                              selector: @selector(_closeTimeoutExpired)
