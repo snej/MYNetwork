@@ -36,16 +36,12 @@ typedef enum {
     TCPReader *_reader;
     TCPWriter *_writer;
     NSError *_error;
+    NSTimeInterval _openTimeout;
 }
 
 /** Initializes a TCPConnection to the given IP address.
     Afer configuring settings, you should call -open to begin the connection. */
 - (id) initToAddress: (IPAddress*)address;
-
-/** Initializes a TCPConnection to the given IP address, binding to a specific outgoing port
-    number. (This is usually only necessary when attempting to tunnel through a NAT.) */
-- (id) initToAddress: (IPAddress*)address
-           localPort: (UInt16)localPort;
 
 /** Initializes a TCPConnection to the given NSNetService's address and port.
     If the service's address cannot be resolved, nil is returned. */
@@ -54,6 +50,9 @@ typedef enum {
 /** Initializes a TCPConnection from an incoming TCP socket.
     You don't usually need to call this; TCPListener does it automatically. */
 - (id) initIncomingFromSocket: (CFSocketNativeHandle)socket listener: (TCPListener*)listener;
+
+/** Timeout for waiting to open a connection. (Default is zero, meaning the OS default timeout.) */
+@property NSTimeInterval openTimeout;
 
 /** The delegate object that will be called when the connection opens, closes or receives messages. */
 @property (assign) id<TCPConnectionDelegate> delegate;

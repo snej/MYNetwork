@@ -30,6 +30,8 @@ enum {
     kBLIPError_Unspecified = 599            // peer didn't send any detailed error info
 };
 
+NSError *BLIPMakeError( int errorCode, NSString *message, ... ) __attribute__ ((format (__NSString__, 2, 3)));
+
 
 /** Abstract superclass for <a href=".#blipdesc">BLIP</a> requests and responses. */
 @interface BLIPMessage : NSObject 

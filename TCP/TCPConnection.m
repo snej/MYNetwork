@@ -67,7 +67,6 @@ static NSMutableArray *sAllConnections;
 
 
 - (id) initToAddress: (IPAddress*)address
-           localPort: (UInt16)localPort
 {
     NSInputStream *input = nil;
     NSOutputStream *output = nil;
@@ -86,12 +85,6 @@ static NSMutableArray *sAllConnections;
                   outputStream: &output];
 #endif
     return [self _initWithAddress: address inputStream: input outputStream: output];
-    //FIX: Support localPort!
-}
-
-- (id) initToAddress: (IPAddress*)address
-{
-    return [self initToAddress: address localPort: 0];
 }
 
 - (id) initToNetService: (NSNetService*)service
@@ -147,7 +140,7 @@ static NSMutableArray *sAllConnections;
 
 
 @synthesize address=_address, isIncoming=_isIncoming, status=_status, delegate=_delegate,
-            reader=_reader, writer=_writer, server=_server;
+            reader=_reader, writer=_writer, server=_server, openTimeout=_openTimeout;
 
 
 - (NSError*) error
@@ -189,6 +182,22 @@ static NSMutableArray *sAllConnections;
         if( ! [sAllConnections my_containsObjectIdenticalTo: self] )
             [sAllConnections addObject: self];
         self.status = kTCP_Opening;
+        if( _openTimeout > 0 )
+            [self performSelector: @selector(_openTimeoutExpired) withObject: nil afterDelay: _openTimeout];
+    }
+}
+
+- (void) _stopOpenTimer
+{
+    [NSObject cancelPreviousPerformRequestsWithTarget: self selector: @selector(_openTimeoutExpired) object: nil];
+}
+
+- (void) _openTimeoutExpired
+{
+    if( _status == kTCP_Opening ) {
+        LogTo(TCP,@"%@: timed out waiting to open",self);
+        [self _stream: _reader gotError: [NSError errorWithDomain: NSPOSIXErrorDomain
+                                                             code: ETIMEDOUT userInfo: nil]];
     }
 }
 
@@ -203,6 +212,7 @@ static NSMutableArray *sAllConnections;
         setObj(&_reader,nil);
         self.status = kTCP_Disconnected;
     }
+    [self _stopOpenTimer];
 }
 
 
@@ -213,6 +223,7 @@ static NSMutableArray *sAllConnections;
 
 - (void) closeWithTimeout: (NSTimeInterval)timeout
 {
+    [self _stopOpenTimer];
     if( _status == kTCP_Opening ) {
         LogTo(TCP,@"%@ canceling open",self);
         [self _closed];
@@ -265,6 +276,7 @@ static NSMutableArray *sAllConnections;
     [NSObject cancelPreviousPerformRequestsWithTarget: self
                                              selector: @selector(_closeTimeoutExpired)
                                                object: nil];
+    [self _stopOpenTimer];
     [sAllConnections removeObjectIdenticalTo: self];
 }
 
@@ -297,6 +309,7 @@ static NSMutableArray *sAllConnections;
         self.address = stream.peerAddress;
     if( _status==kTCP_Opening && _reader.isOpen && _writer.isOpen ) {
         LogTo(TCP,@"%@ opened; address=%@",self,_address);
+        [self _stopOpenTimer];
         self.status = kTCP_Open;
         [self tellDelegate: @selector(connectionDidOpen:) withObject: nil];
     }

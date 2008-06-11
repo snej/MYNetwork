@@ -421,7 +421,7 @@ class OutgoingMessage (Message):
     
     @property
     def sent(self):
-        return 'encoded' in self.__dict__
+        return hasattr(self,'encoded')
     
     def _encode(self):
         "Generates the message's encoded form, prior to sending it."

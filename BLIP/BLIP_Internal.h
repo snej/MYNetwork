@@ -44,9 +44,6 @@ typedef struct {
 #define kBLIPFrameHeaderMagicNumber 0x9B34F205
 
 
-NSError *BLIPMakeError( int errorCode, NSString *message, ... ) __attribute__ ((format (__NSString__, 2, 3)));
-
-
 @interface BLIPConnection ()
 - (void) _dispatchRequest: (BLIPRequest*)request;
 - (void) _dispatchResponse: (BLIPResponse*)response;
