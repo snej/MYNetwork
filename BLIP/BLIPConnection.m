@@ -15,6 +15,7 @@
 #import "Logging.h"
 #import "Test.h"
 #import "ExceptionUtils.h"
+#import "Target.h"
 
 
 NSString* const BLIPErrorDomain = @"BLIP";
@@ -33,9 +34,13 @@ NSError *BLIPMakeError( int errorCode, NSString *message, ... )
 }
 
 
+@interface BLIPConnection ()
+- (void) _handleCloseRequest: (BLIPRequest*)request;
+@end
 
 
 @implementation BLIPConnection
+
 
 - (void) dealloc
 {
@@ -48,6 +53,11 @@ NSError *BLIPMakeError( int errorCode, NSString *message, ... )
 - (id<BLIPConnectionDelegate>) delegate                     {return (id)_delegate;}
 - (void) setDelegate: (id<BLIPConnectionDelegate>)delegate  {_delegate = delegate;}
 
+
+#pragma mark -
+#pragma mark RECEIVING:
+
+
 - (BLIPDispatcher*) dispatcher
 {
     if( ! _dispatcher ) {
@@ -58,11 +68,23 @@ NSError *BLIPMakeError( int errorCode, NSString *message, ... )
 }
 
 
+- (void) _dispatchMetaRequest: (BLIPRequest*)request
+{
+    NSString* profile = request.profile;
+    if( [profile isEqualToString: kBLIPProfile_Bye] )
+        [self _handleCloseRequest: request];
+    else
+        [request respondWithErrorCode: kBLIPError_NotFound message: @"Unknown meta profile"];
+}
+
+
 - (void) _dispatchRequest: (BLIPRequest*)request
 {
     LogTo(BLIP,@"Received all of %@",request.descriptionWithProperties);
     @try{
-        if( ! [self.dispatcher dispatchMessage: request] )
+        if( request._flags & kBLIP_Meta )
+            [self _dispatchMetaRequest: request];
+        else if( ! [self.dispatcher dispatchMessage: request] )
             [self tellDelegate: @selector(connection:receivedRequest:) withObject: request];
         if( ! request.noReply && ! request.repliedTo ) {
             LogTo(BLIP,@"Returning default empty response to %@",request);
@@ -79,6 +101,10 @@ NSError *BLIPMakeError( int errorCode, NSString *message, ... )
     LogTo(BLIP,@"Received all of %@",response);
     [self tellDelegate: @selector(connection:receivedResponse:) withObject: response];
 }
+
+
+#pragma mark -
+#pragma mark SENDING:
 
 
 - (BLIPRequest*) request
@@ -103,11 +129,61 @@ NSError *BLIPMakeError( int errorCode, NSString *message, ... )
 }
 
 
+#pragma mark -
+#pragma mark CLOSING:
+
+
+- (void) _beginClose
+{
+    // Override of TCPConnection method. Instead of closing the socket, send a 'bye' request:
+    if( ! _blipClosing ) {
+        LogTo(BLIPVerbose,@"Sending close request...");
+        BLIPRequest *r = [self request];
+        [r _setFlag: kBLIP_Meta value: YES];
+        r.profile = kBLIPProfile_Bye;
+        BLIPResponse *response = [r send];
+        response.onComplete = $target(self,_receivedCloseResponse:);
+    }
+    // Put the writer in close mode, to prevent client from sending any more requests:
+    [self.writer close];
+}
+
+- (void) _receivedCloseResponse: (BLIPResponse*)response
+{
+    NSError *error = response.error;
+    LogTo(BLIPVerbose,@"Received close response: error=%@",error);
+    if( error ) {
+        if( [_delegate respondsToSelector: @selector(connection:closeRequestFailedWithError:)] )
+            [_delegate connection: self closeRequestFailedWithError: error];
+    } else {
+        // Now finally close the socket:
+        [super _beginClose];
+    }
+}
+
+
+- (void) _handleCloseRequest: (BLIPRequest*)request
+{
+    LogTo(BLIPVerbose,@"Received a close request");
+    if( [_delegate respondsToSelector: @selector(connectionReceivedCloseRequest:)] )
+        if( ! [_delegate connectionReceivedCloseRequest: self] ) {
+            LogTo(BLIPVerbose,@"Responding with denial of close request");
+            [request respondWithErrorCode: kBLIPError_Forbidden message: @"Close request denied"];
+            return;
+        }
+    
+    LogTo(BLIPVerbose,@"Close request accepted");
+    _blipClosing = YES; // this prevents _beginClose from sending a close request back
+    [self close];
+}
+
+
 @end
 
 
 
 
+#pragma mark -
 @implementation BLIPListener
 
 - (id) initWithPort: (UInt16)port

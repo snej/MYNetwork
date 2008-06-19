@@ -199,6 +199,8 @@
         setObj(&_mutableBody,nil);
         
         BLIPMutableProperties *errorProps = [self.properties mutableCopy];
+        if( ! errorProps )
+            errorProps = [[BLIPMutableProperties alloc] init];
         NSDictionary *userInfo = error.userInfo;
         for( NSString *key in userInfo ) {
             id value = $castIf(NSString,[userInfo objectForKey: key]);
@@ -227,8 +229,12 @@
 {
     Assert(_connection,@"%@ has no connection to send over",self);
     Assert(!_sent,@"%@ was already sent",self);
+    BLIPWriter *writer = (BLIPWriter*)_connection.writer;
+    Assert(writer,@"%@'s connection has no writer (already closed?)",self);
     [self _encode];
-    return (self.sent = [(BLIPWriter*)_connection.writer sendMessage: self]);
+    BOOL sent = self.sent = [writer sendMessage: self];
+    Assert(sent);
+    return sent;
 }
 
 

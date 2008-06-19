@@ -20,6 +20,7 @@
 - (void) _streamOpened: (TCPStream*)stream;
 - (BOOL) _streamPeerCertAvailable: (TCPStream*)stream;
 - (void) _stream: (TCPStream*)stream gotError: (NSError*)error;
+- (void) _streamCanClose: (TCPStream*)stream;
 - (void) _streamGotEOF: (TCPStream*)stream;
-- (void) _streamClosed: (TCPStream*)stream;
+- (void) _streamDisconnected: (TCPStream*)stream;
 @end

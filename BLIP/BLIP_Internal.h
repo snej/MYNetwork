@@ -29,6 +29,7 @@ enum {
     kBLIP_Urgent    = 0x0020,       // please send sooner/faster
     kBLIP_NoReply   = 0x0040,       // no RPY needed
     kBLIP_MoreComing= 0x0080,       // More frames coming (Applies only to individual frame)
+    kBLIP_Meta      = 0x0100,       // Special message type, handled internally (hello, bye, ...)
 };
 typedef UInt16 BLIPMessageFlags;
 
@@ -43,6 +44,9 @@ typedef struct {
 
 #define kBLIPFrameHeaderMagicNumber 0x9B34F205
 
+#define kBLIPProfile_Hi  @"Hi"      // Used for Profile header in meta greeting message
+#define kBLIPProfile_Bye @"Bye"     // Used for Profile header in meta close-request message
+
 
 @interface BLIPConnection ()
 - (void) _dispatchRequest: (BLIPRequest*)request;
@@ -52,6 +56,7 @@ typedef struct {
 
 @interface BLIPMessage ()
 @property BOOL sent, propertiesAvailable, complete;
+- (BLIPMessageFlags) _flags;
 - (void) _setFlag: (BLIPMessageFlags)flag value: (BOOL)value;
 - (void) _encode;
 @end

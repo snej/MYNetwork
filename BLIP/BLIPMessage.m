@@ -74,6 +74,8 @@
         [desc appendString: @", urgent"];
     if( _flags & kBLIP_NoReply )
         [desc appendString: @", noreply"];
+    if( _flags & kBLIP_Meta )
+        [desc appendString: @", META"];
     [desc appendString: @"]"];
     return desc;
 }
@@ -102,6 +104,8 @@
     else
         _flags &= ~flag;
 }
+
+- (BLIPMessageFlags) _flags                 {return _flags;}
 
 - (BOOL) compressed                         {return (_flags & kBLIP_Compressed) != 0;}
 - (BOOL) urgent                             {return (_flags & kBLIP_Urgent) != 0;}

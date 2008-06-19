@@ -79,10 +79,6 @@
 
 - (BOOL) sendMessage: (BLIPMessage*)message
 {
-    if( _shouldClose ) {
-        Warn(@"%@: Attempt to send a message after the connection has started closing",self);
-        return NO;
-    }
     Assert(!message.sent,@"message has already been sent");
     [self _queueMessage: message isNew: YES];
     return YES;
@@ -91,12 +87,14 @@
 
 - (BOOL) sendRequest: (BLIPRequest*)q response: (BLIPResponse*)response
 {
-    if( !_shouldClose ) {
-        [q _assignedNumber: ++_numRequestsSent];
-        if( response ) {
-            [response _assignedNumber: _numRequestsSent];
-            [(BLIPReader*)self.reader _addPendingResponse: response];
-        }
+    if( _shouldClose ) {
+        Warn(@"%@: Attempt to send a request after the connection has started closing: %@",self,q);
+        return NO;
+    }
+    [q _assignedNumber: ++_numRequestsSent];
+    if( response ) {
+        [response _assignedNumber: _numRequestsSent];
+        [(BLIPReader*)self.reader _addPendingResponse: response];
     }
     return [self sendMessage: q];
 }

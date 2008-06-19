@@ -20,6 +20,7 @@
 @interface BLIPConnection : TCPConnection
 {
     BLIPDispatcher *_dispatcher;
+    BOOL _blipClosing;
 }
 
 /** The delegate object that will be called when the connection opens, closes or receives messages. */
@@ -73,6 +74,13 @@
 /** Called when a BLIPResponse (to one of your requests) is received from the peer.
     This is called <i>after</i> the response object's onComplete target, if any, is invoked.*/
 - (void) connection: (BLIPConnection*)connection receivedResponse: (BLIPResponse*)response;
+
+/** Called when the peer wants to close the connection. Return YES to allow, NO to prevent. */
+- (BOOL) connectionReceivedCloseRequest: (BLIPConnection*)connection;
+
+/** Called if the peer refuses a close request. 
+    The typical error is BLIP error kBLIPError_Forbidden. */
+- (void) connection: (BLIPConnection*)connection closeRequestFailedWithError: (NSError*)error;
 @end
 
 

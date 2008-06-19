@@ -207,9 +207,7 @@ static NSMutableArray *sAllConnections;
     if( _status > kTCP_Closed ) {
         LogTo(TCP,@"%@ disconnecting",self);
         [_writer disconnect];
-        setObj(&_writer,nil);
         [_reader disconnect];
-        setObj(&_reader,nil);
         self.status = kTCP_Disconnected;
     }
     [self _stopOpenTimer];
@@ -231,8 +229,7 @@ static NSMutableArray *sAllConnections;
         LogTo(TCP,@"%@ closing",self);
         self.status = kTCP_Closing;
         [self retain];
-        [_reader close];
-        [_writer close];
+        [self _beginClose];
         if( ! [self _checkIfClosed] ) {
             if( timeout <= 0.0 )
                 [self disconnect];
@@ -248,6 +245,13 @@ static NSMutableArray *sAllConnections;
 {
     if( _status==kTCP_Closing )
         [self disconnect];
+}
+
+
+- (void) _beginClose
+{
+    [_reader close];
+    [_writer close];
 }
 
 
@@ -356,27 +360,16 @@ static NSMutableArray *sAllConnections;
     [[self retain] autorelease];
     setObj(&_error,error);
     [_reader disconnect];
-    setObj(&_reader,nil);
     [_writer disconnect];
-    setObj(&_writer,nil);
     [self _closed];
 }
 
 - (void) _streamGotEOF: (TCPStream*)stream
 {
     LogTo(TCP,@"%@ got EOF on %@",self,stream);
-    if( stream == _reader ) {
-        setObj(&_reader,nil);
-        // This is the expected way for he peer to initiate closing the connection.
-        if( _status==kTCP_Open ) {
-            [self closeWithTimeout: INFINITY];
-            return;
-        }
-    } else if( stream == _writer ) {
-        setObj(&_writer,nil);
-    }
-    
+    [stream disconnect];
     if( _status == kTCP_Closing ) {
+        [self _streamCanClose: stream];
         [self _checkIfClosed];
     } else {
         [self _stream: stream 
@@ -385,14 +378,27 @@ static NSMutableArray *sAllConnections;
 }
 
 
-// Called after I called -close on a stream and it finished closing:
-- (void) _streamClosed: (TCPStream*)stream
+// Called as soon as a stream is ready to close, after its -close method has been called.
+- (void) _streamCanClose: (TCPStream*)stream
 {
-    LogTo(TCP,@"%@ finished closing %@",self,stream);
+    if( ! _reader.isActive && !_writer.isActive ) {
+        LogTo(TCPVerbose,@"Both streams are ready to close now!");
+        [_reader disconnect];
+        [_writer disconnect];
+    }
+}
+
+
+// Called after I called -close on a stream and it finished closing:
+- (void) _streamDisconnected: (TCPStream*)stream
+{
+    LogTo(TCP,@"%@: disconnected %@",self,stream);
     if( stream == _reader )
         setObj(&_reader,nil);
     else if( stream == _writer )
         setObj(&_writer,nil);
+    else
+        return;
     if( !_reader.isOpen && !_writer.isOpen )
         [self _closed];
 }

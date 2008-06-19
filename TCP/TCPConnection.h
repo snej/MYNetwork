@@ -108,6 +108,7 @@ typedef enum {
 // protected:
 - (Class) readerClass;
 - (Class) writerClass;
+- (void) _beginClose;
 
 @end
 

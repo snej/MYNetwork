@@ -93,7 +93,7 @@
 
 - (BOOL) isBusy
 {
-    return _curBytesRead > 0;
+    return _curBytesRead > 0 || _pendingRequests.count > 0 || _pendingResponses.count > 0;
 }
 
 

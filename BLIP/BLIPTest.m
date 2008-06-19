@@ -35,6 +35,7 @@
 #define kClientUsesSSLCert          NO
 #define kListenerRequiresSSL        NO
 #define kListenerRequiresClientCert NO
+#define kListenerCloseAfter         50
 
 
 static SecIdentityRef GetClientIdentity(void) {
@@ -100,36 +101,38 @@ static SecIdentityRef GetListenerIdentity(void) {
 
 - (void) sendAMessage
 {
-    if(_pending.count<100) {
-        Log(@"** Sending another %i messages...", kNBatchedMessages);
-        for( int i=0; i<kNBatchedMessages; i++ ) {
-            size_t size = random() % 32768;
-            NSMutableData *body = [NSMutableData dataWithLength: size];
-            UInt8 *bytes = body.mutableBytes;
-            for( size_t i=0; i<size; i++ )
-                bytes[i] = i % 256;
-            
-            BLIPRequest *q = [_conn requestWithBody: body
-                                         properties: $dict({@"Content-Type", @"application/octet-stream"},
-                                                           {@"User-Agent", @"BLIPConnectionTester"},
-                                                           {@"Date", [[NSDate date] description]},
-                                                           {@"Size",$sprintf(@"%u",size)})];
-            Assert(q);
-            if( kUseCompression && (random()%2==1) )
-                q.compressed = YES;
-            if( random()%16 > 12 )
-                q.urgent = YES;
-            BLIPResponse *response = [q send];
-            Assert(response);
-            Assert(q.number>0);
-            Assert(response.number==q.number);
-            [_pending setObject: $object(size) forKey: $object(q.number)];
-            response.onComplete = $target(self,responseArrived:);
+    if( _conn.status==kTCP_Open || _conn.status==kTCP_Opening ) {
+        if(_pending.count<100) {
+            Log(@"** Sending another %i messages...", kNBatchedMessages);
+            for( int i=0; i<kNBatchedMessages; i++ ) {
+                size_t size = random() % 32768;
+                NSMutableData *body = [NSMutableData dataWithLength: size];
+                UInt8 *bytes = body.mutableBytes;
+                for( size_t i=0; i<size; i++ )
+                    bytes[i] = i % 256;
+                
+                BLIPRequest *q = [_conn requestWithBody: body
+                                             properties: $dict({@"Content-Type", @"application/octet-stream"},
+                                                               {@"User-Agent", @"BLIPConnectionTester"},
+                                                               {@"Date", [[NSDate date] description]},
+                                                               {@"Size",$sprintf(@"%u",size)})];
+                Assert(q);
+                if( kUseCompression && (random()%2==1) )
+                    q.compressed = YES;
+                if( random()%16 > 12 )
+                    q.urgent = YES;
+                BLIPResponse *response = [q send];
+                Assert(response);
+                Assert(q.number>0);
+                Assert(response.number==q.number);
+                [_pending setObject: $object(size) forKey: $object(q.number)];
+                response.onComplete = $target(self,responseArrived:);
+            }
+        } else {
+            Warn(@"There are %u pending messages; waiting for the listener to catch up...",_pending.count);
         }
-    } else {
-        Warn(@"There are %u pending messages; waiting for the listener to catch up...",_pending.count);
+        [self performSelector: @selector(sendAMessage) withObject: nil afterDelay: kSendInterval];
     }
-    [self performSelector: @selector(sendAMessage) withObject: nil afterDelay: kSendInterval];
 }
 
 - (void) responseArrived: (BLIPResponse*)response
@@ -217,6 +220,7 @@ TestCase(BLIPConnection) {
 @interface BLIPTestListener : NSObject <TCPListenerDelegate, BLIPConnectionDelegate>
 {
     BLIPListener *_listener;
+    int _nReceived;
 }
 
 @end
@@ -277,6 +281,7 @@ TestCase(BLIPConnection) {
 - (void) connectionDidOpen: (TCPConnection*)connection
 {
     Log(@"** %@ didOpen [SSL=%@]",connection,connection.actualSecurityLevel);
+    _nReceived = 0;
 }
 - (BOOL) connection: (TCPConnection*)connection authorizeSSLPeer: (SecCertificateRef)peerCert
 {
@@ -312,6 +317,11 @@ TestCase(BLIPConnection) {
     AssertEq([[request valueOfProperty: @"Size"] intValue], size);
 
     [request respondWithData: body contentType: request.contentType];
+    
+    if( ++ _nReceived == kListenerCloseAfter ) {
+        Log(@"********** Closing BLIPTestListener after %i requests",_nReceived);
+        [connection close];
+    }
 }
 
 

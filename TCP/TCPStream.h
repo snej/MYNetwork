@@ -47,6 +47,9 @@
 /** Does the stream have pending data to read or write, that prevents it from closing? */
 @property (readonly) BOOL isBusy;
 
+/** Returns NO if the stream is ready to close (-close has been called and -isBusy is NO.) */
+@property (readonly) BOOL isActive;
+
 /** Generic accessor for CFStream/NSStream properties. */
 - (id) propertyForKey: (CFStringRef)cfStreamProperty;
 

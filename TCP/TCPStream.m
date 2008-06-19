@@ -110,20 +110,24 @@ static NSError* fixStreamError( NSError *error );
         [_stream close];
         setObj(&_stream,nil);
     }
-    setObj(&_conn,nil);
+    if( _conn ) {
+        [self retain];
+        [_conn _streamDisconnected: self];
+        setObj(&_conn,nil);
+        [self release];
+    }
 }
 
 
 - (BOOL) close
 {
+    _shouldClose = YES;
     if( self.isBusy ) {
-        _shouldClose = YES;
         return NO;
     } else {
-        LogTo(TCP,@"Closing %@",self);
-        [[self retain] autorelease];    // don't let myself be dealloced in the midst of this
-        [_conn _streamClosed: self];    // have to do this before disconnect
-        [self disconnect];
+        LogTo(TCP,@"Request to close %@",self);
+        [[self retain] autorelease];        // don't let myself be dealloced in the midst of this
+        [_conn _streamCanClose: self];
         return YES;
     }
 }
@@ -138,6 +142,11 @@ static NSError* fixStreamError( NSError *error );
 - (BOOL) isBusy
 {
     return NO;  // abstract
+}
+
+- (BOOL) isActive
+{
+    return !_shouldClose || self.isBusy;
 }
 
 
@@ -158,14 +167,7 @@ static NSError* fixStreamError( NSError *error );
 
 - (void) _gotEOF
 {
-    if( self.isBusy )
-        [self _gotError: [NSError errorWithDomain: NSPOSIXErrorDomain code: ECONNRESET userInfo: nil]];
-    else {
-        [self retain];
-        [_conn _streamGotEOF: self];
-        [self disconnect];
-        [self release];
-    }
+    [_conn _streamGotEOF: self];
 }
 
 - (BOOL) _gotError: (NSError*)error
