@@ -264,6 +264,7 @@ static NSMutableArray *sAllConnections;
 // called by my streams when they close (after my -close is called)
 - (void) _closed
 {
+    [[self retain] autorelease];
     if( _status != kTCP_Closed && _status != kTCP_Disconnected ) {
         LogTo(TCP,@"%@ is now closed",self);
         TCPConnectionStatus prevStatus = _status;
@@ -352,6 +353,7 @@ static NSMutableArray *sAllConnections;
 {
     LogTo(TCP,@"%@ got %@ on %@",self,error,stream.class);
     Assert(error);
+    [[self retain] autorelease];
     setObj(&_error,error);
     [_reader disconnect];
     setObj(&_reader,nil);
