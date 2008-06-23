@@ -79,7 +79,7 @@
 - (BOOL) connectionReceivedCloseRequest: (BLIPConnection*)connection;
 
 /** Called if the peer refuses a close request. 
-    The typical error is BLIP error kBLIPError_Forbidden. */
+    The typical error is kBLIPError_Forbidden. */
 - (void) connection: (BLIPConnection*)connection closeRequestFailedWithError: (NSError*)error;
 @end
 

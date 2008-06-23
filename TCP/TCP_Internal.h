@@ -24,3 +24,9 @@
 - (void) _streamGotEOF: (TCPStream*)stream;
 - (void) _streamDisconnected: (TCPStream*)stream;
 @end
+
+
+@interface TCPStream ()
+- (void) _unclose;
+@end
+

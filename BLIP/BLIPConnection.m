@@ -8,6 +8,7 @@
 
 #import "BLIPConnection.h"
 #import "BLIP_Internal.h"
+#import "TCP_Internal.h"
 #import "BLIPReader.h"
 #import "BLIPWriter.h"
 #import "BLIPDispatcher.h"
@@ -153,8 +154,8 @@ NSError *BLIPMakeError( int errorCode, NSString *message, ... )
     NSError *error = response.error;
     LogTo(BLIPVerbose,@"Received close response: error=%@",error);
     if( error ) {
-        if( [_delegate respondsToSelector: @selector(connection:closeRequestFailedWithError:)] )
-            [_delegate connection: self closeRequestFailedWithError: error];
+        [self _unclose];
+        [self tellDelegate: @selector(connection:closeRequestFailedWithError:) withObject: error];
     } else {
         // Now finally close the socket:
         [super _beginClose];

@@ -109,6 +109,7 @@ typedef enum {
 - (Class) readerClass;
 - (Class) writerClass;
 - (void) _beginClose;
+- (void) _unclose;
 
 @end
 

@@ -247,7 +247,24 @@ static NSMutableArray *sAllConnections;
         [self disconnect];
 }
 
+- (void) _stopCloseTimer
+{
+    [NSObject cancelPreviousPerformRequestsWithTarget: self selector: @selector(_closeTimeoutExpired) object: nil];
+}
 
+- (void) _unclose
+{
+    if( _status == kTCP_Closing ) {
+        LogTo(TCP,@"%@: _unclose!",self);
+        [_reader _unclose];
+        [_writer _unclose];
+        [self _stopCloseTimer];
+        self.status = kTCP_Open;
+    }
+}
+
+
+/** Subclasses can override this to customize what happens when -close is called. */
 - (void) _beginClose
 {
     [_reader close];
@@ -278,9 +295,7 @@ static NSMutableArray *sAllConnections;
         else
             [self tellDelegate: @selector(connectionDidClose:) withObject: nil];
     }
-    [NSObject cancelPreviousPerformRequestsWithTarget: self
-                                             selector: @selector(_closeTimeoutExpired)
-                                               object: nil];
+    [self _stopCloseTimer];
     [self _stopOpenTimer];
     [sAllConnections removeObjectIdenticalTo: self];
 }

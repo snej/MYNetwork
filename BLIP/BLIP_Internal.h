@@ -42,7 +42,7 @@ typedef struct {
     UInt16           size;          // total size of frame, _including_ this header
 } BLIPFrameHeader;
 
-#define kBLIPFrameHeaderMagicNumber 0x9B34F205
+#define kBLIPFrameHeaderMagicNumber 0x9B34F206
 
 #define kBLIPProfile_Hi  @"Hi"      // Used for Profile header in meta greeting message
 #define kBLIPProfile_Bye @"Bye"     // Used for Profile header in meta close-request message

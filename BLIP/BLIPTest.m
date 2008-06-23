@@ -194,6 +194,13 @@ static SecIdentityRef GetListenerIdentity(void) {
     Log(@"Now %u replies pending", _pending.count);
 }
 
+- (BOOL) connectionReceivedCloseRequest: (BLIPConnection*)connection
+{
+    BOOL response = NO;
+    Log(@"***** %@ received a close request; returning %i",connection,response);
+    return response;
+}
+
 
 @end
 
@@ -322,6 +329,17 @@ TestCase(BLIPConnection) {
         Log(@"********** Closing BLIPTestListener after %i requests",_nReceived);
         [connection close];
     }
+}
+
+- (BOOL) connectionReceivedCloseRequest: (BLIPConnection*)connection;
+{
+    Log(@"***** %@ received a close request",connection);
+    return YES;
+}
+
+- (void) connection: (BLIPConnection*)connection closeRequestFailedWithError: (NSError*)error
+{
+    Log(@"***** %@'s close request failed: %@",connection,error);
 }
 
 

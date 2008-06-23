@@ -121,15 +121,22 @@ static NSError* fixStreamError( NSError *error );
 
 - (BOOL) close
 {
-    _shouldClose = YES;
+    if( ! _shouldClose ) {
+        _shouldClose = YES;
+        LogTo(TCP,@"Request to close %@",self);
+    }
     if( self.isBusy ) {
         return NO;
     } else {
-        LogTo(TCP,@"Request to close %@",self);
         [[self retain] autorelease];        // don't let myself be dealloced in the midst of this
         [_conn _streamCanClose: self];
         return YES;
     }
+}
+
+- (void) _unclose
+{
+    _shouldClose = NO;
 }
 
 
