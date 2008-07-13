@@ -70,6 +70,7 @@
 		277905280DE9E5BC00C6D295 /* CoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 270461910DE4975C003D9D3F /* CoreServices.framework */; };
 		277905300DE9ED9100C6D295 /* MYUtilitiesTest_main.m in Sources */ = {isa = PBXBuildFile; fileRef = 270462C10DE4A64B003D9D3F /* MYUtilitiesTest_main.m */; };
 		2779053B0DE9EDAA00C6D295 /* BLIPTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 270460FE0DE49030003D9D3F /* BLIPTest.m */; };
+		277ECFD50E2A771A00D756BB /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 2704618B0DE49652003D9D3F /* libz.dylib */; };
 		27D5EC070DE5FEDE00CD84FA /* BLIPRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 27D5EC060DE5FEDE00CD84FA /* BLIPRequest.m */; };
 		27E0DBF00DF3450F00E7F648 /* GTMNSData+zlib.m in Sources */ = {isa = PBXBuildFile; fileRef = 27E0DBEF0DF3450F00E7F648 /* GTMNSData+zlib.m */; };
 		27E0DBF10DF3450F00E7F648 /* GTMNSData+zlib.m in Sources */ = {isa = PBXBuildFile; fileRef = 27E0DBEF0DF3450F00E7F648 /* GTMNSData+zlib.m */; };
@@ -165,6 +166,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				277ECFD50E2A771A00D756BB /* libz.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
