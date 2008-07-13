@@ -175,7 +175,7 @@
     if( ! (_flags & kBLIP_ERR) )
         return nil;
     
-    NSMutableDictionary *userInfo = [[self.properties allProperties] mutableCopy];
+    NSMutableDictionary *userInfo = [[[self.properties allProperties] mutableCopy] autorelease];
     NSString *domain = [userInfo objectForKey: @"Error-Domain"];
     int code = [[userInfo objectForKey: @"Error-Code"] intValue];
     if( domain==nil || code==0 ) {
@@ -255,7 +255,7 @@
 - (void) _connectionClosed
 {
     [super _connectionClosed];
-    if( !_isMine ) {
+    if( !_isMine && !_complete ) {
         // Change incoming response to an error:
         _isMutable = YES;
         [_properties autorelease];
@@ -263,6 +263,7 @@
         [self _setError: BLIPMakeError(kBLIPError_Disconnected,
                                          @"Connection closed before response was received")];
         _isMutable = NO;
+        self.complete = YES;    // Calls onComplete target
     }
 }
 

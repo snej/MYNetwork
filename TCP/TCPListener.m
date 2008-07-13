@@ -23,6 +23,8 @@ static void TCPListenerAcceptCallBack(CFSocketRef socket, CFSocketCallBackType t
                                       CFDataRef address, const void *data, void *info);
 
 @interface TCPListener()
+- (void) _openBonjour;
+- (void) _closeBonjour;
 @property BOOL bonjourPublished;
 @property NSInteger bonjourError;
 - (void) _updateTXTRecord;
@@ -51,8 +53,9 @@ static void TCPListenerAcceptCallBack(CFSocketRef socket, CFSocketCallBackType t
 
 
 @synthesize delegate=_delegate, port=_port, useIPv6=_useIPv6,
-            bonjourServiceType=_bonjourServiceType, bonjourServiceName=_bonjourServiceName,
+            bonjourServiceType=_bonjourServiceType,
             bonjourPublished=_bonjourPublished, bonjourError=_bonjourError,
+            bonjourService=_netService,
             pickAvailablePort=_pickAvailablePort;
 
 
@@ -62,7 +65,7 @@ static void TCPListenerAcceptCallBack(CFSocketRef socket, CFSocketCallBackType t
 }
 
 
-// Stores the last error from CFSocketCreate or CFSocketSetAddress into *ouError.
+// Stores the last error from CFSocketCreate or CFSocketSetAddress into *outError.
 static void* getLastCFSocketError( NSError **outError ) {
     if( outError )
         *outError = [NSError errorWithDomain: NSPOSIXErrorDomain code: errno userInfo: nil];
@@ -160,23 +163,7 @@ static CFSocketRef closeSocket( CFSocketRef socket ) {
         }
     }
     
-    // Open Bonjour:
-    if( _bonjourServiceType && !_netService) {
-        // instantiate the NSNetService object that will advertise on our behalf.
-        _netService = [[NSNetService alloc] initWithDomain: @"local." 
-                                                      type: _bonjourServiceType
-                                                      name: _bonjourServiceName ?:@""
-                                                      port: _port];
-        if( _netService ) {
-            [_netService setDelegate:self];
-            if( _bonjourTXTRecord )
-                [self _updateTXTRecord];
-            [_netService publish];
-        } else {
-            self.bonjourError = -1;
-            Warn(@"%@: Failed to create NSNetService",self);
-        }
-    }
+    [self _openBonjour];
 
     LogTo(TCP,@"%@ is open",self);
     [self tellDelegate: @selector(listenerDidOpen:) withObject: nil];
@@ -192,14 +179,7 @@ static CFSocketRef closeSocket( CFSocketRef socket ) {
 - (void) close 
 {
     if( _ipv4socket ) {
-        if( _netService ) {
-            [_netService stop];
-            [_netService release];
-            _netService = nil;
-            self.bonjourPublished = NO;
-        }
-        self.bonjourError = 0;
-
+        [self _closeBonjour];
         _ipv4socket = closeSocket(_ipv4socket);
         _ipv6socket = closeSocket(_ipv6socket);
 
@@ -264,6 +244,51 @@ static void TCPListenerAcceptCallBack(CFSocketRef socket, CFSocketCallBackType t
 
 #pragma mark -
 #pragma mark BONJOUR:
+
+
+- (void) _openBonjour
+{
+    if( self.isOpen && _bonjourServiceType && !_netService) {
+        // instantiate the NSNetService object that will advertise on our behalf.
+        _netService = [[NSNetService alloc] initWithDomain: @"local." 
+                                                      type: _bonjourServiceType
+                                                      name: _bonjourServiceName ?:@""
+                                                      port: _port];
+        if( _netService ) {
+            [_netService setDelegate:self];
+            if( _bonjourTXTRecord )
+                [self _updateTXTRecord];
+            [_netService publish];
+        } else {
+            self.bonjourError = -1;
+            Warn(@"%@: Failed to create NSNetService",self);
+        }
+    }
+}
+
+- (void) _closeBonjour
+{
+    if( _netService ) {
+        [_netService stop];
+        [_netService release];
+        _netService = nil;
+        self.bonjourPublished = NO;
+    }
+    if( self.bonjourError )
+        self.bonjourError = 0;
+}
+
+
+- (NSString*) bonjourServiceName {return _bonjourServiceName;}
+
+- (void) setBonjourServiceName: (NSString*)name
+{
+    if( ! $equal(name,_bonjourServiceName) ) {
+        [self _closeBonjour];
+        setObj(&_bonjourServiceName,name);
+        [self _openBonjour];
+    }
+}
 
 
 - (NSDictionary*) bonjourTXTRecord

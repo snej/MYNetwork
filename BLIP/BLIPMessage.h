@@ -45,6 +45,7 @@ NSError *BLIPMakeError( int errorCode, NSString *message, ... ) __attribute__ ((
     NSMutableData *_mutableBody;
     BOOL _isMine, _isMutable, _sent, _propertiesAvailable, _complete;
     SInt32 _bytesWritten;
+    id _representedObject;
 };
 
 /** The BLIPConnection associated with this message. */
@@ -87,6 +88,10 @@ NSError *BLIPMakeError( int errorCode, NSString *message, ... ) __attribute__ ((
 /** The message body as an NSString.
     The UTF-8 character encoding is used to convert. */
 @property (copy) NSString *bodyString;
+
+/** An arbitrary object that you can associate with this message for your own purposes.
+    The message retains it, but doesn't do anything else with it. */
+@property (retain) id representedObject;
 
 #pragma mark PROPERTIES:
 

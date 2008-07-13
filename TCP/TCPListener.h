@@ -98,6 +98,9 @@
 /** Current error status of Bonjour service advertising. See NSNetServicesError for error codes. */
 @property (readonly) NSInteger /*NSNetServicesError*/ bonjourError;
 
+/** The NSNetService being published. */
+@property (readonly) NSNetService* bonjourService;
+
 
 @end
 

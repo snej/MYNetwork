@@ -36,6 +36,7 @@
 #define kListenerRequiresSSL        NO
 #define kListenerRequiresClientCert NO
 #define kListenerCloseAfter         50
+#define kClientAcceptCloseRequest   YES
 
 
 static SecIdentityRef GetClientIdentity(void) {
@@ -196,7 +197,7 @@ static SecIdentityRef GetListenerIdentity(void) {
 
 - (BOOL) connectionReceivedCloseRequest: (BLIPConnection*)connection
 {
-    BOOL response = NO;
+    BOOL response = kClientAcceptCloseRequest;
     Log(@"***** %@ received a close request; returning %i",connection,response);
     return response;
 }

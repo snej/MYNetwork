@@ -93,7 +93,8 @@
 
 
 @synthesize connection=_connection, number=_number, isMine=_isMine, isMutable=_isMutable,
-            _bytesWritten, sent=_sent, propertiesAvailable=_propertiesAvailable, complete=_complete;
+            _bytesWritten, sent=_sent, propertiesAvailable=_propertiesAvailable, complete=_complete,
+            representedObject=_representedObject;
 
 
 - (void) _setFlag: (BLIPMessageFlags)flag value: (BOOL)value
