@@ -244,6 +244,13 @@ static const struct {UInt32 mask, value;} const kPrivateRanges[] = {
     return self;
 }
 
+- (void)dealloc 
+{
+    [_hostname release];
+    [super dealloc];
+}
+
+
 - (NSUInteger) hash
 {
     return [_hostname hash] ^ _port;
