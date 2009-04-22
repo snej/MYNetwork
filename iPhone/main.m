@@ -46,9 +46,11 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 */
 
 #import <UIKit/UIKit.h>
+#import "Test.h"
 
 int main(int argc, char *argv[])
 {
+    RunTestCases(argc,(const char**)argv);
     NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
     int retVal = UIApplicationMain(argc, argv, nil, nil);
     [pool release];

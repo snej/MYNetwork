@@ -9,23 +9,24 @@
 //
 
 #import <Cocoa/Cocoa.h>
-@class BLIPConnection;
+#import "BLIPConnection.h"
+@class MYBonjourBrowser;
 
 
-@interface BLIPEchoClient : NSObject
+@interface BLIPEchoClient : NSObject <BLIPConnectionDelegate>
 {
     IBOutlet NSTextField * inputField;
     IBOutlet NSTextField * responseField;
     IBOutlet NSTableView * serverTableView;
     
-    NSNetServiceBrowser * _serviceBrowser;
-    NSMutableArray * _serviceList;
-
+    MYBonjourBrowser * _serviceBrowser;
     BLIPConnection *_connection;
 }
 
-@property (readonly) NSMutableArray *serviceList;
+@property (readonly) MYBonjourBrowser *serviceBrowser;
+@property (readonly) NSArray *serviceList;
 
+- (IBAction)serverClicked:(id)sender;
 - (IBAction)sendText:(id)sender;
 
 @end

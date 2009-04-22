@@ -35,6 +35,10 @@
 /** Initializes an IPAddress from a BSD struct sockaddr. */
 - (id) initWithSockAddr: (const struct sockaddr*)sockaddr;
 
+/** Returns the IP address of this host (plus the specified port number).
+    If multiple network interfaces are active, the main one's address is returned. */
++ (IPAddress*) localAddressWithPort: (UInt16)port;
+
 /** Returns the IP address of this host (with a port number of zero).
     If multiple network interfaces are active, the main one's address is returned. */
 + (IPAddress*) localAddress;

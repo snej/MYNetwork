@@ -9,43 +9,35 @@
 //
 
 #import "BLIPEchoClient.h"
-#import "BLIP.h"
+#import "MYBonjourBrowser.h"
+#import "MYBonjourService.h"
+#import "CollectionUtils.h"
+#import "MYNetwork.h"
 #import "Target.h"
 
 
 @implementation BLIPEchoClient
 
-@synthesize serviceList=_serviceList;
 
 - (void)awakeFromNib 
 {
-    _serviceBrowser = [[NSNetServiceBrowser alloc] init];
-    _serviceList = [[NSMutableArray alloc] init];
-    [_serviceBrowser setDelegate:self];
-    
-    [_serviceBrowser searchForServicesOfType:@"_blipecho._tcp." inDomain:@""];
+    [self.serviceBrowser start];
 }
 
-#pragma mark -
-#pragma mark NSNetServiceBrowser delegate methods
-
-// We broadcast the willChangeValueForKey: and didChangeValueForKey: for the NSTableView binding to work.
-
-- (void)netServiceBrowser:(NSNetServiceBrowser *)aNetServiceBrowser didFindService:(NSNetService *)aNetService moreComing:(BOOL)moreComing {
-    if (![_serviceList containsObject:aNetService]) {
-        [self willChangeValueForKey:@"serviceList"];
-        [_serviceList addObject:aNetService];
-        [self didChangeValueForKey:@"serviceList"];
-    }
+- (MYBonjourBrowser*) serviceBrowser {
+    if (!_serviceBrowser)
+        _serviceBrowser = [[MYBonjourBrowser alloc] initWithServiceType: @"_blipecho._tcp."];
+    return _serviceBrowser;
 }
 
-- (void)netServiceBrowser:(NSNetServiceBrowser *)aNetServiceBrowser didRemoveService:(NSNetService *)aNetService moreComing:(BOOL)moreComing {
-    if ([_serviceList containsObject:aNetService]) {
-        [self willChangeValueForKey:@"serviceList"];
-        [_serviceList removeObject:aNetService];
-        [self didChangeValueForKey:@"serviceList"];
-    }
+- (NSArray*) serviceList {
+    return [_serviceBrowser.services.allObjects sortedArrayUsingSelector: @selector(compare:)];
 }
+
++ (NSArray*) keyPathsForValuesAffectingServiceList {
+    return $array(@"serviceBrowser.services");
+}
+
 
 #pragma mark -
 #pragma mark BLIPConnection support
@@ -54,9 +46,10 @@
 - (void)openConnection: (NSNetService*)service 
 {
     _connection = [[BLIPConnection alloc] initToNetService: service];
-    if( _connection )
+    if( _connection ) {
+        _connection.delegate = self;
         [_connection open];
-    else
+    } else
         NSBeep();
 }
 
@@ -64,9 +57,34 @@
 - (void)closeConnection
 {
     [_connection close];
-    [_connection release];
-    _connection = nil;
 }
+
+/** Called after the connection successfully opens. */
+- (void) connectionDidOpen: (TCPConnection*)connection {
+    if (connection==_connection) {
+        [inputField setEnabled: YES];
+        [responseField setEnabled: YES];
+        [inputField.window makeFirstResponder: inputField];
+    }
+}
+
+/** Called after the connection fails to open due to an error. */
+- (void) connection: (TCPConnection*)connection failedToOpen: (NSError*)error {
+    [serverTableView.window presentError: error];
+}
+
+/** Called after the connection closes. */
+- (void) connectionDidClose: (TCPConnection*)connection {
+    if (connection==_connection) {
+        if (connection.error)
+            [serverTableView.window presentError: connection.error];
+        [_connection release];
+        _connection = nil;
+        [inputField setEnabled: NO];
+        [responseField setEnabled: NO];
+    }
+}
+
 
 #pragma mark -
 #pragma mark GUI action methods
@@ -77,7 +95,7 @@
     
     [self closeConnection];
     if (-1 != selectedRow)
-        [self openConnection: [_serviceList objectAtIndex:selectedRow]];
+        [self openConnection: [[self.serviceList objectAtIndex:selectedRow] netService]];
 }
 
 /* Send a BLIP request containing the string in the textfield */
@@ -86,7 +104,11 @@
     BLIPRequest *r = [_connection request];
     r.bodyString = [sender stringValue];
     BLIPResponse *response = [r send];
-    response.onComplete = $target(self,gotResponse:);
+    if (response) {
+        response.onComplete = $target(self,gotResponse:);
+        [inputField setStringValue: @""];
+    } else
+        NSBeep();
 }
 
 /* Receive the response to the BLIP request, and put its contents into the response field */
@@ -100,5 +122,6 @@
 
 int main(int argc, char *argv[])
 {
+    //RunTestCases(argc,(const char**)argv);
     return NSApplicationMain(argc,  (const char **) argv);
 }

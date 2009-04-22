@@ -14,7 +14,7 @@
 #import "ExceptionUtils.h"
 
 
-#if TARGET_OS_IPHONE && TARGET_OS_EMBEDDED
+#if TARGET_OS_IPHONE && !defined(__SEC_TYPES__)
 // SecureTransport.h is missing on iPhone, with its SSL constants:
 enum{
     errSSLClosedAbort 			= -9806,	/* connection closed via error */
@@ -348,7 +348,7 @@ static NSMutableArray *sAllConnections;
                     allow = NO; // Server MUST have a cert!
                 else {
                     SecCertificateRef cert = certs.count ?(SecCertificateRef)[certs objectAtIndex:0] :NULL;
-                    LogTo(TCP,@"%@: Peer cert = %@",self,cert);
+                    LogTo(TCP,@"%@: Peer cert = %@",self,[TCPEndpoint describeCert: cert]);
                     if( [_delegate respondsToSelector: @selector(connection:authorizeSSLPeer:)] )
                         allow = [_delegate connection: self authorizeSSLPeer: cert];
                 }

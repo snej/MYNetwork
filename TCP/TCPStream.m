@@ -96,7 +96,7 @@ static NSError* fixStreamError( NSError *error );
 - (void) open
 {
     Assert(_stream);
-    AssertEq(_stream.streamStatus,NSStreamStatusNotOpen);
+    AssertEq(_stream.streamStatus,(NSStreamStatus)NSStreamStatusNotOpen);
     LogTo(TCP,@"Opening %@",self);
     [_stream open];
 }

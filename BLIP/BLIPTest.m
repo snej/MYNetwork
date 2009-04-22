@@ -19,10 +19,13 @@
 #import "Logging.h"
 #import "Test.h"
 
-#define HAVE_KEYCHAIN_FRAMEWORK 0
-#if HAVE_KEYCHAIN_FRAMEWORK
-#import <Keychain/Keychain.h>
-#endif
+#import <Security/Security.h>
+#import <SecurityInterface/SFChooseIdentityPanel.h>
+
+@interface TCPEndpoint ()
++ (NSString*) describeCert: (SecCertificateRef)cert;
++ (NSString*) describeIdentity: (SecIdentityRef)identity;
+@end
 
 
 #define kListenerHost               @"localhost"
@@ -31,20 +34,41 @@
 #define kNBatchedMessages           20
 #define kUseCompression             YES
 #define kUrgentEvery                4
-#define kClientRequiresSSL          NO
-#define kClientUsesSSLCert          NO
-#define kListenerRequiresSSL        NO
-#define kListenerRequiresClientCert NO
 #define kListenerCloseAfter         50
 #define kClientAcceptCloseRequest   YES
 
+#define kListenerUsesSSL            YES     // Does the listener (server) use an SSL connection?
+#define kListenerRequiresClientCert YES     // Does the listener require clients to have an SSL cert?
+#define kClientRequiresSSL          YES     // Does the client require the listener to use SSL?
+#define kClientUsesSSLCert          YES     // Does the client use an SSL cert?
+
+
+static SecIdentityRef ChooseIdentity( NSString *prompt ) {
+    NSMutableArray *identities = [NSMutableArray array];
+    SecKeychainRef kc;
+    SecKeychainCopyDefault(&kc);
+    SecIdentitySearchRef search;
+    SecIdentitySearchCreate(kc, CSSM_KEYUSE_ANY, &search);
+    SecIdentityRef identity;
+    while (SecIdentitySearchCopyNext(search, &identity) == noErr)
+        [identities addObject: (id)identity];
+    Log(@"Found %u identities -- prompting '%@'", identities.count, prompt);
+    if (identities.count > 0) {
+        SFChooseIdentityPanel *panel = [SFChooseIdentityPanel sharedChooseIdentityPanel];
+        if ([panel runModalForIdentities: identities message: prompt] == NSOKButton) {
+            Log(@"Using SSL identity: %@", panel.identity);
+            return panel.identity;
+        }
+    }
+    return NULL;
+}
 
 static SecIdentityRef GetClientIdentity(void) {
-    return NULL;    // Make this return a valid identity to test client-side certs
+    return ChooseIdentity(@"Choose an identity for the BLIP Client Test:");
 }
 
 static SecIdentityRef GetListenerIdentity(void) {
-    return NULL;    // Make this return a valid identity to test client-side certs
+    return ChooseIdentity(@"Choose an identity for the BLIP Listener Test:");
 }
 
 
@@ -75,15 +99,11 @@ static SecIdentityRef GetListenerIdentity(void) {
             [self release];
             return nil;
         }
-        if( kClientRequiresSSL ) {
-            _conn.SSLProperties = $mdict({kTCPPropertySSLAllowsAnyRoot, $true});
-            if( kClientUsesSSLCert ) {
-                SecIdentityRef clientIdentity = GetClientIdentity();
-                if( clientIdentity ) {
-                    [_conn setSSLProperty: $array((id)clientIdentity)
-                                   forKey: kTCPPropertySSLCertificates];
-                }
-            }
+        if( kClientUsesSSLCert ) {
+            [_conn setPeerToPeerIdentity: GetClientIdentity()];
+        } else if( kClientRequiresSSL ) {
+            _conn.SSLProperties = $mdict({kTCPPropertySSLAllowsAnyRoot, $true},
+                                        {(id)kCFStreamSSLPeerName, [NSNull null]});
         }
         _conn.delegate = self;
         Log(@"** Opening connection...");
@@ -148,22 +168,20 @@ static SecIdentityRef GetListenerIdentity(void) {
 }
 - (BOOL) connection: (TCPConnection*)connection authorizeSSLPeer: (SecCertificateRef)peerCert
 {
-#if HAVE_KEYCHAIN_FRAMEWORK
-    Certificate *cert = peerCert ?[Certificate certificateWithCertificateRef: peerCert] :nil;
-    Log(@"** %@ authorizeSSLPeer: %@",self,cert);
-#else
-    Log(@"** %@ authorizeSSLPeer: %@",self,peerCert);
-#endif
+    Log(@"** %@ authorizeSSLPeer: %@",self, [TCPEndpoint describeCert:peerCert]);
     return peerCert != nil;
 }
 - (void) connection: (TCPConnection*)connection failedToOpen: (NSError*)error
 {
-    Log(@"** %@ failedToOpen: %@",connection,error);
+    Warn(@"** %@ failedToOpen: %@",connection,error);
     CFRunLoopStop(CFRunLoopGetCurrent());
 }
 - (void) connectionDidClose: (TCPConnection*)connection
 {
-    Log(@"** %@ didClose",connection);
+    if (connection.error)
+        Warn(@"** %@ didClose: %@", connection,connection.error);
+    else
+        Log(@"** %@ didClose", connection);
     setObj(&_conn,nil);
     [NSObject cancelPreviousPerformRequestsWithTarget: self];
     CFRunLoopStop(CFRunLoopGetCurrent());
@@ -188,7 +206,7 @@ static SecIdentityRef GetListenerIdentity(void) {
         const UInt8 *bytes = body.bytes;
         for( size_t i=0; i<size; i++ )
             AssertEq(bytes[i],i % 256);
-        AssertEq(size,sizeObj.intValue);
+        AssertEq(size,sizeObj.unsignedIntValue);
     }
     Assert(sizeObj);
     [_pending removeObjectForKey: $object(response.number)];
@@ -207,9 +225,7 @@ static SecIdentityRef GetListenerIdentity(void) {
 
 
 TestCase(BLIPConnection) {
-#if HAVE_KEYCHAIN_FRAMEWORK
-    [Keychain setUserInteractionAllowed: YES];
-#endif
+    SecKeychainSetUserInteractionAllowed(true);
     BLIPConnectionTester *tester = [[BLIPConnectionTester alloc] init];
     CAssert(tester);
     
@@ -244,12 +260,11 @@ TestCase(BLIPConnection) {
         _listener.delegate = self;
         _listener.pickAvailablePort = YES;
         _listener.bonjourServiceType = @"_bliptest._tcp";
-        if( kListenerRequiresSSL ) {
-            SecIdentityRef listenerIdentity = GetListenerIdentity();
-            Assert(listenerIdentity);
-            _listener.SSLProperties = $mdict({kTCPPropertySSLCertificates, $array((id)listenerIdentity)},
-                                             {kTCPPropertySSLAllowsAnyRoot,$true},
-                            {kTCPPropertySSLClientSideAuthentication, $object(kTCPTryAuthenticate)});
+        if( kListenerUsesSSL ) {
+            [_listener setPeerToPeerIdentity: GetListenerIdentity()];
+            if (!kListenerRequiresClientCert)
+                [_listener setSSLProperty: $object(kTCPTryAuthenticate) 
+                                   forKey: kTCPPropertySSLClientSideAuthentication];
         }
         Assert( [_listener open] );
         Log(@"%@ is listening...",self);
@@ -293,12 +308,7 @@ TestCase(BLIPConnection) {
 }
 - (BOOL) connection: (TCPConnection*)connection authorizeSSLPeer: (SecCertificateRef)peerCert
 {
-#if HAVE_KEYCHAIN_FRAMEWORK
-    Certificate *cert = peerCert ?[Certificate certificateWithCertificateRef: peerCert] :nil;
-    Log(@"** %@ authorizeSSLPeer: %@",connection,cert);
-#else
-    Log(@"** %@ authorizeSSLPeer: %@",self,peerCert);
-#endif
+    Log(@"** %@ authorizeSSLPeer: %@",self, [TCPEndpoint describeCert:peerCert]);
     return peerCert != nil || ! kListenerRequiresClientCert;
 }
 - (void) connection: (TCPConnection*)connection failedToOpen: (NSError*)error
@@ -307,7 +317,10 @@ TestCase(BLIPConnection) {
 }
 - (void) connectionDidClose: (TCPConnection*)connection
 {
-    Log(@"** %@ didClose",connection);
+    if (connection.error)
+        Warn(@"** %@ didClose: %@", connection,connection.error);
+    else
+        Log(@"** %@ didClose", connection);
     [connection release];
 }
 - (void) connection: (BLIPConnection*)connection receivedRequest: (BLIPRequest*)request
@@ -322,7 +335,7 @@ TestCase(BLIPConnection) {
     
     AssertEqual([request valueOfProperty: @"Content-Type"], @"application/octet-stream");
     Assert([request valueOfProperty: @"User-Agent"] != nil);
-    AssertEq([[request valueOfProperty: @"Size"] intValue], size);
+    AssertEq((size_t)[[request valueOfProperty: @"Size"] intValue], size);
 
     [request respondWithData: body contentType: request.contentType];
     
@@ -351,9 +364,7 @@ TestCase(BLIPListener) {
     EnableLogTo(BLIP,YES);
     EnableLogTo(PortMapper,YES);
     EnableLogTo(Bonjour,YES);
-#if HAVE_KEYCHAIN_FRAMEWORK
-    [Keychain setUserInteractionAllowed: YES];
-#endif
+    SecKeychainSetUserInteractionAllowed(true);
     BLIPTestListener *listener = [[BLIPTestListener alloc] init];
     
     [[NSRunLoop currentRunLoop] run];

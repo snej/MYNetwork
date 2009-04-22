@@ -7,7 +7,7 @@
 //
 
 #import "BLIPEchoServer.h"
-#import "BLIP.h"
+#import "MYNetwork.h"
 
 
 @implementation BLIPEchoServer

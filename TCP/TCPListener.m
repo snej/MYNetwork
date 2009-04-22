@@ -156,10 +156,13 @@ static CFSocketRef closeSocket( CFSocketRef socket ) {
         addr6.sin6_port = htons(_port);
         memcpy(&(addr6.sin6_addr), &in6addr_any, sizeof(addr6.sin6_addr));
         
-        _ipv6socket = [self _openProtocol: PF_INET6 address: (struct sockaddr*)&addr6 error: outError];
+        NSError *error;
+        _ipv6socket = [self _openProtocol: PF_INET6 address: (struct sockaddr*)&addr6 error: &error];
         if( ! _ipv6socket ) {
             _ipv4socket = closeSocket(_ipv4socket);
-            return [self _failedToOpen: *outError];
+            [self _failedToOpen: error];
+            if (outError) *outError = error;
+            return NO;
         }
     }
     

@@ -36,6 +36,11 @@
 		270E9B9A0EE64B45003F17CA /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 270E9B970EE64B45003F17CA /* Icon.png */; };
 		270E9BA10EE64B4E003F17CA /* HelloWorldAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 270E9B9E0EE64B4E003F17CA /* HelloWorldAppDelegate.m */; };
 		270E9BA20EE64B4E003F17CA /* MyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 270E9BA00EE64B4E003F17CA /* MyViewController.m */; };
+		2777C78D0F75E141007F8D30 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2777C78C0F75E141007F8D30 /* Security.framework */; };
+		278C1B2E0F9F865800954AE1 /* MYPortMapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 278C1B2C0F9F865800954AE1 /* MYPortMapper.m */; };
+		278C1B2F0F9F865800954AE1 /* PortMapperTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 278C1B2D0F9F865800954AE1 /* PortMapperTest.m */; };
+		278C1B350F9F86A100954AE1 /* MYUtilities_Debug.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 278C1B330F9F86A100954AE1 /* MYUtilities_Debug.xcconfig */; };
+		278C1B360F9F86A100954AE1 /* MYUtilities_Release.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 278C1B340F9F86A100954AE1 /* MYUtilities_Release.xcconfig */; };
 		280E754F0DD40C5E005A515E /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 280E754C0DD40C5E005A515E /* MainWindow.xib */; };
 /* End PBXBuildFile section */
 
@@ -96,6 +101,12 @@
 		270E9B9E0EE64B4E003F17CA /* HelloWorldAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HelloWorldAppDelegate.m; sourceTree = "<group>"; };
 		270E9B9F0EE64B4E003F17CA /* MyViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyViewController.h; sourceTree = "<group>"; };
 		270E9BA00EE64B4E003F17CA /* MyViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyViewController.m; sourceTree = "<group>"; };
+		2777C78C0F75E141007F8D30 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		278C1B2B0F9F865800954AE1 /* MYPortMapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MYPortMapper.h; sourceTree = "<group>"; };
+		278C1B2C0F9F865800954AE1 /* MYPortMapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MYPortMapper.m; sourceTree = "<group>"; };
+		278C1B2D0F9F865800954AE1 /* PortMapperTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PortMapperTest.m; sourceTree = "<group>"; };
+		278C1B330F9F86A100954AE1 /* MYUtilities_Debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = MYUtilities_Debug.xcconfig; sourceTree = "<group>"; };
+		278C1B340F9F86A100954AE1 /* MYUtilities_Release.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = MYUtilities_Release.xcconfig; sourceTree = "<group>"; };
 		280E754C0DD40C5E005A515E /* MainWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainWindow.xib; sourceTree = "<group>"; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = iPhone/main.m; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -110,6 +121,7 @@
 				1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */,
 				270E9AE90EE61167003F17CA /* libz.dylib in Frameworks */,
 				270E9B4F0EE63F8F003F17CA /* CFNetwork.framework in Frameworks */,
+				2777C78D0F75E141007F8D30 /* Security.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -141,6 +153,7 @@
 				270E9AA20EE61113003F17CA /* IPAddress.m */,
 				270E9AA30EE61113003F17CA /* TCP */,
 				270E9AAF0EE61113003F17CA /* BLIP */,
+				278C1B2A0F9F865800954AE1 /* PortMapper */,
 			);
 			name = MYNetwork;
 			sourceTree = "<group>";
@@ -201,6 +214,8 @@
 				270E9AD70EE6111A003F17CA /* Target.m */,
 				270E9AD80EE6111A003F17CA /* Test.h */,
 				270E9AD90EE6111A003F17CA /* Test.m */,
+				278C1B330F9F86A100954AE1 /* MYUtilities_Debug.xcconfig */,
+				278C1B340F9F86A100954AE1 /* MYUtilities_Release.xcconfig */,
 				270E9ADA0EE6111A003F17CA /* GoogleToolboxSubset */,
 			);
 			name = MYUtilities;
@@ -228,6 +243,16 @@
 			path = Classes;
 			sourceTree = "<group>";
 		};
+		278C1B2A0F9F865800954AE1 /* PortMapper */ = {
+			isa = PBXGroup;
+			children = (
+				278C1B2B0F9F865800954AE1 /* MYPortMapper.h */,
+				278C1B2C0F9F865800954AE1 /* MYPortMapper.m */,
+				278C1B2D0F9F865800954AE1 /* PortMapperTest.m */,
+			);
+			path = PortMapper;
+			sourceTree = "<group>";
+		};
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
@@ -237,6 +262,7 @@
 				29B97315FDCFA39411CA2CEA /* Other Sources */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
+				2777C78C0F75E141007F8D30 /* Security.framework */,
 			);
 			name = CustomTemplate;
 			sourceTree = "<group>";
@@ -325,6 +351,8 @@
 				270E9B950EE64B3C003F17CA /* HelloWorld.xib in Resources */,
 				270E9B990EE64B45003F17CA /* Default.png in Resources */,
 				270E9B9A0EE64B45003F17CA /* Icon.png in Resources */,
+				278C1B350F9F86A100954AE1 /* MYUtilities_Debug.xcconfig in Resources */,
+				278C1B360F9F86A100954AE1 /* MYUtilities_Release.xcconfig in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -357,6 +385,8 @@
 				270E9AE40EE6111A003F17CA /* GTMNSData+zlib.m in Sources */,
 				270E9BA10EE64B4E003F17CA /* HelloWorldAppDelegate.m in Sources */,
 				270E9BA20EE64B4E003F17CA /* MyViewController.m in Sources */,
+				278C1B2E0F9F865800954AE1 /* MYPortMapper.m in Sources */,
+				278C1B2F0F9F865800954AE1 /* PortMapperTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -366,56 +396,37 @@
 		1D6058940D05DD3E006BFB54 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Jens Alfke";
-				COPY_PHASE_STRIP = NO;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = iPhone/MYNetwork_iPhone_Prefix.pch;
 				INFOPLIST_FILE = iPhone/Info.plist;
 				PRODUCT_NAME = BLIPEcho;
-				PROVISIONING_PROFILE = "166C8314-D005-438F-841B-B20D42F71712";
 			};
 			name = Debug;
 		};
 		1D6058950D05DD3E006BFB54 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Jens Alfke";
-				COPY_PHASE_STRIP = YES;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = iPhone/MYNetwork_iPhone_Prefix.pch;
 				INFOPLIST_FILE = iPhone/Info.plist;
 				PRODUCT_NAME = BLIPEcho;
-				PROVISIONING_PROFILE = "166C8314-D005-438F-841B-B20D42F71712";
 			};
 			name = Release;
 		};
 		C01FCF4F08A954540054247B /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 278C1B330F9F86A100954AE1 /* MYUtilities_Debug.xcconfig */;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				GCC_C_LANGUAGE_STANDARD = c99;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
+				EXCLUDED_RECURSIVE_SEARCH_PATH_SUBDIRECTORIES = "*.nib *.lproj *.framework *.gch *.xcode* (*) CVS .svn .hg";
 				ONLY_ACTIVE_ARCH = YES;
-				PREBINDING = NO;
 				SDKROOT = iphonesimulator2.0;
 			};
 			name = Debug;
 		};
 		C01FCF5008A954540054247B /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 278C1B340F9F86A100954AE1 /* MYUtilities_Release.xcconfig */;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				GCC_C_LANGUAGE_STANDARD = c99;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				PREBINDING = NO;
 				SDKROOT = iphonesimulator2.0;
 			};
 			name = Release;

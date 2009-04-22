@@ -7,8 +7,10 @@
 //
 
 #import "TCPEndpoint.h"
-
+#import "Test.h"
+#import "CollectionUtils.h"
 #import "ExceptionUtils.h"
+#import <Security/Security.h>
 
 
 NSString* const kTCPPropertySSLClientSideAuthentication = @"kTCPPropertySSLClientSideAuthentication";
@@ -47,6 +49,15 @@ NSString* const kTCPPropertySSLClientSideAuthentication = @"kTCPPropertySSLClien
 - (NSString*) securityLevel                 {return [_sslProperties objectForKey: (id)kCFStreamSSLLevel];}
 - (void) setSecurityLevel: (NSString*)level {[self setSSLProperty: level forKey: (id)kCFStreamSSLLevel];}
 
+- (void) setPeerToPeerIdentity: (SecIdentityRef)identity {
+    Assert(identity);
+    self.SSLProperties = $mdict(
+             {(id)kCFStreamSSLLevel, NSStreamSocketSecurityLevelTLSv1},
+             {kTCPPropertySSLCertificates, $array((id)identity)},
+             {kTCPPropertySSLAllowsAnyRoot, $true},
+             {kTCPPropertySSLPeerName, [NSNull null]},
+             {kTCPPropertySSLClientSideAuthentication, $object(kTCPAlwaysAuthenticate)});
+}
 
 - (void) tellDelegate: (SEL)selector withObject: (id)param
 {
@@ -55,6 +66,37 @@ NSString* const kTCPPropertySSLClientSideAuthentication = @"kTCPPropertySSLClien
             [_delegate performSelector: selector withObject: self withObject: param];
         }catchAndReport(@"%@ delegate",self.class);
     }
+}
+
+
++ (NSString*) describeCert: (SecCertificateRef)cert {
+    if (!cert)
+        return @"(null)";
+    NSString *desc;
+#if TARGET_OS_IPHONE && !defined(__SEC_TYPES__)
+    CFStringRef summary = NULL;
+    SecCertificateCopySubjectSummary(cert);
+    desc = $sprintf(@"Certificate[%@]", summary);
+    if(summary) CFRelease(summary);
+#else
+    CFStringRef name=NULL;
+    CFArrayRef emails=NULL;
+    SecCertificateCopyCommonName(cert, &name);
+    SecCertificateCopyEmailAddresses(cert, &emails);
+    desc = $sprintf(@"Certificate[\"%@\", <%@>]",
+                              name, [(NSArray*)emails componentsJoinedByString: @">, <"]);
+    if(name) CFRelease(name);
+    if(emails) CFRelease(emails);
+#endif
+    return desc;
+}
+
++ (NSString*) describeIdentity: (SecIdentityRef)identity {
+    if (!identity)
+        return @"(null)";
+    SecCertificateRef cert;
+    SecIdentityCopyCertificate(identity, &cert);
+    return $sprintf(@"Identity[%@]", [self describeCert: cert]);
 }
 
 

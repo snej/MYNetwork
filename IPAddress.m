@@ -160,7 +160,7 @@
 }
 
 
-+ (IPAddress*) localAddress
++ (IPAddress*) localAddressWithPort: (UInt16)port
 {
     // getifaddrs returns a linked list of interface entries;
     // find the first active non-loopback interface with IPv4:
@@ -179,7 +179,12 @@
         }
         freeifaddrs(interfaces);
     }
-    return [[[self alloc] initWithIPv4: address] autorelease];
+    return [[[self alloc] initWithIPv4: address port: port] autorelease];
+}
+
++ (IPAddress*) localAddress
+{
+    return [self localAddressWithPort: 0];
 }
 
 
@@ -339,7 +344,7 @@ static const struct {UInt32 mask, value;} const kPrivateRanges[] = {
 TestCase(IPAddress) {
     RequireTestCase(CollectionUtils);
     IPAddress *addr = [[IPAddress alloc] initWithIPv4: htonl(0x0A0001FE) port: 8080];
-    CAssertEq(addr.ipv4,htonl(0x0A0001FE));
+    CAssertEq(addr.ipv4,(UInt32)htonl(0x0A0001FE));
     CAssertEq(addr.port,8080);
     CAssertEqual(addr.hostname,@"10.0.1.254");
     CAssertEqual(addr.description,@"10.0.1.254:8080");
@@ -347,7 +352,7 @@ TestCase(IPAddress) {
     
     addr = [[IPAddress alloc] initWithHostname: @"66.66.0.255" port: 123];
     CAssertEq(addr.class,[IPAddress class]);
-    CAssertEq(addr.ipv4,htonl(0x424200FF));
+    CAssertEq(addr.ipv4,(UInt32)htonl(0x424200FF));
     CAssertEq(addr.port,123);
     CAssertEqual(addr.hostname,@"66.66.0.255");
     CAssertEqual(addr.description,@"66.66.0.255:123");
@@ -355,8 +360,8 @@ TestCase(IPAddress) {
     
     addr = [[IPAddress alloc] initWithHostname: @"www.apple.com" port: 80];
     CAssertEq(addr.class,[HostAddress class]);
-    Log(@"www.apple.com = 0x%08X", addr.ipv4);
-    CAssertEq(addr.ipv4,htonl(0x1195A00A));
+    Log(@"www.apple.com = %@ [0x%08X]", addr.ipv4name, ntohl(addr.ipv4));
+    CAssertEq(addr.ipv4,(UInt32)htonl(0x11FBC820));
     CAssertEq(addr.port,80);
     CAssertEqual(addr.hostname,@"www.apple.com");
     CAssertEqual(addr.description,@"www.apple.com:80");

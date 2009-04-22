@@ -127,6 +127,7 @@ typedef enum {
     settings say to check the peer's certificate.
     This happens, if at all, after the -connectionDidOpen: call. */
 - (BOOL) connection: (TCPConnection*)connection authorizeSSLPeer: (SecCertificateRef)peerCert;
-/** Called after the connection closes. */
+/** Called after the connection closes.
+    You can check the connection's error property to see if it was normal or abnormal. */
 - (void) connectionDidClose: (TCPConnection*)connection;
 @end

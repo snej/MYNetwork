@@ -19,6 +19,7 @@
     Most of the API is inherited from TCPConnection. */
 @interface BLIPConnection : TCPConnection
 {
+    @private
     BLIPDispatcher *_dispatcher;
     BOOL _blipClosing;
 }
