@@ -13,24 +13,14 @@
 #import "ExceptionUtils.h"
 
 #import <dns_sd.h>
-#import <sys/types.h>
-#import <sys/socket.h>
-#import <net/if.h>
-#import <netinet/in.h>
-#import <ifaddrs.h>
 
 
 NSString* const MYPortMapperChangedNotification = @"MYPortMapperChanged";
 
 
 @interface MYPortMapper ()
-// Redeclare these properties as settable, internally:
-@property (readwrite) SInt32 error;
-@property (retain) IPAddress* publicAddress, *localAddress;
-// Private getter:
-@property (readonly) void* _service;
+@property (retain) IPAddress* publicAddress, *localAddress; // redeclare as settable
 - (void) priv_updateLocalAddress;
-- (void) priv_disconnect;
 @end
 
 
@@ -61,23 +51,13 @@ NSString* const MYPortMapperChangedNotification = @"MYPortMapperChanged";
 
 - (void) dealloc
 {
-    if( _service )
-        [self priv_disconnect];
     [_publicAddress release];
     [_localAddress release];
     [super dealloc];
 }
 
-- (void) finalize
-{
-    if( _service )
-        [self priv_disconnect];
-    [super finalize];
-}
-
 
 @synthesize localAddress=_localAddress, publicAddress=_publicAddress,
-            error=_error, _service=_service,
             mapTCP=_mapTCP, mapUDP=_mapUDP,
             desiredPublicPort=_desiredPublicPort;
 
@@ -158,110 +138,44 @@ static void portMapCallback (
 }
 
 
-/** CFSocket callback, informing us that _socket has data available, which means
-    that the DNS service has an incoming result to be processed. This will end up invoking
-    the portMapCallback. */
-static void serviceCallback(CFSocketRef s, 
-                            CFSocketCallBackType type,
-                            CFDataRef address, const void *data, void *clientCallBackInfo)
+- (DNSServiceRef) createServiceRef
 {
-    MYPortMapper *mapper = (MYPortMapper*)clientCallBackInfo;
-    DNSServiceRef service = mapper._service;
-    DNSServiceErrorType err = DNSServiceProcessResult(service);
-    if( err ) {
-        // An error here means the socket has failed and should be closed.
-        [mapper priv_portMapStatus: err publicAddress: 0 publicPort: 0];
-        [mapper priv_disconnect];
-    }
-}
-
-
-
-- (BOOL) open
-{
-    NSAssert(!_service,@"Already open");
-    // Create the DNSService:
     DNSServiceProtocol protocols = 0;
     if( _mapTCP ) protocols |= kDNSServiceProtocol_TCP;
     if( _mapUDP ) protocols |= kDNSServiceProtocol_UDP;
-    self.error = DNSServiceNATPortMappingCreate((DNSServiceRef*)&_service, 
-                                         0 /*flags*/, 
-                                         0 /*interfaceIndex*/, 
-                                         protocols,
-                                         htons(_localPort),
-                                         htons(_desiredPublicPort),
-                                         0 /*ttl*/,
-                                         &portMapCallback, 
-                                         self);
-    if( _error ) {
-        LogTo(PortMapper,@"Error %i creating port mapping",_error);
-        return NO;
-    }
-    
-    // Wrap a CFSocket around the service's socket:
-    CFSocketContext ctxt = { 0, self, CFRetain, CFRelease, NULL };
-    _socket = CFSocketCreateWithNative(NULL, 
-                                       DNSServiceRefSockFD(_service), 
-                                       kCFSocketReadCallBack, 
-                                       &serviceCallback, &ctxt);
-    if( _socket ) {
-        CFSocketSetSocketFlags(_socket, CFSocketGetSocketFlags(_socket) & ~kCFSocketCloseOnInvalidate);
-        // Attach the socket to the runloop so the serviceCallback will be invoked:
-        _socketSource = CFSocketCreateRunLoopSource(NULL, _socket, 0);
-        if( _socketSource )
-            CFRunLoopAddSource(CFRunLoopGetCurrent(), _socketSource, kCFRunLoopCommonModes);
-    }
-    if( _socketSource ) {
-        LogTo(PortMapper,@"Opening");
-        return YES;
-    } else {
-        Warn(@"Failed to open PortMapper");
-        [self close];
-        _error = kDNSServiceErr_Unknown;
-        return NO;
-    }
+    DNSServiceRef serviceRef = NULL;
+    self.error = DNSServiceNATPortMappingCreate(&serviceRef, 
+                                                0 /*flags*/, 
+                                                0 /*interfaceIndex*/, 
+                                                protocols,
+                                                htons(_localPort),
+                                                htons(_desiredPublicPort),
+                                                0 /*ttl*/,
+                                                &portMapCallback, 
+                                                self);
+    return serviceRef;
+}
+
+
+- (void) stopService
+{
+    [super stopService];
+    if (_publicAddress)
+        self.publicAddress = nil;
 }
 
 
 - (BOOL) waitTillOpened
 {
-    if( ! _socketSource )
+    if( ! self.serviceRef )
         if( ! [self open] )
             return NO;
     // Run the runloop until there's either an error or a result:
-    while( _error==0 && _publicAddress==nil )
+    while( self.error==0 && _publicAddress==nil )
         if( ! [[NSRunLoop currentRunLoop] runMode: NSDefaultRunLoopMode
                                        beforeDate: [NSDate distantFuture]] )
             break;
-    return (_error==0);
-}
-
-
-// Close down, but _without_ clearing the 'error' property
-- (void) priv_disconnect
-{
-    if( _socketSource ) {
-        CFRunLoopSourceInvalidate(_socketSource);
-        CFRelease(_socketSource);
-        _socketSource = NULL;
-    }
-    if( _socket ) {
-        CFSocketInvalidate(_socket);
-        CFRelease(_socket);
-        _socket = NULL;
-    }
-    if( _service ) {
-        LogTo(PortMapper,@"Deleting port mapping");
-        DNSServiceRefDeallocate(_service);
-        _service = NULL;
-        self.publicAddress = nil;
-    }
-}
-
-- (void) close
-{
-    [self priv_disconnect];
-    self.error = 0;
+    return (self.error==0);
 }
 
 

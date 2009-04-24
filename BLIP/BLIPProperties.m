@@ -228,7 +228,7 @@ static const char* kAbbreviations[] = {
 
 + (BLIPProperties*) properties
 {
-    return [[self alloc] initWithDictionary: nil];
+    return [[[self alloc] initWithDictionary: nil] autorelease];
 }
 
 - (id) init

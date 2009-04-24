@@ -6,8 +6,7 @@
 //  Copyright 2008 Jens Alfke. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-#import <CoreFoundation/CFSocket.h>
+#import "MYDNSService.h"
 @class IPAddress;
 
 
@@ -34,14 +33,11 @@
     * When the MYPortMapper reports changes, you (somehow) notify peers of the changes.
     * When closing the network service, close the MYPortMapper object too.
 */ 
-@interface MYPortMapper : NSObject
+@interface MYPortMapper : MYDNSService
 {
+    @private
     UInt16 _localPort, _desiredPublicPort;
     BOOL _mapTCP, _mapUDP;
-    SInt32 _error;
-    void* /*DNSServiceRef*/ _service; // Typed void* to avoid having to #include <dnssd.h>
-    CFSocketRef _socket;
-    CFRunLoopSourceRef _socketSource;
     IPAddress *_publicAddress, *_localAddress;
 }
 
@@ -65,28 +61,12 @@
     This property has no effect if changed while the PortMapper is open. */
 @property UInt16 desiredPublicPort;
 
-/** Opens the PortMapper, using the current settings of the above properties.
-    Returns immediately; you can find out when the mapping is created or fails
-    by observing the error/publicAddress/publicPort properties, or by listening
-    for the PortMapperChangedNotification.
-    It's very unlikely that this call will fail (return NO). If it does, it
-    probably means that the mDNSResponder process isn't working. */
-- (BOOL) open;
-
 /** Blocks till the PortMapper finishes opening. Returns YES if it opened, NO on error.
     It's not usually a good idea to use this, as it will lock up your application
     until a response arrives from the NAT. Listen for asynchronous notifications instead.
     If called when the PortMapper is closed, it will call -open for you.
     If called when it's already open, it just returns YES. */
 - (BOOL) waitTillOpened;
-
-/** Closes the PortMapper, terminating any open port mapping. */
-- (void) close;
-
-/** The error status, a DNSServiceErrorType enum; nonzero if something went wrong. 
-    The most likely error is kDNSServiceErr_NATPortMappingUnsupported (-65564).
-    This property is KV observable. */
-@property (readonly) SInt32 error;
 
 /** The known public IPv4 address/port, once it's been determined.
     This property is KV observable. */
