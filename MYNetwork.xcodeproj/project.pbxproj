@@ -356,8 +356,7 @@
 				27E0DBEC0DF3450F00E7F648 /* GoogleToolboxSubset */,
 			);
 			name = MYUtilities;
-			path = ../MYUtilities;
-			sourceTree = "<group>";
+			sourceTree = MYUtilities;
 		};
 		277903E70DE8F05F00C6D295 /* Demo */ = {
 			isa = PBXGroup;
