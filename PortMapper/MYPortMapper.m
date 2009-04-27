@@ -33,6 +33,7 @@ NSString* const MYPortMapperChangedNotification = @"MYPortMapperChanged";
     if (self != nil) {
         _localPort = localPort;
         _mapTCP = YES;
+        self.continuous = YES;
         [self priv_updateLocalAddress];
     }
     return self;
@@ -87,11 +88,9 @@ static IPAddress* makeIPAddr( UInt32 rawAddr, UInt16 port ) {
               publicAddress: (UInt32)rawPublicAddress
                  publicPort: (UInt16)publicPort
 {
-    LogTo(PortMapper,@"Callback got err %i, addr %08X:%hu",
-          errorCode, rawPublicAddress, publicPort);
     if( errorCode==kDNSServiceErr_NoError ) {
         if( rawPublicAddress==0 || (publicPort==0 && (_mapTCP || _mapUDP)) ) {
-            LogTo(PortMapper,@"(Callback reported no mapping available)");
+            LogTo(PortMapper,@"%@: No port-map available", self);
             errorCode = kDNSServiceErr_NATPortMappingUnsupported;
         }
     }
@@ -104,8 +103,8 @@ static IPAddress* makeIPAddr( UInt32 rawAddr, UInt16 port ) {
         self.publicAddress = publicAddress;
     
     if( ! errorCode ) {
-        LogTo(PortMapper,@"Callback got %08X:%hu -> %@ (mapped=%i)",
-              rawPublicAddress,publicPort, self.publicAddress, self.isMapped);
+        LogTo(PortMapper,@"%@: Public addr is %@ (mapped=%i)",
+              self, self.publicAddress, self.isMapped);
     }
     [[NSNotificationCenter defaultCenter] postNotificationName: MYPortMapperChangedNotification
                                                         object: self];
@@ -128,13 +127,11 @@ static void portMapCallback (
                       void                             *context
                       )
 {
-    NSAutoreleasePool *pool = [NSAutoreleasePool new];
     @try{
         [(MYPortMapper*)context priv_portMapStatus: errorCode 
                                      publicAddress: publicAddress
                                         publicPort: ntohs(publicPort)];  // port #s in network byte order!
     }catchAndReport(@"PortMapper");
-    [pool drain];
 }
 
 
@@ -157,24 +154,12 @@ static void portMapCallback (
 }
 
 
-- (void) stopService
-{
-    [super stopService];
-    if (_publicAddress)
-        self.publicAddress = nil;
-}
-
-
 - (BOOL) waitTillOpened
 {
     if( ! self.serviceRef )
-        if( ! [self open] )
+        if( ! [self start] )
             return NO;
-    // Run the runloop until there's either an error or a result:
-    while( self.error==0 && _publicAddress==nil )
-        if( ! [[NSRunLoop currentRunLoop] runMode: NSDefaultRunLoopMode
-                                       beforeDate: [NSDate distantFuture]] )
-            break;
+    [self waitForReply];
     return (self.error==0);
 }
 
@@ -183,9 +168,10 @@ static void portMapCallback (
 {
     IPAddress *addr = nil;
     MYPortMapper *mapper = [[self alloc] initWithNullMapping];
+    mapper.continuous = NO;
     if( [mapper waitTillOpened] )
         addr = [mapper.publicAddress retain];
-    [mapper close];
+    [mapper stop];
     [mapper release];
     return [addr autorelease];
 }

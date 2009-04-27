@@ -233,6 +233,22 @@ static const struct {UInt32 mask, value;} const kPrivateRanges[] = {
     return self;
 }
 
+- (id) initWithHostname: (NSString*)hostname
+               sockaddr: (const struct sockaddr*)sockaddr
+                   port: (UInt16)port;
+{
+    if( [hostname length]==0 ) {
+        [self release];
+        return nil;
+    }
+    self = [super initWithSockAddr: sockaddr];
+    if( self ) {
+        _hostname = [hostname copy];
+        _port = port;
+    }
+    return self;
+}    
+
 
 - (void)encodeWithCoder:(NSCoder *)coder
 {
@@ -253,6 +269,18 @@ static const struct {UInt32 mask, value;} const kPrivateRanges[] = {
 {
     [_hostname release];
     [super dealloc];
+}
+
+
+- (NSString*) description
+{
+    NSMutableString *desc = [_hostname mutableCopy];
+    NSString *addr = self.ipv4name;
+    if (addr)
+        [desc appendFormat: @"(%@)", addr];
+    if( _port )
+        [desc appendFormat: @":%hu",_port];
+    return desc;
 }
 
 

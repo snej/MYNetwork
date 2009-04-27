@@ -27,20 +27,32 @@ static void serviceCallback(CFSocketRef s,
 
 - (void) dealloc
 {
+    Log(@"DEALLOC %@ %p", self.class,self);
     if( _serviceRef )
-        [self stopService];
+        [self cancel];
     [super dealloc];
 }
 
 - (void) finalize
 {
     if( _serviceRef )
-        [self stopService];
+        [self cancel];
     [super finalize];
 }
 
 
-@synthesize serviceRef=_serviceRef, error=_error;
+- (DNSServiceErrorType) error {
+    return _error;
+}
+
+- (void) setError: (DNSServiceErrorType)error {
+    if (error)
+        Warn(@"%@ error := %i", self,error);
+    _error = error;
+}
+
+
+@synthesize continuous=_continuous, serviceRef=_serviceRef;
 
 
 - (DNSServiceRef) createServiceRef {
@@ -48,11 +60,17 @@ static void serviceCallback(CFSocketRef s,
 }
 
 
-- (BOOL) open
+- (BOOL) start
 {
     if (_serviceRef)
-        return YES;
+        return YES;     // already started
+
+    if (_error)
+        self.error = 0;
+
+    // Ask the subclass to create a DNSServiceRef:
     _serviceRef = [self createServiceRef];
+    
     if (_serviceRef) {
         // Wrap a CFSocket around the service's socket:
         CFSocketContext ctxt = { 0, self, CFRetain, CFRelease, NULL };
@@ -66,7 +84,7 @@ static void serviceCallback(CFSocketRef s,
             _socketSource = CFSocketCreateRunLoopSource(NULL, _socket, 0);
             if( _socketSource ) {
                 CFRunLoopAddSource(CFRunLoopGetCurrent(), _socketSource, kCFRunLoopCommonModes);
-                LogTo(DNS,@"Opening %@",self);
+                LogTo(DNS,@"Opening %@ -- service=%p",self,_serviceRef);
                 return YES; // success
             }
         }
@@ -74,13 +92,14 @@ static void serviceCallback(CFSocketRef s,
     if (!_error)
         self.error = kDNSServiceErr_Unknown;
     LogTo(DNS,@"Failed to open %@ -- err=%i",self,_error);
-    [self stopService];
+    [self cancel];
     return NO;
 }
 
 
-- (void) stopService
+- (void) cancel
 {
+    [self retain];            // Prevents _socket's dealloc from releasing & deallocing me!
     if( _socketSource ) {
         CFRunLoopSourceInvalidate(_socketSource);
         CFRelease(_socketSource);
@@ -96,15 +115,43 @@ static void serviceCallback(CFSocketRef s,
         DNSServiceRefDeallocate(_serviceRef);
         _serviceRef = NULL;
     }
+    [self release];
 }
 
 
-- (void) close
+- (void) stop
 {
-    [self stopService];
+    [self cancel];
     if (_error)
         self.error = 0;
 }
+
+
+- (BOOL) priv_processResult
+{
+    Assert(_serviceRef);
+    DNSServiceErrorType err = DNSServiceProcessResult(_serviceRef);
+    if (err) {
+        // An error here means the socket has failed and should be closed.
+        self.error = err;
+        [self cancel];
+        return NO;
+    } else {
+        if (!_continuous)
+            [self cancel];
+        return YES;
+    }
+}
+
+- (BOOL) waitForReply
+{
+    if (!_serviceRef)
+        return NO;
+    LogTo(DNS,@"Waiting for %@ ...", self);
+    BOOL ok = [self priv_processResult];
+    LogTo(DNS,@"    ...done waiting");
+    return ok;
+}    
 
 
 /** CFSocket callback, informing us that _socket has data available, which means
@@ -114,14 +161,11 @@ static void serviceCallback(CFSocketRef s,
                             CFSocketCallBackType type,
                             CFDataRef address, const void *data, void *clientCallBackInfo)
 {
-    MYDNSService *serviceObj = (MYDNSService*)clientCallBackInfo;
-    DNSServiceRef service = serviceObj.serviceRef;
-    DNSServiceErrorType err = DNSServiceProcessResult(service);
-    if( err ) {
-        // An error here means the socket has failed and should be closed.
-        serviceObj.error = err;
-        [serviceObj stopService];
-    }
+    NSAutoreleasePool *pool = [NSAutoreleasePool new];
+    @try{
+        [(MYDNSService*)clientCallBackInfo priv_processResult];
+    }catchAndReport(@"PortMapper serviceCallback");
+    [pool drain];
 }
 
 

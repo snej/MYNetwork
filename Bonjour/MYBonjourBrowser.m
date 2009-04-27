@@ -8,13 +8,24 @@
 
 #import "MYBonjourBrowser.h"
 #import "MYBonjourService.h"
+#import "ExceptionUtils.h"
 #import "Test.h"
 #import "Logging.h"
+#import <dns_sd.h>
 
+
+static void browseCallback (DNSServiceRef                       sdRef,
+                            DNSServiceFlags                     flags,
+                            uint32_t                            interfaceIndex,
+                            DNSServiceErrorType                 errorCode,
+                            const char                          *serviceName,
+                            const char                          *regtype,
+                            const char                          *replyDomain,
+                            void                                *context);
 
 @interface MYBonjourBrowser ()
 @property BOOL browsing;
-@property (retain) NSError* error;
+- (void) _updateServiceList;
 @end
 
 
@@ -26,9 +37,8 @@
     Assert(serviceType);
     self = [super init];
     if (self != nil) {
+        self.continuous = YES;
         _serviceType = [serviceType copy];
-        _browser = [[NSNetServiceBrowser alloc] init];
-        _browser.delegate = self;
         _services = [[NSMutableSet alloc] init];
         _addServices = [[NSMutableSet alloc] init];
         _rmvServices = [[NSMutableSet alloc] init];
@@ -41,11 +51,7 @@
 - (void) dealloc
 {
     LogTo(Bonjour,@"DEALLOC BonjourBrowser");
-    [_browser stop];
-    _browser.delegate = nil;
-    [_browser release];
     [_serviceType release];
-    [_error release];
     [_services release];
     [_addServices release];
     [_rmvServices release];
@@ -53,40 +59,64 @@
 }
 
 
-@synthesize browsing=_browsing, error=_error, services=_services, serviceClass=_serviceClass;
+@synthesize browsing=_browsing, services=_services, serviceClass=_serviceClass;
 
 
-- (void) start
+- (NSString*) description
 {
-    [_browser searchForServicesOfType: _serviceType inDomain: @"local."];
-}
-
-- (void) stop
-{
-    [_browser stop];
+    return $sprintf(@"%@[%@]", self.class,_serviceType);
 }
 
 
-- (void)netServiceBrowserWillSearch:(NSNetServiceBrowser *)netServiceBrowser
-{
-    LogTo(Bonjour,@"%@ started browsing",self);
-    self.browsing = YES;
+- (DNSServiceRef) createServiceRef {
+    DNSServiceRef serviceRef = NULL;
+    self.error = DNSServiceBrowse(&serviceRef, 0, 0,
+                                  _serviceType.UTF8String, NULL,
+                                  &browseCallback, self);
+    return serviceRef;
 }
 
-- (void)netServiceBrowserDidStopSearch:(NSNetServiceBrowser *)netServiceBrowser
-{
-    LogTo(Bonjour,@"%@ stopped browsing",self);
-    self.browsing = NO;
+
+- (void) priv_gotError: (DNSServiceErrorType)errorCode {
+    LogTo(Bonjour,@"%@ got error %i", self,errorCode);
+    self.error = errorCode;
 }
 
-- (void)netServiceBrowser:(NSNetServiceBrowser *)aNetServiceBrowser 
-             didNotSearch:(NSDictionary *)errorDict
+- (void) priv_gotServiceName: (NSString*)serviceName
+                        type: (NSString*)regtype
+                      domain: (NSString*)domain
+                   interface: (uint32_t)interfaceIndex
+                       flags: (DNSServiceFlags)flags
 {
-    NSString *domain = [errorDict objectForKey: NSNetServicesErrorDomain];
-    int err = [[errorDict objectForKey: NSNetServicesErrorCode] intValue];
-    self.error = [NSError errorWithDomain: domain code: err userInfo: nil];
-    LogTo(Bonjour,@"%@ got error: ",self,self.error);
-    self.browsing = NO;
+    // Create (or reuse existing) MYBonjourService object:
+    MYBonjourService *service = [[_serviceClass alloc] initWithName: serviceName
+                                                               type: regtype
+                                                             domain: domain
+                                                          interface: interfaceIndex];
+    MYBonjourService *existingService = [_services member: service];
+    if( existingService ) {
+        [service release];
+        service = [existingService retain];
+    }
+    
+    // Add it to the add/remove sets:
+    NSMutableSet *addTo, *removeFrom;
+    if (flags & kDNSServiceFlagsAdd) {
+        addTo = _addServices;
+        removeFrom = _rmvServices;
+    } else {
+        addTo = _rmvServices;
+        removeFrom = _addServices;
+    }
+    if( [removeFrom containsObject: service] )
+        [removeFrom removeObject: service];
+    else
+        [addTo addObject: service];
+    [service release];
+    
+    // After a round of updates is done, do the update:
+    if( ! (flags & kDNSServiceFlagsMoreComing) )
+        [self _updateServiceList];
 }
 
 
@@ -117,42 +147,26 @@
 }
 
 
-- (void) _handleService: (NSNetService*)netService 
-                  addTo: (NSMutableSet*)addTo
-             removeFrom: (NSMutableSet*)removeFrom
-             moreComing: (BOOL)moreComing
+static void browseCallback (DNSServiceRef                       sdRef,
+                            DNSServiceFlags                     flags,
+                            uint32_t                            interfaceIndex,
+                            DNSServiceErrorType                 errorCode,
+                            const char                          *serviceName,
+                            const char                          *regtype,
+                            const char                          *replyDomain,
+                            void                                *context)
 {
-    // Wrap the NSNetService in a BonjourService, using an existing instance if possible:
-    MYBonjourService *service = [[_serviceClass alloc] initWithNetService: netService];
-    MYBonjourService *existingService = [_services member: service];
-    if( existingService ) {
-        [service release];
-        service = [existingService retain];
-    }
-    
-    if( [removeFrom containsObject: service] )
-        [removeFrom removeObject: service];
-    else
-        [addTo addObject: service];
-    [service release];
-    if( ! moreComing )
-        [self _updateServiceList];
-}
-
-- (void)netServiceBrowser:(NSNetServiceBrowser *)aNetServiceBrowser 
-           didFindService:(NSNetService *)netService
-               moreComing:(BOOL)moreComing 
-{
-    //LogTo(Bonjour,@"Add service %@",netService);
-    [self _handleService: netService addTo: _addServices removeFrom: _rmvServices moreComing: moreComing];
-}
-
-- (void)netServiceBrowser:(NSNetServiceBrowser *)aNetServiceBrowser 
-         didRemoveService:(NSNetService *)netService 
-               moreComing:(BOOL)moreComing 
-{
-    //LogTo(Bonjour,@"Remove service %@",netService);
-    [self _handleService: netService addTo: _rmvServices removeFrom: _addServices moreComing: moreComing];
+    @try{
+        //LogTo(Bonjour,@"browseCallback (error=%i, name='%s')", errorCode,serviceName);
+        if (errorCode)
+            [(MYBonjourBrowser*)context priv_gotError: errorCode];
+        else
+            [(MYBonjourBrowser*)context priv_gotServiceName: [NSString stringWithUTF8String: serviceName]
+                                                       type: [NSString stringWithUTF8String: regtype]
+                                                     domain: [NSString stringWithUTF8String: replyDomain]
+                                                  interface: interfaceIndex
+                                                      flags: flags];
+    }catchAndReport(@"Bonjour");
 }
 
 
@@ -162,6 +176,11 @@
 
 #pragma mark -
 #pragma mark TESTING:
+
+#if DEBUG
+
+#import "MYBonjourQuery.h"
+#import "MYAddressLookup.h"
 
 @interface BonjourTester : NSObject
 {
@@ -175,7 +194,7 @@
 {
     self = [super init];
     if (self != nil) {
-        _browser = [[MYBonjourBrowser alloc] initWithServiceType: @"_http._tcp"];
+        _browser = [[MYBonjourBrowser alloc] initWithServiceType: @"_presence._tcp"];
         [_browser addObserver: self forKeyPath: @"services" options: NSKeyValueObservingOptionNew context: NULL];
         [_browser addObserver: self forKeyPath: @"browsing" options: NSKeyValueObservingOptionNew context: NULL];
         [_browser start];
@@ -199,7 +218,11 @@
         if( [[change objectForKey: NSKeyValueChangeKindKey] intValue]==NSKeyValueChangeInsertion ) {
             NSSet *newServices = [change objectForKey: NSKeyValueChangeNewKey];
             for( MYBonjourService *service in newServices ) {
-                LogTo(Bonjour,@"    --> %@ : TXT=%@", service,service.txtRecord);
+                NSString *hostname = service.hostname;  // block till it's resolved
+                Log(@"##### %@ : at %@:%hu, TXT=%@", 
+                      service, hostname, service.port, service.txtRecord);
+                service.addressLookup.continuous = YES;
+                [service queryForRecord: kDNSServiceType_NULL];
             }
         }
     }
@@ -208,12 +231,15 @@
 @end
 
 TestCase(Bonjour) {
+    EnableLogTo(Bonjour,YES);
+    EnableLogTo(DNS,YES);
     [NSRunLoop currentRunLoop]; // create runloop
     BonjourTester *tester = [[BonjourTester alloc] init];
-    [[NSRunLoop currentRunLoop] runUntilDate: [NSDate dateWithTimeIntervalSinceNow: 15]];
+    [[NSRunLoop currentRunLoop] runUntilDate: [NSDate dateWithTimeIntervalSinceNow: 1500]];
     [tester release];
 }
 
+#endif
 
 
 /*

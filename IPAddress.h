@@ -80,6 +80,10 @@
 
 - (id) initWithHostname: (NSString*)hostname port: (UInt16)port;
 
+- (id) initWithHostname: (NSString*)hostname
+               sockaddr: (const struct sockaddr*)sockaddr
+                   port: (UInt16)port;
+
 @end
 
 

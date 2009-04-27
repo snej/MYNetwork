@@ -18,23 +18,27 @@
     CFSocketRef _socket;
     CFRunLoopSourceRef _socketSource;
     SInt32 _error;
+    BOOL _continuous;
 }
+
+/** If NO (the default), the service will stop after it gets a result.
+    If YES, it will continue to run until stopped. */
+@property BOOL continuous;
 
 /** Starts the service.
     Returns immediately; you can find out when the service actually starts (or fails to)
     by observing the isOpen and error properties.
     It's very unlikely that this call itself will fail (return NO). If it does, it
     probably means that the mDNSResponder process isn't working. */
-- (BOOL) open;
+- (BOOL) start;
 
-- (void) close;
+/** Stops the service. */
+- (void) stop;
 
-
-@property (readonly) struct _DNSServiceRef_t* serviceRef;
 
 /** The error status, a DNSServiceErrorType enum; nonzero if something went wrong. 
     This property is KV observable. */
-@property SInt32 error;
+@property int32_t error;
 
 // PROTECTED:
 
@@ -43,6 +47,15 @@
     If an error occurs, the method should set self.error and return NULL.*/
 - (struct _DNSServiceRef_t*) createServiceRef;
 
-- (void) stopService;
+@property (readonly) struct _DNSServiceRef_t* serviceRef;
+
+/** Same as -stop, but does not clear the error property.
+    (The stop method actually calls this first.) */
+- (void) cancel;
+
+/** Block until a message is received from the daemon.
+    This will cause the service's callback (defined by the subclass) to be invoked.
+    @return  YES if a message is received, NO on error (or if the service isn't started) */
+- (BOOL) waitForReply;
 
 @end

@@ -6,17 +6,15 @@
 //  Copyright 2008 Jens Alfke. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+#import "MYDNSService.h"
 
 
 /** Searches for Bonjour services of a specific type. */
-@interface MYBonjourBrowser : NSObject
+@interface MYBonjourBrowser : MYDNSService
 {
     @private
     NSString *_serviceType;
-    NSNetServiceBrowser *_browser;
     BOOL _browsing;
-    NSError *_error;
     Class _serviceClass;
     NSMutableSet *_services, *_addServices, *_rmvServices;
 }
@@ -26,18 +24,8 @@
     @param serviceType  The name of the service type to look for, e.g. "_http._tcp". */
 - (id) initWithServiceType: (NSString*)serviceType;
 
-/** Starts browsing. This is asynchronous, so nothing will happen immediately. */
-- (void) start;
-
-/** Stops browsing. */
-- (void) stop;
-
 /** Is the browser currently browsing? */
 @property (readonly) BOOL browsing;
-
-/** The current error status, if any.
-    This is KV-observable. */
-@property (readonly,retain) NSError* error;
 
 /** The set of currently found services. These are instances of the serviceClass,
     which is BonjourService by default.

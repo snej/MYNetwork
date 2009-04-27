@@ -42,7 +42,7 @@
         _mapper.desiredPublicPort = 22222;
         
         // Now open the mapping (asynchronously):
-        if( [_mapper open] ) {
+        if( [_mapper start] ) {
             Log(@"Opening port mapping...");
             // Now listen for notifications to find out when the mapping opens, fails, or changes:
             [[NSNotificationCenter defaultCenter] addObserver: self 
@@ -78,7 +78,7 @@
 
 - (void) dealloc
 {
-    [_mapper close];
+    [_mapper stop];
     [_mapper release];
     [super dealloc];
 }
@@ -90,7 +90,9 @@
 
 TestCase(MYPortMapper) {
     
+    EnableLogTo(DNS,YES);
     EnableLogTo(PortMapper,YES);
+    
     // Here's how to simply obtain your local and public address(es):
     IPAddress *addr = [IPAddress localAddress];
     Log(@"** Local address is %@%@ ...getting public addr...", 

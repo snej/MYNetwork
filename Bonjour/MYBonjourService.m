@@ -7,84 +7,120 @@
 //
 
 #import "MYBonjourService.h"
+#import "MYBonjourQuery.h"
+#import "MYAddressLookup.h"
 #import "IPAddress.h"
 #import "ConcurrentOperation.h"
 #import "Test.h"
 #import "Logging.h"
+#import "ExceptionUtils.h"
+#import <dns_sd.h>
 
 
 NSString* const kBonjourServiceResolvedAddressesNotification = @"BonjourServiceResolvedAddresses";
 
 
 @interface MYBonjourService ()
-@property (copy) NSSet* addresses;
 @end
-
-@interface MYBonjourResolveOperation ()
-@property (assign) MYBonjourService *service;
-@property (retain) NSSet *addresses;
-@end
-
 
 
 @implementation MYBonjourService
 
 
-- (id) initWithNetService: (NSNetService*)netService
+- (id) initWithName: (NSString*)serviceName
+               type: (NSString*)type
+             domain: (NSString*)domain
+          interface: (uint32)interfaceIndex
 {
     self = [super init];
     if (self != nil) {
-        _netService = [netService retain];
-        _netService.delegate = self;
+        _name = [serviceName copy];
+        _type = [type copy];
+        _domain = [domain copy];
+        _interfaceIndex = interfaceIndex;
     }
     return self;
 }
 
-- (void) dealloc
-{
-    Log(@"DEALLOC %@",self);
-    _netService.delegate = nil;
-    [_netService release];
-    [_txtRecord release];
-    [_addresses release];
+- (void) dealloc {
+    [_name release];
+    [_type release];
+    [_domain release];
+    [_hostname release];
+    [_txtQuery stop];
+    [_txtQuery release];
+    [_addressLookup stop];
+    [_addressLookup release];
     [super dealloc];
 }
 
 
-- (NSString*) description
-{
-    return $sprintf(@"%@['%@'.%@%@]", self.class,self.name,_netService.type,_netService.domain);
+@synthesize name=_name, type=_type, domain=_domain, interfaceIndex=_interfaceIndex;
+
+
+- (NSString*) description {
+    return $sprintf(@"%@['%@'.%@%@]", self.class,_name,_type,_domain);
 }
 
 
-- (NSComparisonResult) compare: (id)obj
-{
-    return [self.name caseInsensitiveCompare: [obj name]];
+- (NSComparisonResult) compare: (id)obj {
+    return [_name caseInsensitiveCompare: [obj name]];
 }
 
-
-- (NSNetService*) netService        {return _netService;}
-- (BOOL) isEqual: (id)obj           {return [obj isKindOfClass: [MYBonjourService class]] && [_netService isEqual: [obj netService]];}
-- (NSUInteger) hash                 {return _netService.hash;}
-- (NSString*) name                  {return _netService.name;}
-
-
-- (void) added
-{
-    LogTo(Bonjour,@"Added %@",_netService);
-}
-
-- (void) removed
-{
-    LogTo(Bonjour,@"Removed %@",_netService);
-    [_netService stopMonitoring];
-    _netService.delegate = nil;
-    
-    if( _resolveOp ) {
-        [_resolveOp cancel];
-        [_resolveOp release];
-        _resolveOp = nil;
+- (BOOL) isEqual: (id)obj {
+    if ([obj isKindOfClass: [MYBonjourService class]]) {
+        MYBonjourService *service = obj;
+        return [_name caseInsensitiveCompare: [service name]] == 0
+            && $equal(_type, service->_type)
+            && $equal(_domain, service->_domain)
+            && _interfaceIndex == service->_interfaceIndex;
+    } else {
+        return NO;
     }
+}
+
+- (NSUInteger) hash {
+    return _name.hash ^ _type.hash ^ _domain.hash;
+}
+
+
+- (void) added {
+    LogTo(Bonjour,@"Added %@",self);
+}
+
+- (void) removed {
+    LogTo(Bonjour,@"Removed %@",self);
+    [self stop];
+    
+    [_txtQuery stop];
+    [_txtQuery release];
+    _txtQuery = nil;
+    
+    [_addressLookup stop];
+}
+
+
+- (void) priv_finishResolve {
+    // If I haven't finished my resolve yet, run it synchronously now so I can return a valid value:
+    if (!_startedResolve )
+        [self start];
+    if (self.serviceRef)
+        [self waitForReply];
+}    
+
+- (NSString*) fullName {
+    if (!_fullName) [self priv_finishResolve];
+    return _fullName;
+}
+
+- (NSString*) hostname {
+    if (!_hostname) [self priv_finishResolve];
+    return _hostname;
+}
+
+- (UInt16) port {
+    if (!_port) [self priv_finishResolve];
+    return _port;
 }
 
 
@@ -92,19 +128,18 @@ NSString* const kBonjourServiceResolvedAddressesNotification = @"BonjourServiceR
 #pragma mark TXT RECORD:
 
 
-- (NSDictionary*) txtRecord
-{
-    [_netService startMonitoring];
+- (NSDictionary*) txtRecord {
+    // If I haven't started my resolve yet, start it now. (_txtRecord will be nil till it finishes.)
+    if (!_startedResolve)
+        [self start];
     return _txtRecord;
 }
 
-- (void) txtRecordChanged
-{
+- (void) txtRecordChanged {
     // no-op (this is here for subclassers to override)
 }
 
-- (NSString*) txtStringForKey: (NSString*)key
-{
+- (NSString*) txtStringForKey: (NSString*)key {
     NSData *value = [self.txtRecord objectForKey: key];
     if( ! value )
         return nil;
@@ -118,114 +153,117 @@ NSString* const kBonjourServiceResolvedAddressesNotification = @"BonjourServiceR
     return [str autorelease];
 }
 
-
-- (void)netService:(NSNetService *)sender didUpdateTXTRecordData:(NSData *)data
-{
-    NSDictionary *txtDict = [NSNetService dictionaryFromTXTRecordData: data];
-    if( ! $equal(txtDict,_txtRecord) ) {
-        LogTo(Bonjour,@"%@ got TXT record (%u bytes)",self,data.length);
+- (void) setTxtData: (NSData*)txtData {
+    NSDictionary *txtRecord = txtData ?[NSNetService dictionaryFromTXTRecordData: txtData] :nil;
+    if (!$equal(txtRecord,_txtRecord)) {
+        LogTo(Bonjour,@"%@ TXT = %@", self,txtRecord);
         [self willChangeValueForKey: @"txtRecord"];
-        setObj(&_txtRecord,txtDict);
+        setObj(&_txtRecord, txtRecord);
         [self didChangeValueForKey: @"txtRecord"];
         [self txtRecordChanged];
     }
 }
 
 
+- (void) queryDidUpdate: (MYBonjourQuery*)query {
+    if (query==_txtQuery)
+        [self setTxtData: query.recordData];
+}
+
+
 #pragma mark -
-#pragma mark ADDRESS RESOLUTION:
+#pragma mark FULLNAME/HOSTNAME/PORT RESOLUTION:
 
 
-#define kAddressResolveTimeout      10.0
-#define kAddressExpirationInterval  60.0
-#define kAddressErrorRetryInterval   5.0
-
-
-- (NSSet*) addresses
+- (void) priv_resolvedFullName: (NSString*)fullName
+                      hostname: (NSString*)hostname
+                          port: (uint16_t)port
+                     txtRecord: (NSData*)txtData
 {
-    if( _addresses && CFAbsoluteTimeGetCurrent() >= _addressesExpireAt ) {
-        setObj(&_addresses,nil);            // eww, toss 'em and get new ones
-        [self resolve];
-    }
-    return _addresses;
+    LogTo(Bonjour, @"%@: fullname='%@', hostname=%@, port=%u, txt=%u bytes", 
+          self, fullName, hostname, port, txtData.length);
+
+    // Don't call a setter method to set these properties: the getters are synchronous, so
+    // I might already be blocked in a call to one of them, in which case creating a KV
+    // notification could cause trouble...
+    _fullName = fullName.copy;
+    _hostname = hostname.copy;
+    _port = port;
+    
+    // TXT getter is async, though, so I can use a setter to announce the data's availability:
+    [self setTxtData: txtData];
+    
+    // Now that I know my full name, I can start a persistent query to track the TXT:
+    _txtQuery = [[MYBonjourQuery alloc] initWithBonjourService: self 
+                                                    recordType: kDNSServiceType_TXT];
+    _txtQuery.continuous = YES;
+    [_txtQuery start];
 }
 
 
-- (MYBonjourResolveOperation*) resolve
+static void resolveCallback(DNSServiceRef                       sdRef,
+                            DNSServiceFlags                     flags,
+                            uint32_t                            interfaceIndex,
+                            DNSServiceErrorType                 errorCode,
+                            const char                          *fullname,
+                            const char                          *hosttarget,
+                            uint16_t                            port,
+                            uint16_t                            txtLen,
+                            const unsigned char                 *txtRecord,
+                            void                                *context)
 {
-    if( ! _resolveOp ) {
-        LogTo(Bonjour,@"Resolving %@",self);
-        _resolveOp = [[MYBonjourResolveOperation alloc] init];
-        _resolveOp.service = self;
-        [_resolveOp start];
-        Assert(_netService);
-        Assert(_netService.delegate=self);
-        [_netService resolveWithTimeout: kAddressResolveTimeout];
-    }
-    return _resolveOp;
-}
-
-- (void) setAddresses: (NSSet*)addresses
-{
-    setObj(&_addresses,addresses);
-}
-
-
-- (void) _finishedResolving: (NSSet*)addresses expireIn: (NSTimeInterval)expirationInterval
-{
-    _addressesExpireAt = CFAbsoluteTimeGetCurrent() + expirationInterval;
-    self.addresses = addresses;
-    _resolveOp.addresses = addresses;
-    [_resolveOp finish];
-    [_resolveOp release];
-    _resolveOp = nil;
-}
-
-
-- (void)netServiceDidResolveAddress:(NSNetService *)sender
-{
-    // Convert the raw sockaddrs into IPAddress objects:
-    NSMutableSet *addresses = [NSMutableSet setWithCapacity: 2];
-    for( NSData *rawAddr in _netService.addresses ) {
-        IPAddress *addr = [[IPAddress alloc] initWithSockAddr: rawAddr.bytes];
-        if( addr ) {
-            [addresses addObject: addr];
-            [addr release];
+    MYBonjourService *service = context;
+    @try{
+        //LogTo(Bonjour, @"resolveCallback for %@ (err=%i)", service,errorCode);
+        if (errorCode) {
+            [service setError: errorCode];
+        } else {
+            NSData *txtData = nil;
+            if (txtRecord)
+                txtData = [NSData dataWithBytes: txtRecord length: txtLen];
+            [service priv_resolvedFullName: [NSString stringWithUTF8String: fullname]
+                                  hostname: [NSString stringWithUTF8String: hosttarget]
+                                      port: ntohs(port)
+                                 txtRecord: txtData];
         }
+    }catchAndReport(@"MYBonjourResolver query callback");
+}
+
+
+- (DNSServiceRef) createServiceRef {
+    _startedResolve = YES;
+    DNSServiceRef serviceRef = NULL;
+    self.error = DNSServiceResolve(&serviceRef, 0,
+                                   _interfaceIndex, 
+                                   _name.UTF8String, _type.UTF8String, _domain.UTF8String,
+                                   &resolveCallback, self);
+    return serviceRef;
+}
+
+
+- (MYAddressLookup*) addressLookup {
+    if (!_addressLookup) {
+        // Create the lookup the first time this is called:
+        _addressLookup = [[MYAddressLookup alloc] initWithHostname: self.hostname];
+        _addressLookup.port = _port;
+        _addressLookup.interfaceIndex = _interfaceIndex;
     }
-    LogTo(Bonjour,@"Resolved %@: %@",self,addresses);
-    [self _finishedResolving: addresses expireIn: kAddressExpirationInterval];
+    // (Re)start the lookup if it's expired:
+    if (_addressLookup && _addressLookup.timeToLive <= 0.0)
+        [_addressLookup start];
+    return _addressLookup;
 }
 
-- (void)netService:(NSNetService *)sender didNotResolve:(NSDictionary *)errorDict
-{
-    LogTo(Bonjour,@"Error resolving %@ -- %@",self,errorDict);
-    [self _finishedResolving: [NSArray array] expireIn: kAddressErrorRetryInterval];
-}
 
-- (void)netServiceDidStop:(NSNetService *)sender
-{
-    LogTo(Bonjour,@"Resolve stopped for %@",self);
-    [self _finishedResolving: [NSArray array] expireIn: kAddressErrorRetryInterval];
+- (MYBonjourQuery*) queryForRecord: (UInt16)recordType {
+    MYBonjourQuery *query = [[[MYBonjourQuery alloc] initWithBonjourService: self recordType: recordType]
+                                 autorelease];
+    return [query start] ?query :nil;
 }
 
 
 @end
 
-
-
-
-@implementation MYBonjourResolveOperation
-
-@synthesize service=_service, addresses=_addresses;
-
-- (void) dealloc
-{
-    [_addresses release];
-    [super dealloc];
-}
-
-@end
 
 
 /*
