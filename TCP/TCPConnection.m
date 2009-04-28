@@ -111,14 +111,16 @@ static NSMutableArray *sAllConnections;
     CFWriteStreamRef writeStream = NULL;
     CFStreamCreatePairWithSocket(kCFAllocatorDefault, socket, &readStream, &writeStream);
     self = [self _initWithAddress: [IPAddress addressOfSocket: socket] 
-                      inputStream: (NSInputStream*)readStream
-                     outputStream: (NSOutputStream*)writeStream];
+                      inputStream: (NSInputStream*)CFMakeCollectable(readStream)
+                     outputStream: (NSOutputStream*)CFMakeCollectable(writeStream)];
     if( self ) {
         _isIncoming = YES;
         _server = [listener retain];
         CFReadStreamSetProperty(readStream, kCFStreamPropertyShouldCloseNativeSocket, kCFBooleanTrue);
         CFWriteStreamSetProperty(writeStream, kCFStreamPropertyShouldCloseNativeSocket, kCFBooleanTrue);
     }
+    if(readStream) CFRelease(readStream);
+    if(writeStream) CFRelease(writeStream);
     return self;
 }    
 

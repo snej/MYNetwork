@@ -52,6 +52,7 @@ static SecIdentityRef ChooseIdentity( NSString *prompt ) {
     SecIdentityRef identity;
     while (SecIdentitySearchCopyNext(search, &identity) == noErr)
         [identities addObject: (id)identity];
+    CFRelease(search);
     Log(@"Found %u identities -- prompting '%@'", identities.count, prompt);
     if (identities.count > 0) {
         SFChooseIdentityPanel *panel = [SFChooseIdentityPanel sharedChooseIdentityPanel];
