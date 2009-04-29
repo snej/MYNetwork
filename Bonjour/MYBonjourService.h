@@ -33,13 +33,34 @@
 /** The service's domain. */
 @property (readonly) NSString *domain;
 
-@property (readonly, copy) NSString *hostname;
+/** The service's full name -- the name, type and domain concatenated together. */
+@property (readonly,copy) NSString* fullName;
 
-@property (readonly) UInt16 port;
-
+/** The index of the network interface on which this service was found. */
 @property (readonly) uint32_t interfaceIndex;
 
-@property (readonly,copy) NSString* fullName;
+
+/** @name Addressing
+ *  Getting the IP address of the service
+ */
+//@{
+
+/** The hostname of the machine providing this service. */
+@property (readonly, copy) NSString *hostname;
+
+/** The IP port number of this service on its host. */
+@property (readonly) UInt16 port;
+
+/** Returns a MYDNSLookup object that resolves the raw IP address(es) of this service.
+    Subsequent calls to this method will always return the same object. */
+- (MYAddressLookup*) addressLookup;
+
+//@}
+
+
+/** @name TXT and other DNS records
+ */
+//@{
 
 /** The service's metadata dictionary, from its DNS TXT record */
 @property (readonly,copy) NSDictionary *txtRecord;
@@ -47,42 +68,41 @@
 /** A convenience to access a single property from the TXT record. */
 - (NSString*) txtStringForKey: (NSString*)key;
 
-/** Returns a MYDNSLookup object that resolves the IP address(es) of this service.
-    Subsequent calls to this method will always return the same object. */
-- (MYAddressLookup*) addressLookup;
-
 /** Starts a new MYBonjourQuery for the specified DNS record type of this service.
     @param recordType  The DNS record type, e.g. kDNSServiceType_TXT; see the enum in <dns_sd.h>. */
 - (MYBonjourQuery*) queryForRecord: (UInt16)recordType;
 
+//@}
 
-// Protected methods, for subclass use only:
 
-// (for subclasses to override, but not call):
+/** @name Protected
+ *  Advanced methods that may be overridden by subclasses, but should not be called directly.
+ */
+//@{
+
+/** Designated initializer. You probably don't want to create MYBonjourService instances yourself,
+    but if you subclass you might need to override this initializer. */
 - (id) initWithName: (NSString*)serviceName
                type: (NSString*)type
              domain: (NSString*)domain
-          interface: (uint32_t)interfaceIndex;
+          interface: (UInt32)interfaceIndex;
 
+/** Called when this service is officially added to its browser's service set.
+    You can override this, but be sure to call the superclass method. */
 - (void) added;
+
+/** Called when this service is officially removed to its browser's service set.
+    You can override this, but be sure to call the superclass method. */
 - (void) removed;
+
+/** Called when this service's TXT record changes.
+    You can override this, but be sure to call the superclass method. */
 - (void) txtRecordChanged;
 
-// Internal:
-
+/** Called when a query started by this service updates.
+    You can override this, but be sure to call the superclass method. */
 - (void) queryDidUpdate: (MYBonjourQuery*)query;
 
-@end
-
-
-
-@interface MYBonjourResolveOperation : ConcurrentOperation
-{
-    MYBonjourService *_service;
-    NSSet *_addresses;
-}
-
-@property (readonly) MYBonjourService *service;
-@property (readonly,retain) NSSet *addresses;
+//@}
 
 @end

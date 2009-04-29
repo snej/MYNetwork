@@ -94,8 +94,6 @@ static IPAddress* makeIPAddr( UInt32 rawAddr, UInt16 port ) {
             errorCode = kDNSServiceErr_NATPortMappingUnsupported;
         }
     }
-    if( errorCode != self.error )
-        self.error = errorCode;
 
     [self priv_updateLocalAddress];
     IPAddress *publicAddress = makeIPAddr(rawPublicAddress,publicPort);
@@ -106,6 +104,8 @@ static IPAddress* makeIPAddr( UInt32 rawAddr, UInt16 port ) {
         LogTo(PortMapper,@"%@: Public addr is %@ (mapped=%i)",
               self, self.publicAddress, self.isMapped);
     }
+
+    [self gotResponse: errorCode];
     [[NSNotificationCenter defaultCenter] postNotificationName: MYPortMapperChangedNotification
                                                         object: self];
 }
@@ -135,22 +135,19 @@ static void portMapCallback (
 }
 
 
-- (DNSServiceRef) createServiceRef
-{
+- (DNSServiceErrorType) createServiceRef: (DNSServiceRef*)sdRefPtr {
     DNSServiceProtocol protocols = 0;
     if( _mapTCP ) protocols |= kDNSServiceProtocol_TCP;
     if( _mapUDP ) protocols |= kDNSServiceProtocol_UDP;
-    DNSServiceRef serviceRef = NULL;
-    self.error = DNSServiceNATPortMappingCreate(&serviceRef, 
-                                                0 /*flags*/, 
-                                                0 /*interfaceIndex*/, 
-                                                protocols,
-                                                htons(_localPort),
-                                                htons(_desiredPublicPort),
-                                                0 /*ttl*/,
-                                                &portMapCallback, 
-                                                self);
-    return serviceRef;
+    return DNSServiceNATPortMappingCreate(sdRefPtr, 
+                                          kDNSServiceFlagsShareConnection, 
+                                          0 /*interfaceIndex*/, 
+                                          protocols,
+                                          htons(_localPort),
+                                          htons(_desiredPublicPort),
+                                          0 /*ttl*/,
+                                          &portMapCallback, 
+                                          self);
 }
 
 

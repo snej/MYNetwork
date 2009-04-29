@@ -8,17 +8,20 @@
 
 #import <Foundation/Foundation.h>
 #import <CoreFoundation/CFSocket.h>
+@class MYDNSConnection;
 
 
 /** Abstract superclass for services based on DNSServiceRefs, such as MYPortMapper. */
 @interface MYDNSService : NSObject
 {
     @private
+    BOOL _usePrivateConnection;
+    MYDNSConnection *_connection;
     struct _DNSServiceRef_t *_serviceRef;
     CFSocketRef _socket;
     CFRunLoopSourceRef _socketSource;
     SInt32 _error;
-    BOOL _continuous;
+    BOOL _continuous, _gotResponse;
 }
 
 /** If NO (the default), the service will stop after it gets a result.
@@ -40,12 +43,30 @@
     This property is KV observable. */
 @property int32_t error;
 
+
+/** Utility to construct a service's full name. */
++ (NSString*) fullNameOfService: (NSString*)serviceName
+                         ofType: (NSString*)type
+                       inDomain: (NSString*)domain;
+
+
+
 // PROTECTED:
+
+
+@property BOOL usePrivateConnection;
 
 /** Subclass must implement this abstract method to create a new DNSServiceRef.
     This method is called by -open.
-    If an error occurs, the method should set self.error and return NULL.*/
-- (struct _DNSServiceRef_t*) createServiceRef;
+    The implementation MUST pass the given sdRefPtr directly to the DNSService function
+    that creates the new ref, without setting it to NULL first.
+    It MUST also set the kDNSServiceFlagsShareConnection flag. */
+- (int32_t/*DNSServiceErrorType*/) createServiceRef: (struct _DNSServiceRef_t**)sdRefPtr;
+
+/** Subclass's callback must call this method after doing its own work.
+    This method will update the error state, and will stop the service if it's not set to be
+    continuous. */
+- (void) gotResponse: (int32_t/*DNSServiceErrorType*/)errorCode;
 
 @property (readonly) struct _DNSServiceRef_t* serviceRef;
 
@@ -57,5 +78,24 @@
     This will cause the service's callback (defined by the subclass) to be invoked.
     @return  YES if a message is received, NO on error (or if the service isn't started) */
 - (BOOL) waitForReply;
+
+
+@end
+
+
+
+
+@interface MYDNSConnection : NSObject
+{
+    struct _DNSServiceRef_t* _connectionRef;
+    CFSocketRef _socket;
+    CFRunLoopSourceRef _runLoopSource;
+}
+
++ (MYDNSConnection*) sharedConnection;
+- (id) initWithServiceRef: (struct _DNSServiceRef_t *)serviceRef;
+@property (readonly) struct _DNSServiceRef_t* connectionRef;
+- (BOOL) processResult;
+- (void) close;
 
 @end

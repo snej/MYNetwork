@@ -8,6 +8,7 @@
 
 #import "MYBonjourBrowser.h"
 #import "MYBonjourService.h"
+#import "MYBonjourRegistration.h"
 #import "ExceptionUtils.h"
 #import "Test.h"
 #import "Logging.h"
@@ -51,6 +52,8 @@ static void browseCallback (DNSServiceRef                       sdRef,
 - (void) dealloc
 {
     LogTo(Bonjour,@"DEALLOC BonjourBrowser");
+    [_myRegistration cancel];
+    [_myRegistration release];
     [_serviceType release];
     [_services release];
     [_addServices release];
@@ -68,12 +71,12 @@ static void browseCallback (DNSServiceRef                       sdRef,
 }
 
 
-- (DNSServiceRef) createServiceRef {
-    DNSServiceRef serviceRef = NULL;
-    self.error = DNSServiceBrowse(&serviceRef, 0, 0,
-                                  _serviceType.UTF8String, NULL,
-                                  &browseCallback, self);
-    return serviceRef;
+- (DNSServiceErrorType) createServiceRef: (DNSServiceRef*)sdRefPtr {
+    return DNSServiceBrowse(sdRefPtr,
+                            kDNSServiceFlagsShareConnection, 
+                            0,
+                            _serviceType.UTF8String, NULL,
+                            &browseCallback, self);
 }
 
 
@@ -93,8 +96,15 @@ static void browseCallback (DNSServiceRef                       sdRef,
                                                                type: regtype
                                                              domain: domain
                                                           interface: interfaceIndex];
+    if ([_myRegistration isSameAsService: service]) {
+        // This is an echo of my own registration, so ignore it
+        LogTo(Bonjour,@"%@ ignoring echo %@", self,service);
+        [service release];
+        return;
+    }
     MYBonjourService *existingService = [_services member: service];
     if( existingService ) {
+        // Use existing service object instead of creating a new one
         [service release];
         service = [existingService retain];
     }
@@ -114,14 +124,17 @@ static void browseCallback (DNSServiceRef                       sdRef,
         [addTo addObject: service];
     [service release];
     
-    // After a round of updates is done, do the update:
-    if( ! (flags & kDNSServiceFlagsMoreComing) )
-        [self _updateServiceList];
+    // Schedule a (single) call to _updateServiceList:
+    if (!_pendingUpdate) {
+        [self performSelector: @selector(_updateServiceList) withObject: nil afterDelay: 0];
+        _pendingUpdate = YES;
+    }
 }
 
 
 - (void) _updateServiceList
 {
+    _pendingUpdate = NO;
     if( _rmvServices.count ) {
         [self willChangeValueForKey: @"services" 
                     withSetMutation: NSKeyValueMinusSetMutation
@@ -156,17 +169,30 @@ static void browseCallback (DNSServiceRef                       sdRef,
                             const char                          *replyDomain,
                             void                                *context)
 {
+    MYBonjourBrowser *browser = context;
     @try{
         //LogTo(Bonjour,@"browseCallback (error=%i, name='%s')", errorCode,serviceName);
-        if (errorCode)
-            [(MYBonjourBrowser*)context priv_gotError: errorCode];
-        else
-            [(MYBonjourBrowser*)context priv_gotServiceName: [NSString stringWithUTF8String: serviceName]
-                                                       type: [NSString stringWithUTF8String: regtype]
-                                                     domain: [NSString stringWithUTF8String: replyDomain]
-                                                  interface: interfaceIndex
-                                                      flags: flags];
+        if (!errorCode)
+            [browser priv_gotServiceName: [NSString stringWithUTF8String: serviceName]
+                                    type: [NSString stringWithUTF8String: regtype]
+                                  domain: [NSString stringWithUTF8String: replyDomain]
+                               interface: interfaceIndex
+                                   flags: flags];
     }catchAndReport(@"Bonjour");
+    [browser gotResponse: errorCode];
+}
+
+
+- (void) cancel {
+    [_myRegistration stop];
+    [super cancel];
+}
+
+
+- (MYBonjourRegistration *) myRegistration {
+    if (!_myRegistration)
+        _myRegistration = [[MYBonjourRegistration alloc] initWithServiceType: _serviceType port: 0];
+    return _myRegistration;
 }
 
 
@@ -198,6 +224,10 @@ static void browseCallback (DNSServiceRef                       sdRef,
         [_browser addObserver: self forKeyPath: @"services" options: NSKeyValueObservingOptionNew context: NULL];
         [_browser addObserver: self forKeyPath: @"browsing" options: NSKeyValueObservingOptionNew context: NULL];
         [_browser start];
+        
+        MYBonjourRegistration *myReg = _browser.myRegistration;
+        myReg.port = 12346;
+        Assert([myReg start]);
     }
     return self;
 }

@@ -30,36 +30,41 @@ NSString* const kBonjourServiceResolvedAddressesNotification = @"BonjourServiceR
 - (id) initWithName: (NSString*)serviceName
                type: (NSString*)type
              domain: (NSString*)domain
-          interface: (uint32)interfaceIndex
+          interface: (UInt32)interfaceIndex
 {
+    Assert(serviceName);
+    Assert(type);
+    Assert(domain);
     self = [super init];
     if (self != nil) {
         _name = [serviceName copy];
         _type = [type copy];
         _domain = [domain copy];
+        _fullName = [[[self class] fullNameOfService: _name ofType: _type inDomain: _domain] retain];
         _interfaceIndex = interfaceIndex;
     }
     return self;
 }
 
 - (void) dealloc {
-    [_name release];
-    [_type release];
-    [_domain release];
-    [_hostname release];
     [_txtQuery stop];
     [_txtQuery release];
     [_addressLookup stop];
     [_addressLookup release];
+    [_name release];
+    [_type release];
+    [_domain release];
+    [_fullName release];
+    [_hostname release];
     [super dealloc];
 }
 
 
-@synthesize name=_name, type=_type, domain=_domain, interfaceIndex=_interfaceIndex;
+@synthesize name=_name, type=_type, domain=_domain, fullName=_fullName, interfaceIndex=_interfaceIndex;
 
 
 - (NSString*) description {
-    return $sprintf(@"%@['%@'.%@%@]", self.class,_name,_type,_domain);
+    return $sprintf(@"%@[%@]", self.class,self.fullName);
 }
 
 
@@ -101,17 +106,12 @@ NSString* const kBonjourServiceResolvedAddressesNotification = @"BonjourServiceR
 
 
 - (void) priv_finishResolve {
-    // If I haven't finished my resolve yet, run it synchronously now so I can return a valid value:
+    // If I haven't finished my resolve yet, run it *synchronously* now so I can return a valid value:
     if (!_startedResolve )
         [self start];
     if (self.serviceRef)
         [self waitForReply];
 }    
-
-- (NSString*) fullName {
-    if (!_fullName) [self priv_finishResolve];
-    return _fullName;
-}
 
 - (NSString*) hostname {
     if (!_hostname) [self priv_finishResolve];
@@ -129,9 +129,12 @@ NSString* const kBonjourServiceResolvedAddressesNotification = @"BonjourServiceR
 
 
 - (NSDictionary*) txtRecord {
-    // If I haven't started my resolve yet, start it now. (_txtRecord will be nil till it finishes.)
-    if (!_startedResolve)
-        [self start];
+    if (!_txtQuery) {
+        _txtQuery = [[MYBonjourQuery alloc] initWithBonjourService: self 
+                                                        recordType: kDNSServiceType_TXT];
+        _txtQuery.continuous = YES;
+        [_txtQuery start];
+    }
     return _txtRecord;
 }
 
@@ -172,32 +175,24 @@ NSString* const kBonjourServiceResolvedAddressesNotification = @"BonjourServiceR
 
 
 #pragma mark -
-#pragma mark FULLNAME/HOSTNAME/PORT RESOLUTION:
+#pragma mark HOSTNAME/PORT RESOLUTION:
 
 
-- (void) priv_resolvedFullName: (NSString*)fullName
-                      hostname: (NSString*)hostname
+- (void) priv_resolvedHostname: (NSString*)hostname
                           port: (uint16_t)port
                      txtRecord: (NSData*)txtData
 {
-    LogTo(Bonjour, @"%@: fullname='%@', hostname=%@, port=%u, txt=%u bytes", 
-          self, fullName, hostname, port, txtData.length);
+    LogTo(Bonjour, @"%@: hostname=%@, port=%u, txt=%u bytes", 
+          self, hostname, port, txtData.length);
 
     // Don't call a setter method to set these properties: the getters are synchronous, so
     // I might already be blocked in a call to one of them, in which case creating a KV
     // notification could cause trouble...
-    _fullName = fullName.copy;
     _hostname = hostname.copy;
     _port = port;
     
     // TXT getter is async, though, so I can use a setter to announce the data's availability:
     [self setTxtData: txtData];
-    
-    // Now that I know my full name, I can start a persistent query to track the TXT:
-    _txtQuery = [[MYBonjourQuery alloc] initWithBonjourService: self 
-                                                    recordType: kDNSServiceType_TXT];
-    _txtQuery.continuous = YES;
-    [_txtQuery start];
 }
 
 
@@ -215,29 +210,26 @@ static void resolveCallback(DNSServiceRef                       sdRef,
     MYBonjourService *service = context;
     @try{
         //LogTo(Bonjour, @"resolveCallback for %@ (err=%i)", service,errorCode);
-        if (errorCode) {
-            [service setError: errorCode];
-        } else {
+        if (!errorCode) {
             NSData *txtData = nil;
             if (txtRecord)
                 txtData = [NSData dataWithBytes: txtRecord length: txtLen];
-            [service priv_resolvedFullName: [NSString stringWithUTF8String: fullname]
-                                  hostname: [NSString stringWithUTF8String: hosttarget]
+            [service priv_resolvedHostname: [NSString stringWithUTF8String: hosttarget]
                                       port: ntohs(port)
                                  txtRecord: txtData];
         }
     }catchAndReport(@"MYBonjourResolver query callback");
+    [service gotResponse: errorCode];
 }
 
 
-- (DNSServiceRef) createServiceRef {
+- (DNSServiceErrorType) createServiceRef: (DNSServiceRef*)sdRefPtr {
     _startedResolve = YES;
-    DNSServiceRef serviceRef = NULL;
-    self.error = DNSServiceResolve(&serviceRef, 0,
-                                   _interfaceIndex, 
-                                   _name.UTF8String, _type.UTF8String, _domain.UTF8String,
-                                   &resolveCallback, self);
-    return serviceRef;
+    return DNSServiceResolve(sdRefPtr,
+                             kDNSServiceFlagsShareConnection,
+                             _interfaceIndex, 
+                             _name.UTF8String, _type.UTF8String, _domain.UTF8String,
+                             &resolveCallback, self);
 }
 
 

@@ -19,14 +19,17 @@
     CFAbsoluteTime _expires;
 }
 
-/** Initializes the lookup with a DNS hostname. */
+/** Initializes the lookup with a DNS hostname.
+    (If you've got a Bonjour service already, as a MYBonjourService object, it's more convenient
+    to access its addressLookup property instead of creating your own instance.) */
 - (id) initWithHostname: (NSString*)hostname;
 
 /** The port number; this will be copied into the resulting IPAddress objects.
     Defaults to zero, but you can set it before calling -start. */
 @property UInt16 port;
 
-/** The index of the network interface. You usually don't need to set this. */
+/** The index of the network interface to use, or zero (the default) for any interface.
+    You usually don't need to set this. */
 @property UInt16 interfaceIndex;
 
 /** The resulting address(es) of the host, as HostAddress objects. */

@@ -41,6 +41,12 @@
 		278C1B2F0F9F865800954AE1 /* PortMapperTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 278C1B2D0F9F865800954AE1 /* PortMapperTest.m */; };
 		278C1B350F9F86A100954AE1 /* MYUtilities_Debug.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 278C1B330F9F86A100954AE1 /* MYUtilities_Debug.xcconfig */; };
 		278C1B360F9F86A100954AE1 /* MYUtilities_Release.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 278C1B340F9F86A100954AE1 /* MYUtilities_Release.xcconfig */; };
+		27D915BF0FA8EABC002B0DEC /* MYDNSService.m in Sources */ = {isa = PBXBuildFile; fileRef = 27D915BC0FA8EABC002B0DEC /* MYDNSService.m */; };
+		27D915C00FA8EABC002B0DEC /* MYAddressLookup.m in Sources */ = {isa = PBXBuildFile; fileRef = 27D915BE0FA8EABC002B0DEC /* MYAddressLookup.m */; };
+		27D915C90FA8EAD0002B0DEC /* MYBonjourBrowser.m in Sources */ = {isa = PBXBuildFile; fileRef = 27D915C20FA8EAD0002B0DEC /* MYBonjourBrowser.m */; };
+		27D915CA0FA8EAD0002B0DEC /* MYBonjourService.m in Sources */ = {isa = PBXBuildFile; fileRef = 27D915C40FA8EAD0002B0DEC /* MYBonjourService.m */; };
+		27D915CB0FA8EAD0002B0DEC /* MYBonjourQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = 27D915C60FA8EAD0002B0DEC /* MYBonjourQuery.m */; };
+		27D915CC0FA8EAD0002B0DEC /* MYBonjourRegistration.m in Sources */ = {isa = PBXBuildFile; fileRef = 27D915C80FA8EAD0002B0DEC /* MYBonjourRegistration.m */; };
 		280E754F0DD40C5E005A515E /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 280E754C0DD40C5E005A515E /* MainWindow.xib */; };
 /* End PBXBuildFile section */
 
@@ -107,6 +113,18 @@
 		278C1B2D0F9F865800954AE1 /* PortMapperTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PortMapperTest.m; sourceTree = "<group>"; };
 		278C1B330F9F86A100954AE1 /* MYUtilities_Debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = MYUtilities_Debug.xcconfig; sourceTree = "<group>"; };
 		278C1B340F9F86A100954AE1 /* MYUtilities_Release.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = MYUtilities_Release.xcconfig; sourceTree = "<group>"; };
+		27D915BB0FA8EABC002B0DEC /* MYDNSService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MYDNSService.h; path = PortMapper/MYDNSService.h; sourceTree = "<group>"; };
+		27D915BC0FA8EABC002B0DEC /* MYDNSService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MYDNSService.m; path = PortMapper/MYDNSService.m; sourceTree = "<group>"; };
+		27D915BD0FA8EABC002B0DEC /* MYAddressLookup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MYAddressLookup.h; path = Bonjour/MYAddressLookup.h; sourceTree = "<group>"; };
+		27D915BE0FA8EABC002B0DEC /* MYAddressLookup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MYAddressLookup.m; path = Bonjour/MYAddressLookup.m; sourceTree = "<group>"; };
+		27D915C10FA8EAD0002B0DEC /* MYBonjourBrowser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MYBonjourBrowser.h; path = Bonjour/MYBonjourBrowser.h; sourceTree = "<group>"; };
+		27D915C20FA8EAD0002B0DEC /* MYBonjourBrowser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MYBonjourBrowser.m; path = Bonjour/MYBonjourBrowser.m; sourceTree = "<group>"; };
+		27D915C30FA8EAD0002B0DEC /* MYBonjourService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MYBonjourService.h; path = Bonjour/MYBonjourService.h; sourceTree = "<group>"; };
+		27D915C40FA8EAD0002B0DEC /* MYBonjourService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MYBonjourService.m; path = Bonjour/MYBonjourService.m; sourceTree = "<group>"; };
+		27D915C50FA8EAD0002B0DEC /* MYBonjourQuery.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MYBonjourQuery.h; path = Bonjour/MYBonjourQuery.h; sourceTree = "<group>"; };
+		27D915C60FA8EAD0002B0DEC /* MYBonjourQuery.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MYBonjourQuery.m; path = Bonjour/MYBonjourQuery.m; sourceTree = "<group>"; };
+		27D915C70FA8EAD0002B0DEC /* MYBonjourRegistration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MYBonjourRegistration.h; path = Bonjour/MYBonjourRegistration.h; sourceTree = "<group>"; };
+		27D915C80FA8EAD0002B0DEC /* MYBonjourRegistration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MYBonjourRegistration.m; path = Bonjour/MYBonjourRegistration.m; sourceTree = "<group>"; };
 		280E754C0DD40C5E005A515E /* MainWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainWindow.xib; sourceTree = "<group>"; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = iPhone/main.m; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -149,11 +167,11 @@
 		270E9AA00EE61113003F17CA /* MYNetwork */ = {
 			isa = PBXGroup;
 			children = (
-				270E9AA10EE61113003F17CA /* IPAddress.h */,
-				270E9AA20EE61113003F17CA /* IPAddress.m */,
+				27D915B90FA8EA85002B0DEC /* Addressing */,
+				27D915BA0FA8EA98002B0DEC /* Bonjour */,
+				278C1B2A0F9F865800954AE1 /* PortMapper */,
 				270E9AA30EE61113003F17CA /* TCP */,
 				270E9AAF0EE61113003F17CA /* BLIP */,
-				278C1B2A0F9F865800954AE1 /* PortMapper */,
 			);
 			name = MYNetwork;
 			sourceTree = "<group>";
@@ -219,8 +237,7 @@
 				270E9ADA0EE6111A003F17CA /* GoogleToolboxSubset */,
 			);
 			name = MYUtilities;
-			path = ../MYUtilities;
-			sourceTree = SOURCE_ROOT;
+			sourceTree = MYUtilities;
 		};
 		270E9ADA0EE6111A003F17CA /* GoogleToolboxSubset */ = {
 			isa = PBXGroup;
@@ -251,6 +268,34 @@
 				278C1B2D0F9F865800954AE1 /* PortMapperTest.m */,
 			);
 			path = PortMapper;
+			sourceTree = "<group>";
+		};
+		27D915B90FA8EA85002B0DEC /* Addressing */ = {
+			isa = PBXGroup;
+			children = (
+				270E9AA10EE61113003F17CA /* IPAddress.h */,
+				270E9AA20EE61113003F17CA /* IPAddress.m */,
+				27D915BB0FA8EABC002B0DEC /* MYDNSService.h */,
+				27D915BC0FA8EABC002B0DEC /* MYDNSService.m */,
+				27D915BD0FA8EABC002B0DEC /* MYAddressLookup.h */,
+				27D915BE0FA8EABC002B0DEC /* MYAddressLookup.m */,
+			);
+			name = Addressing;
+			sourceTree = "<group>";
+		};
+		27D915BA0FA8EA98002B0DEC /* Bonjour */ = {
+			isa = PBXGroup;
+			children = (
+				27D915C10FA8EAD0002B0DEC /* MYBonjourBrowser.h */,
+				27D915C20FA8EAD0002B0DEC /* MYBonjourBrowser.m */,
+				27D915C30FA8EAD0002B0DEC /* MYBonjourService.h */,
+				27D915C40FA8EAD0002B0DEC /* MYBonjourService.m */,
+				27D915C50FA8EAD0002B0DEC /* MYBonjourQuery.h */,
+				27D915C60FA8EAD0002B0DEC /* MYBonjourQuery.m */,
+				27D915C70FA8EAD0002B0DEC /* MYBonjourRegistration.h */,
+				27D915C80FA8EAD0002B0DEC /* MYBonjourRegistration.m */,
+			);
+			name = Bonjour;
 			sourceTree = "<group>";
 		};
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
@@ -387,6 +432,12 @@
 				270E9BA20EE64B4E003F17CA /* MyViewController.m in Sources */,
 				278C1B2E0F9F865800954AE1 /* MYPortMapper.m in Sources */,
 				278C1B2F0F9F865800954AE1 /* PortMapperTest.m in Sources */,
+				27D915BF0FA8EABC002B0DEC /* MYDNSService.m in Sources */,
+				27D915C00FA8EABC002B0DEC /* MYAddressLookup.m in Sources */,
+				27D915C90FA8EAD0002B0DEC /* MYBonjourBrowser.m in Sources */,
+				27D915CA0FA8EAD0002B0DEC /* MYBonjourService.m in Sources */,
+				27D915CB0FA8EAD0002B0DEC /* MYBonjourQuery.m in Sources */,
+				27D915CC0FA8EAD0002B0DEC /* MYBonjourRegistration.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -417,7 +468,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				EXCLUDED_RECURSIVE_SEARCH_PATH_SUBDIRECTORIES = "*.nib *.lproj *.framework *.gch *.xcode* (*) CVS .svn .hg";
 				ONLY_ACTIVE_ARCH = YES;
-				SDKROOT = iphonesimulator2.0;
+				SDKROOT = iphonesimulator2.2.1;
 			};
 			name = Debug;
 		};
@@ -427,7 +478,7 @@
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				SDKROOT = iphonesimulator2.0;
+				SDKROOT = iphonesimulator2.2.1;
 			};
 			name = Release;
 		};

@@ -7,6 +7,7 @@
 //
 
 #import "MYDNSService.h"
+@class MYBonjourRegistration;
 
 
 /** Searches for Bonjour services of a specific type. */
@@ -17,6 +18,8 @@
     BOOL _browsing;
     Class _serviceClass;
     NSMutableSet *_services, *_addServices, *_rmvServices;
+    BOOL _pendingUpdate;
+    MYBonjourRegistration *_myRegistration;
 }
 
 /** Initializes a new BonjourBrowser.
@@ -36,5 +39,11 @@
     The default value is [BonjourService class]; you can change this, but only
     to a subclass of that. */
 @property Class serviceClass;
+
+/** My own registration for this service type.
+    This object is created on demand and won't be started up until you tell it to.
+    Before starting it, you'll need to set its port, and optionally its name.
+    Your own registration will _not_ be visible in the set of services.*/
+@property (readonly) MYBonjourRegistration *myRegistration;
 
 @end

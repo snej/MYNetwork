@@ -25,6 +25,9 @@
 		270461470DE491A6003D9D3F /* Target.m in Sources */ = {isa = PBXBuildFile; fileRef = 270461460DE491A6003D9D3F /* Target.m */; };
 		270461890DE49634003D9D3F /* CollectionUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 270461870DE49634003D9D3F /* CollectionUtils.m */; };
 		2706F1D90F9D3EF300292CCF /* SecurityInterface.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2706F1D80F9D3EF300292CCF /* SecurityInterface.framework */; };
+		273B457B0FA681EE00276298 /* MYBonjourRegistration.h in Headers */ = {isa = PBXBuildFile; fileRef = 273B45790FA681EE00276298 /* MYBonjourRegistration.h */; };
+		273B457C0FA681EE00276298 /* MYBonjourRegistration.m in Sources */ = {isa = PBXBuildFile; fileRef = 273B457A0FA681EE00276298 /* MYBonjourRegistration.m */; };
+		273B457D0FA681EE00276298 /* MYBonjourRegistration.m in Sources */ = {isa = PBXBuildFile; fileRef = 273B457A0FA681EE00276298 /* MYBonjourRegistration.m */; };
 		2777C9110F7602A7007F8D30 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2777C9100F7602A7007F8D30 /* Security.framework */; };
 		2779048B0DE9204300C6D295 /* BLIPEchoClient.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2779048A0DE9204300C6D295 /* BLIPEchoClient.xib */; };
 		277905240DE9E5BC00C6D295 /* BLIPEchoServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 277903D60DE8EE4800C6D295 /* BLIPEchoServer.m */; };
@@ -165,6 +168,8 @@
 		270462C10DE4A64B003D9D3F /* MYUtilitiesTest_main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MYUtilitiesTest_main.m; sourceTree = "<group>"; };
 		270462C30DE4A65B003D9D3F /* BLIP Overview.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "BLIP Overview.txt"; path = "BLIP/BLIP Overview.txt"; sourceTree = "<group>"; wrapsLines = 1; };
 		2706F1D80F9D3EF300292CCF /* SecurityInterface.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SecurityInterface.framework; path = System/Library/Frameworks/SecurityInterface.framework; sourceTree = SDKROOT; };
+		273B45790FA681EE00276298 /* MYBonjourRegistration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MYBonjourRegistration.h; sourceTree = "<group>"; };
+		273B457A0FA681EE00276298 /* MYBonjourRegistration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MYBonjourRegistration.m; sourceTree = "<group>"; };
 		274122DD0F9CDD1600F21842 /* MYUtilities_Debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = MYUtilities_Debug.xcconfig; sourceTree = "<group>"; };
 		274122DE0F9CDD1600F21842 /* MYUtilities_Release.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = MYUtilities_Release.xcconfig; sourceTree = "<group>"; };
 		2777C9100F7602A7007F8D30 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
@@ -182,8 +187,8 @@
 		2780F20B0FA194BD00C0FB83 /* MYDNSService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MYDNSService.m; path = PortMapper/MYDNSService.m; sourceTree = "<group>"; };
 		2780F4360FA28F4400C0FB83 /* MYBonjourQuery.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MYBonjourQuery.h; sourceTree = "<group>"; };
 		2780F4370FA28F4400C0FB83 /* MYBonjourQuery.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MYBonjourQuery.m; sourceTree = "<group>"; };
-		2780F49F0FA2C59000C0FB83 /* MYAddressLookup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MYAddressLookup.h; sourceTree = "<group>"; };
-		2780F4A00FA2C59000C0FB83 /* MYAddressLookup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MYAddressLookup.m; sourceTree = "<group>"; };
+		2780F49F0FA2C59000C0FB83 /* MYAddressLookup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MYAddressLookup.h; path = Bonjour/MYAddressLookup.h; sourceTree = "<group>"; };
+		2780F4A00FA2C59000C0FB83 /* MYAddressLookup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MYAddressLookup.m; path = Bonjour/MYAddressLookup.m; sourceTree = "<group>"; };
 		278C1A340F9F687800954AE1 /* PortMapperTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PortMapperTest.m; sourceTree = "<group>"; };
 		278C1A350F9F687800954AE1 /* MYPortMapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MYPortMapper.h; sourceTree = "<group>"; };
 		278C1A360F9F687800954AE1 /* MYPortMapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MYPortMapper.m; sourceTree = "<group>"; };
@@ -389,6 +394,8 @@
 				270461020DE49030003D9D3F /* IPAddress.m */,
 				2780F20A0FA194BD00C0FB83 /* MYDNSService.h */,
 				2780F20B0FA194BD00C0FB83 /* MYDNSService.m */,
+				2780F49F0FA2C59000C0FB83 /* MYAddressLookup.h */,
+				2780F4A00FA2C59000C0FB83 /* MYAddressLookup.m */,
 			);
 			name = Addressing;
 			sourceTree = "<group>";
@@ -412,8 +419,8 @@
 				278C1BA10F9F92EA00954AE1 /* MYBonjourService.m */,
 				2780F4360FA28F4400C0FB83 /* MYBonjourQuery.h */,
 				2780F4370FA28F4400C0FB83 /* MYBonjourQuery.m */,
-				2780F49F0FA2C59000C0FB83 /* MYAddressLookup.h */,
-				2780F4A00FA2C59000C0FB83 /* MYAddressLookup.m */,
+				273B45790FA681EE00276298 /* MYBonjourRegistration.h */,
+				273B457A0FA681EE00276298 /* MYBonjourRegistration.m */,
 			);
 			path = Bonjour;
 			sourceTree = "<group>";
@@ -438,6 +445,7 @@
 				2780F20C0FA194BD00C0FB83 /* MYDNSService.h in Headers */,
 				2780F4380FA28F4400C0FB83 /* MYBonjourQuery.h in Headers */,
 				2780F4A10FA2C59000C0FB83 /* MYAddressLookup.h in Headers */,
+				273B457B0FA681EE00276298 /* MYBonjourRegistration.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -595,6 +603,7 @@
 				2780F20D0FA194BD00C0FB83 /* MYDNSService.m in Sources */,
 				2780F4390FA28F4400C0FB83 /* MYBonjourQuery.m in Sources */,
 				2780F4A20FA2C59000C0FB83 /* MYAddressLookup.m in Sources */,
+				273B457C0FA681EE00276298 /* MYBonjourRegistration.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -631,6 +640,7 @@
 				2780F20E0FA194BD00C0FB83 /* MYDNSService.m in Sources */,
 				2780F43A0FA28F4400C0FB83 /* MYBonjourQuery.m in Sources */,
 				2780F4A30FA2C59000C0FB83 /* MYAddressLookup.m in Sources */,
+				273B457D0FA681EE00276298 /* MYBonjourRegistration.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
