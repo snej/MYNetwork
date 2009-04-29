@@ -50,17 +50,25 @@
                        inDomain: (NSString*)domain;
 
 
+/** @name Protected
+ *  Methods for use only by subclasses
+ */
+//@{
 
-// PROTECTED:
-
-
+/** Normally, all DNSService objects use a shared IPC connection to the mDNSResponder daemon.
+    If an instance wants to use its own connection instead, it can set this property to YES before
+    it starts. If it does so, it must NOT set the kDNSServiceFlagsShareConnection flag when creating
+    its underlying DNSService.
+    This functionality is only provided because MYBonjourRegistration needs it -- there's a bug
+    that prevents DNSServiceUpdateRecord from working with a shared connection. */
 @property BOOL usePrivateConnection;
 
 /** Subclass must implement this abstract method to create a new DNSServiceRef.
     This method is called by -open.
     The implementation MUST pass the given sdRefPtr directly to the DNSService function
     that creates the new ref, without setting it to NULL first.
-    It MUST also set the kDNSServiceFlagsShareConnection flag. */
+    It MUST also set the kDNSServiceFlagsShareConnection flag, unless it's already set the
+    usePrivateConnection property. */
 - (int32_t/*DNSServiceErrorType*/) createServiceRef: (struct _DNSServiceRef_t**)sdRefPtr;
 
 /** Subclass's callback must call this method after doing its own work.
@@ -68,6 +76,7 @@
     continuous. */
 - (void) gotResponse: (int32_t/*DNSServiceErrorType*/)errorCode;
 
+/** The underlying DNSServiceRef. This will be NULL except while the service is running. */
 @property (readonly) struct _DNSServiceRef_t* serviceRef;
 
 /** Same as -stop, but does not clear the error property.
@@ -79,6 +88,7 @@
     @return  YES if a message is received, NO on error (or if the service isn't started) */
 - (BOOL) waitForReply;
 
+//@}
 
 @end
 

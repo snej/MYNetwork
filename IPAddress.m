@@ -83,6 +83,15 @@
     }
 }
 
+- (id) initWithSockAddr: (const struct sockaddr*)sockaddr
+                   port: (UInt16)port
+{
+    self = [self initWithSockAddr: sockaddr];
+    if (self)
+        _port = port;
+    return self;
+}
+
 + (IPAddress*) addressOfSocket: (CFSocketNativeHandle)socket
 {
     uint8_t name[SOCK_MAXADDRLEN];
@@ -241,10 +250,9 @@ static const struct {UInt32 mask, value;} const kPrivateRanges[] = {
         [self release];
         return nil;
     }
-    self = [super initWithSockAddr: sockaddr];
+    self = [super initWithSockAddr: sockaddr port: port];
     if( self ) {
         _hostname = [hostname copy];
-        _port = port;
     }
     return self;
 }    
@@ -278,15 +286,15 @@ static const struct {UInt32 mask, value;} const kPrivateRanges[] = {
     NSString *addr = self.ipv4name;
     if (addr)
         [desc appendFormat: @"(%@)", addr];
-    if( _port )
-        [desc appendFormat: @":%hu",_port];
+    if( self.port )
+        [desc appendFormat: @":%hu",self.port];
     return desc;
 }
 
 
 - (NSUInteger) hash
 {
-    return [_hostname hash] ^ _port;
+    return [_hostname hash] ^ self.port;
 }
 
 

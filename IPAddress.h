@@ -14,6 +14,7 @@
     also remembers the DNS host-name. */
 @interface IPAddress : NSObject <NSCoding, NSCopying>
 {
+    @private
     UInt32 _ipv4;       // In network byte order (big-endian), just like struct in_addr
     UInt16 _port;       // native byte order
 }
@@ -75,11 +76,14 @@
     An instance of HostAddress looks up its ipv4 address on the fly by calling gethostbyname. */
 @interface HostAddress : IPAddress
 {
+    @private
     NSString *_hostname;
 }
 
 - (id) initWithHostname: (NSString*)hostname port: (UInt16)port;
 
+/** Initializes a HostAddress from a host name, plus a sockaddr struct and a port number.
+    (The port number overrides any port specified in the sockaddr struct.) */
 - (id) initWithHostname: (NSString*)hostname
                sockaddr: (const struct sockaddr*)sockaddr
                    port: (UInt16)port;
@@ -93,6 +97,7 @@
     addresses for a peer that doesn't have a stable address. */
 @interface RecentAddress : IPAddress
 {
+    @private
     CFAbsoluteTime _lastSuccess;
     UInt32 _successes;
 }
