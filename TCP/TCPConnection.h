@@ -9,7 +9,7 @@
 #import "TCPEndpoint.h"
 #import <Security/Security.h>
 @class IPAddress;
-@class TCPReader, TCPWriter, TCPListener;
+@class TCPReader, TCPWriter, TCPListener, MYBonjourService;
 @protocol TCPConnectionDelegate;
 
 
@@ -46,6 +46,10 @@ typedef enum {
 /** Initializes a TCPConnection to the given NSNetService's address and port.
     If the service's address cannot be resolved, nil is returned. */
 - (id) initToNetService: (NSNetService*)service;
+
+/** Initializes a TCPConnection to the given MYBonjourService's address and port.
+    If the service's address cannot be resolved, nil is returned. */
+- (id) initToBonjourService: (MYBonjourService*)service;
 
 /** Initializes a TCPConnection from an incoming TCP socket.
     You don't usually need to call this; TCPListener does it automatically. */

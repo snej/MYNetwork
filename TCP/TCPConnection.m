@@ -8,6 +8,7 @@
 
 #import "TCP_Internal.h"
 #import "IPAddress.h"
+#import "MYBonjourService.h"
 
 #import "Logging.h"
 #import "Test.h"
@@ -101,6 +102,15 @@ static NSMutableArray *sAllConnections;
         output = nil;
     }
     return [self _initWithAddress: address inputStream: input outputStream: output];
+}
+
+- (id) initToBonjourService: (MYBonjourService*)service;
+{
+    NSNetService *netService = [[NSNetService alloc] initWithDomain: service.domain
+                                                               type: service.type name: service.name];
+    self = [self initToNetService: netService];
+    [service release];
+    return self;
 }
 
 
