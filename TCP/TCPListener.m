@@ -142,7 +142,7 @@ static CFSocketRef closeSocket( CFSocketRef socket ) {
     
     if (0 == _port) {
         // now that the binding was successful, we get the port number 
-        NSData *addr = [(NSData *)CFSocketCopyAddress(_ipv4socket) autorelease];
+        NSData *addr = [NSMakeCollectable( CFSocketCopyAddress(_ipv4socket) ) autorelease];
         const struct sockaddr_in *addr4 = addr.bytes;
         self.port = ntohs(addr4->sin_port);
     }
