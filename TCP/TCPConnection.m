@@ -75,10 +75,8 @@ static NSMutableArray *sAllConnections;
     // +getStreamsToHost: is missing for some stupid reason on iPhone. Grrrrrrrrrr.
     CFStreamCreatePairWithSocketToHost(NULL, (CFStringRef)address.hostname, address.port,
                                        (CFReadStreamRef*)&input, (CFWriteStreamRef*)&output);
-    if( input )
-        [(id)CFMakeCollectable(input) autorelease];
-    if( output )
-        [(id)CFMakeCollectable(output) autorelease];
+    if( input )  [NSMakeCollectable(input) autorelease];
+    if( output ) [NSMakeCollectable(output) autorelease];
 #else
     [NSStream getStreamsToHost: [NSHost hostWithAddress: address.ipv4name]
                           port: address.port 
@@ -120,17 +118,18 @@ static NSMutableArray *sAllConnections;
     CFReadStreamRef readStream = NULL;
     CFWriteStreamRef writeStream = NULL;
     CFStreamCreatePairWithSocket(kCFAllocatorDefault, socket, &readStream, &writeStream);
+	if( readStream )  [NSMakeCollectable(readStream) autorelease];
+    if( writeStream ) [NSMakeCollectable(writeStream) autorelease];
+	
     self = [self _initWithAddress: [IPAddress addressOfSocket: socket] 
-                      inputStream: (NSInputStream*)CFMakeCollectable(readStream)
-                     outputStream: (NSOutputStream*)CFMakeCollectable(writeStream)];
+                      inputStream: (NSInputStream*)readStream
+                     outputStream: (NSOutputStream*)writeStream];
     if( self ) {
         _isIncoming = YES;
         _server = [listener retain];
         CFReadStreamSetProperty(readStream, kCFStreamPropertyShouldCloseNativeSocket, kCFBooleanTrue);
         CFWriteStreamSetProperty(writeStream, kCFStreamPropertyShouldCloseNativeSocket, kCFBooleanTrue);
     }
-    if(readStream) CFRelease(readStream);
-    if(writeStream) CFRelease(writeStream);
     return self;
 }    
 
