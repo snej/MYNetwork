@@ -94,7 +94,7 @@ static SecIdentityRef GetListenerIdentity(void) {
     if (self != nil) {
         Log(@"** INIT %@",self);
         _pending = [[NSMutableDictionary alloc] init];
-        IPAddress *addr = [[IPAddress alloc] initWithHostname: kListenerHost port: kListenerPort];
+        IPAddress *addr = [[[IPAddress alloc] initWithHostname: kListenerHost port: kListenerPort] autorelease];
         _conn = [[BLIPConnection alloc] initToAddress: addr];
         if( ! _conn ) {
             [self release];

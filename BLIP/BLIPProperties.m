@@ -351,7 +351,7 @@ TestCase(BLIPProperties) {
     Log(@"As data: %@", data);
     CAssertEqual(data,[NSMutableData dataWithLength: 2]);
     
-    BLIPMutableProperties *mprops = [props mutableCopy];
+    BLIPMutableProperties *mprops = [[props mutableCopy] autorelease];
     Log(@"Mutable copy:\n%@", mprops.allProperties);
     data = mprops.encodedData;
     Log(@"As data: %@", data);

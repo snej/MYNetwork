@@ -282,7 +282,7 @@ static const struct {UInt32 mask, value;} const kPrivateRanges[] = {
 
 - (NSString*) description
 {
-    NSMutableString *desc = [_hostname mutableCopy];
+    NSMutableString *desc = [[_hostname mutableCopy] autorelease];
     NSString *addr = self.ipv4name;
     if (addr)
         [desc appendFormat: @"(%@)", addr];
@@ -385,6 +385,7 @@ TestCase(IPAddress) {
     CAssertEqual(addr.hostname,@"10.0.1.254");
     CAssertEqual(addr.description,@"10.0.1.254:8080");
     CAssert(addr.isPrivate);
+	[addr release];
     
     addr = [[IPAddress alloc] initWithHostname: @"66.66.0.255" port: 123];
     CAssertEq(addr.class,[IPAddress class]);
@@ -393,7 +394,8 @@ TestCase(IPAddress) {
     CAssertEqual(addr.hostname,@"66.66.0.255");
     CAssertEqual(addr.description,@"66.66.0.255:123");
     CAssert(!addr.isPrivate);
-    
+ 	[addr release];
+   
     addr = [[IPAddress alloc] initWithHostname: @"www.apple.com" port: 80];
     CAssertEq(addr.class,[HostAddress class]);
     Log(@"www.apple.com = %@ [0x%08X]", addr.ipv4name, ntohl(addr.ipv4));
@@ -402,6 +404,7 @@ TestCase(IPAddress) {
     CAssertEqual(addr.hostname,@"www.apple.com");
     CAssertEqual(addr.description,@"www.apple.com:80");
     CAssert(!addr.isPrivate);
+	[addr release];
 }
 
 
