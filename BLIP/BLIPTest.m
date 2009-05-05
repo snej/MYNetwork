@@ -50,8 +50,10 @@ static SecIdentityRef ChooseIdentity( NSString *prompt ) {
     SecIdentitySearchRef search;
     SecIdentitySearchCreate(kc, CSSM_KEYUSE_ANY, &search);
     SecIdentityRef identity;
-    while (SecIdentitySearchCopyNext(search, &identity) == noErr)
+    while (SecIdentitySearchCopyNext(search, &identity) == noErr) {
         [identities addObject: (id)identity];
+		CFRelease( identity );
+	}
     CFRelease(search);
     Log(@"Found %u identities -- prompting '%@'", identities.count, prompt);
     if (identities.count > 0) {
