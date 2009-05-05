@@ -95,6 +95,7 @@
     NSString *message = [[NSString alloc] initWithData: request.body encoding: NSUTF8StringEncoding];
     label.text = [NSString stringWithFormat: @"Echoed:\n“%@”",message];
     [request respondWithData: request.body contentType: request.contentType];
+	[message release];
 }
 
 - (void) connectionDidClose: (TCPConnection*)connection;
