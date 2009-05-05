@@ -725,6 +725,7 @@
 		279E8F9F0F9FDD0900608D8D /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				GCC_ENABLE_OBJC_GC = supported;
 				INSTALL_PATH = /usr/local/lib;
 				PRODUCT_NAME = MYNetwork;
 			};
@@ -733,6 +734,7 @@
 		279E8FA00F9FDD0900608D8D /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				GCC_ENABLE_OBJC_GC = supported;
 				INSTALL_PATH = /usr/local/lib;
 				PRODUCT_NAME = MYNetwork;
 			};
