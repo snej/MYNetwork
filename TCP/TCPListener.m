@@ -53,7 +53,7 @@ static void TCPListenerAcceptCallBack(CFSocketRef socket, CFSocketCallBackType t
 
 
 @synthesize delegate=_delegate, port=_port, useIPv6=_useIPv6,
-            bonjourServiceType=_bonjourServiceType,
+            bonjourServiceType=_bonjourServiceType, bonjourServiceOptions=_bonjourServiceOptions,
             bonjourPublished=_bonjourPublished, bonjourError=_bonjourError,
             bonjourService=_netService,
             pickAvailablePort=_pickAvailablePort;
@@ -261,7 +261,7 @@ static void TCPListenerAcceptCallBack(CFSocketRef socket, CFSocketCallBackType t
             [_netService setDelegate:self];
             if( _bonjourTXTRecord )
                 [self _updateTXTRecord];
-            [_netService publish];
+            [_netService publishWithOptions: _bonjourServiceOptions];
         } else {
             self.bonjourError = -1;
             Warn(@"%@: Failed to create NSNetService",self);
