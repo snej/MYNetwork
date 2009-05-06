@@ -54,6 +54,7 @@
 /** Returns a MYDNSLookup object that resolves the raw IP address(es) of this service.
     Subsequent calls to this method will always return the same object. */
 - (MYAddressLookup*) addressLookup;
+- (MYAddressLookup*) addressLookupObservingNewAddresses:(NSObject *)observer;
 
 //@}
 

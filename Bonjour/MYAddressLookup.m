@@ -25,7 +25,7 @@
             return nil;
         }
         _hostname = [hostname copy];
-        _addresses = [[NSMutableArray alloc] init];
+        _addresses = [[NSMutableSet alloc] init];
     }
     return self;
 }
@@ -62,10 +62,24 @@
     if (address) {
         if (flags & kDNSServiceFlagsAdd) {
             LogTo(DNS,@"%@ got %@ [TTL = %u]", self, address, ttl);
+			NSSet *changedObjects = [NSSet setWithObject:address];
+			[self willChangeValueForKey:@"addresses" 
+						withSetMutation:NSKeyValueUnionSetMutation 
+						   usingObjects:changedObjects]; 
             [_addresses addObject: address];
+			[self didChangeValueForKey:@"addresses" 
+					   withSetMutation:NSKeyValueUnionSetMutation 
+						  usingObjects:changedObjects]; 
         } else {
             LogTo(DNS,@"%@ lost %@ [TTL = %u]", self, address, ttl);
+			NSSet *changedObjects = [NSSet setWithObject:address];
+			[self willChangeValueForKey:@"addresses" 
+						withSetMutation:NSKeyValueMinusSetMutation 
+						   usingObjects:changedObjects]; 
             [_addresses removeObject: address];
+			[self didChangeValueForKey:@"addresses" 
+					   withSetMutation:NSKeyValueMinusSetMutation 
+						  usingObjects:changedObjects]; 
         }
         [address release];
     }
@@ -96,7 +110,16 @@ static void lookupCallback(DNSServiceRef                    sdRef,
 
 
 - (DNSServiceErrorType) createServiceRef: (DNSServiceRef*)sdRefPtr {
-    [_addresses removeAllObjects];
+	if ([_addresses count] > 0) {
+		NSSet *changedObjects = [NSSet setWithSet:_addresses];
+		[self willChangeValueForKey:@"addresses" 
+					withSetMutation:NSKeyValueMinusSetMutation 
+					   usingObjects:changedObjects]; 
+		[_addresses removeAllObjects];
+		[self didChangeValueForKey:@"addresses" 
+				   withSetMutation:NSKeyValueMinusSetMutation 
+					  usingObjects:changedObjects]; 
+	}
     return DNSServiceGetAddrInfo(sdRefPtr,
                                  kDNSServiceFlagsShareConnection,
                                  _interfaceIndex, 0,

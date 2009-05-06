@@ -232,8 +232,7 @@ static void resolveCallback(DNSServiceRef                       sdRef,
                              &resolveCallback, self);
 }
 
-
-- (MYAddressLookup*) addressLookup {
+- (MYAddressLookup*) addressLookupObservingNewAddresses:(NSObject *)observer {
     if (!_addressLookup) {
         // Create the lookup the first time this is called:
         _addressLookup = [[MYAddressLookup alloc] initWithHostname: self.hostname];
@@ -241,9 +240,16 @@ static void resolveCallback(DNSServiceRef                       sdRef,
         _addressLookup.interfaceIndex = _interfaceIndex;
     }
     // (Re)start the lookup if it's expired:
-    if (_addressLookup && _addressLookup.timeToLive <= 0.0)
+    if (_addressLookup && _addressLookup.timeToLive <= 0.0) {
+		if (observer != nil) {
+			[_addressLookup addObserver:observer forKeyPath:@"addresses" options:NSKeyValueObservingOptionNew context:NULL];
+		}
         [_addressLookup start];
+	}
     return _addressLookup;
+}
+- (MYAddressLookup*) addressLookup {
+	return [self addressLookupObservingNewAddresses:nil];
 }
 
 

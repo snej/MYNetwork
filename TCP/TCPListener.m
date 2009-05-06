@@ -24,6 +24,7 @@ static void TCPListenerAcceptCallBack(CFSocketRef socket, CFSocketCallBackType t
 
 @interface TCPListener()
 - (void) _openBonjour;
+- (void) _publishBonjour;
 - (void) _closeBonjour;
 @property BOOL bonjourPublished;
 @property NSInteger bonjourError;
@@ -248,6 +249,11 @@ static void TCPListenerAcceptCallBack(CFSocketRef socket, CFSocketCallBackType t
 #pragma mark -
 #pragma mark BONJOUR:
 
+// subclasses can override if they want to call publishWithOptions: instead of publish
+- (void) _publishBonjour
+{
+	[_netService publish];
+}
 
 - (void) _openBonjour
 {
@@ -261,7 +267,7 @@ static void TCPListenerAcceptCallBack(CFSocketRef socket, CFSocketCallBackType t
             [_netService setDelegate:self];
             if( _bonjourTXTRecord )
                 [self _updateTXTRecord];
-            [_netService publish];
+			[self _publishBonjour];
         } else {
             self.bonjourError = -1;
             Warn(@"%@: Failed to create NSNetService",self);
@@ -322,7 +328,7 @@ static void TCPListenerAcceptCallBack(CFSocketRef socket, CFSocketCallBackType t
 }
 
 
-- (void)netServiceWillPublish:(NSNetService *)sender
+- (void)netServiceDidPublish:(NSNetService *)sender
 {
     LogTo(BLIP,@"%@: Advertising %@",self,sender);
     self.bonjourPublished = YES;
