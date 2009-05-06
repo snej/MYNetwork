@@ -43,9 +43,9 @@
 #pragma mark BLIPConnection support
 
 /* Opens a BLIP connection to the given address. */
-- (void)openConnection: (NSNetService*)service 
+- (void)openConnection: (MYBonjourService*)service 
 {
-    _connection = [[BLIPConnection alloc] initToNetService: service];
+    _connection = [[BLIPConnection alloc] initToBonjourService: service];
     if( _connection ) {
         _connection.delegate = self;
         [_connection open];
@@ -95,7 +95,7 @@
     
     [self closeConnection];
     if (-1 != selectedRow)
-        [self openConnection: [[self.serviceList objectAtIndex:selectedRow] netService]];
+        [self openConnection: [self.serviceList objectAtIndex:selectedRow]];
 }
 
 /* Send a BLIP request containing the string in the textfield */
