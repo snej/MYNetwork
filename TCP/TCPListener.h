@@ -32,6 +32,7 @@
     CFSocketRef _ipv6socket;
     
     NSString *_bonjourServiceType, *_bonjourServiceName;
+    NSNetServiceOptions _bonjourServiceOptions;
     NSNetService *_netService;
     NSDictionary *_bonjourTXTRecord;
     BOOL _bonjourPublished;
@@ -87,6 +88,9 @@
 /** The Bonjour service name to advertise. Defaults to nil, meaning that a default name will be
     automatically generated if Bonjour is enabled (by setting -bonjourServiceType). */
 @property (copy) NSString *bonjourServiceName;
+
+/** Options to use when publishing the Bonjour service. */
+@property NSNetServiceOptions bonjourServiceOptions;
 
 /** The dictionary form of the Bonjour TXT record: metadata about the service that can be browsed
     by peers. Changes to this dictionary will be pushed in near-real-time to interested peers. */

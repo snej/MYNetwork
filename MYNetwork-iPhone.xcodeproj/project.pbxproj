@@ -48,6 +48,40 @@
 		27D915CB0FA8EAD0002B0DEC /* MYBonjourQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = 27D915C60FA8EAD0002B0DEC /* MYBonjourQuery.m */; };
 		27D915CC0FA8EAD0002B0DEC /* MYBonjourRegistration.m in Sources */ = {isa = PBXBuildFile; fileRef = 27D915C80FA8EAD0002B0DEC /* MYBonjourRegistration.m */; };
 		280E754F0DD40C5E005A515E /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 280E754C0DD40C5E005A515E /* MainWindow.xib */; };
+		384A72AE0FB00523006A0B19 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
+		384A72AF0FB00523006A0B19 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 270E9B4E0EE63F8F003F17CA /* CFNetwork.framework */; };
+		384A72B00FB00523006A0B19 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 270E9AE80EE61167003F17CA /* libz.dylib */; };
+		384A72B10FB00523006A0B19 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
+		384A72B20FB00523006A0B19 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2777C78C0F75E141007F8D30 /* Security.framework */; };
+		384A72B70FB0062C006A0B19 /* ConcurrentOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 384A72B60FB0062C006A0B19 /* ConcurrentOperation.m */; };
+		384A72B80FB006DF006A0B19 /* IPAddress.m in Sources */ = {isa = PBXBuildFile; fileRef = 270E9AA20EE61113003F17CA /* IPAddress.m */; };
+		384A72B90FB006DF006A0B19 /* TCPConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 270E9AA50EE61113003F17CA /* TCPConnection.m */; };
+		384A72BA0FB006DF006A0B19 /* TCPEndpoint.m in Sources */ = {isa = PBXBuildFile; fileRef = 270E9AA70EE61113003F17CA /* TCPEndpoint.m */; };
+		384A72BB0FB006DF006A0B19 /* TCPListener.m in Sources */ = {isa = PBXBuildFile; fileRef = 270E9AA90EE61113003F17CA /* TCPListener.m */; };
+		384A72BC0FB006DF006A0B19 /* TCPStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 270E9AAB0EE61113003F17CA /* TCPStream.m */; };
+		384A72BD0FB006DF006A0B19 /* TCPWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = 270E9AAD0EE61113003F17CA /* TCPWriter.m */; };
+		384A72BE0FB006DF006A0B19 /* BLIPConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 270E9AB20EE61113003F17CA /* BLIPConnection.m */; };
+		384A72BF0FB006DF006A0B19 /* BLIPDispatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 270E9AB40EE61113003F17CA /* BLIPDispatcher.m */; };
+		384A72C00FB006DF006A0B19 /* BLIPMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 270E9AB60EE61113003F17CA /* BLIPMessage.m */; };
+		384A72C10FB006DF006A0B19 /* BLIPRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 270E9AB80EE61113003F17CA /* BLIPRequest.m */; };
+		384A72C20FB006DF006A0B19 /* BLIPProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 270E9ABA0EE61113003F17CA /* BLIPProperties.m */; };
+		384A72C30FB006DF006A0B19 /* BLIPReader.m in Sources */ = {isa = PBXBuildFile; fileRef = 270E9ABC0EE61113003F17CA /* BLIPReader.m */; };
+		384A72C40FB006DF006A0B19 /* BLIPWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = 270E9ABE0EE61113003F17CA /* BLIPWriter.m */; };
+		384A72C50FB006DF006A0B19 /* CollectionUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 270E9AD10EE6111A003F17CA /* CollectionUtils.m */; };
+		384A72C60FB006DF006A0B19 /* ExceptionUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 270E9AD30EE6111A003F17CA /* ExceptionUtils.m */; };
+		384A72C70FB006DF006A0B19 /* Logging.m in Sources */ = {isa = PBXBuildFile; fileRef = 270E9AD50EE6111A003F17CA /* Logging.m */; };
+		384A72C80FB006DF006A0B19 /* Target.m in Sources */ = {isa = PBXBuildFile; fileRef = 270E9AD70EE6111A003F17CA /* Target.m */; };
+		384A72C90FB006DF006A0B19 /* Test.m in Sources */ = {isa = PBXBuildFile; fileRef = 270E9AD90EE6111A003F17CA /* Test.m */; };
+		384A72CA0FB006DF006A0B19 /* GTMNSData+zlib.m in Sources */ = {isa = PBXBuildFile; fileRef = 270E9ADD0EE6111A003F17CA /* GTMNSData+zlib.m */; };
+		384A72CB0FB006DF006A0B19 /* MYPortMapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 278C1B2C0F9F865800954AE1 /* MYPortMapper.m */; };
+		384A72CC0FB006DF006A0B19 /* PortMapperTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 278C1B2D0F9F865800954AE1 /* PortMapperTest.m */; };
+		384A72CD0FB006DF006A0B19 /* MYDNSService.m in Sources */ = {isa = PBXBuildFile; fileRef = 27D915BC0FA8EABC002B0DEC /* MYDNSService.m */; };
+		384A72CE0FB006DF006A0B19 /* MYAddressLookup.m in Sources */ = {isa = PBXBuildFile; fileRef = 27D915BE0FA8EABC002B0DEC /* MYAddressLookup.m */; };
+		384A72CF0FB006DF006A0B19 /* MYBonjourBrowser.m in Sources */ = {isa = PBXBuildFile; fileRef = 27D915C20FA8EAD0002B0DEC /* MYBonjourBrowser.m */; };
+		384A72D00FB006DF006A0B19 /* MYBonjourService.m in Sources */ = {isa = PBXBuildFile; fileRef = 27D915C40FA8EAD0002B0DEC /* MYBonjourService.m */; };
+		384A72D10FB006DF006A0B19 /* MYBonjourQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = 27D915C60FA8EAD0002B0DEC /* MYBonjourQuery.m */; };
+		384A72D20FB006DF006A0B19 /* MYBonjourRegistration.m in Sources */ = {isa = PBXBuildFile; fileRef = 27D915C80FA8EAD0002B0DEC /* MYBonjourRegistration.m */; };
+		384A72D30FB006DF006A0B19 /* ConcurrentOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 384A72B60FB0062C006A0B19 /* ConcurrentOperation.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -127,6 +161,9 @@
 		27D915C80FA8EAD0002B0DEC /* MYBonjourRegistration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MYBonjourRegistration.m; path = Bonjour/MYBonjourRegistration.m; sourceTree = "<group>"; };
 		280E754C0DD40C5E005A515E /* MainWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainWindow.xib; sourceTree = "<group>"; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = iPhone/main.m; sourceTree = "<group>"; };
+		384A72A90FB0050B006A0B19 /* libMYNetwork.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libMYNetwork.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		384A72B50FB0062C006A0B19 /* ConcurrentOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConcurrentOperation.h; sourceTree = "<group>"; };
+		384A72B60FB0062C006A0B19 /* ConcurrentOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConcurrentOperation.m; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -143,6 +180,18 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		384A72A70FB0050B006A0B19 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				384A72AE0FB00523006A0B19 /* Foundation.framework in Frameworks */,
+				384A72AF0FB00523006A0B19 /* CFNetwork.framework in Frameworks */,
+				384A72B00FB00523006A0B19 /* libz.dylib in Frameworks */,
+				384A72B10FB00523006A0B19 /* UIKit.framework in Frameworks */,
+				384A72B20FB00523006A0B19 /* Security.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -150,6 +199,7 @@
 			isa = PBXGroup;
 			children = (
 				1D6058910D05DD3D006BFB54 /* BLIPEcho.app */,
+				384A72A90FB0050B006A0B19 /* libMYNetwork.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -220,6 +270,8 @@
 		270E9ACD0EE6111A003F17CA /* MYUtilities */ = {
 			isa = PBXGroup;
 			children = (
+				384A72B50FB0062C006A0B19 /* ConcurrentOperation.h */,
+				384A72B60FB0062C006A0B19 /* ConcurrentOperation.m */,
 				270E9ACE0EE6111A003F17CA /* MYUtilitiesTest_main.m */,
 				270E9ACF0EE6111A003F17CA /* MYUtilities_Prefix.pch */,
 				270E9AD00EE6111A003F17CA /* CollectionUtils.h */,
@@ -345,6 +397,16 @@
 		};
 /* End PBXGroup section */
 
+/* Begin PBXHeadersBuildPhase section */
+		384A72A50FB0050B006A0B19 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
 /* Begin PBXNativeTarget section */
 		1D6058900D05DD3D006BFB54 /* MYNetwork-iPhone */ = {
 			isa = PBXNativeTarget;
@@ -362,6 +424,23 @@
 			productName = "MYNetwork-iPhone";
 			productReference = 1D6058910D05DD3D006BFB54 /* BLIPEcho.app */;
 			productType = "com.apple.product-type.application";
+		};
+		384A72A80FB0050B006A0B19 /* MYNetwork */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 384A72B40FB00534006A0B19 /* Build configuration list for PBXNativeTarget "MYNetwork" */;
+			buildPhases = (
+				384A72A50FB0050B006A0B19 /* Headers */,
+				384A72A60FB0050B006A0B19 /* Sources */,
+				384A72A70FB0050B006A0B19 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = MYNetwork;
+			productName = MYNetwork;
+			productReference = 384A72A90FB0050B006A0B19 /* libMYNetwork.a */;
+			productType = "com.apple.product-type.library.static";
 		};
 /* End PBXNativeTarget section */
 
@@ -383,6 +462,7 @@
 			projectRoot = "";
 			targets = (
 				1D6058900D05DD3D006BFB54 /* MYNetwork-iPhone */,
+				384A72A80FB0050B006A0B19 /* MYNetwork */,
 			);
 		};
 /* End PBXProject section */
@@ -438,6 +518,42 @@
 				27D915CA0FA8EAD0002B0DEC /* MYBonjourService.m in Sources */,
 				27D915CB0FA8EAD0002B0DEC /* MYBonjourQuery.m in Sources */,
 				27D915CC0FA8EAD0002B0DEC /* MYBonjourRegistration.m in Sources */,
+				384A72B70FB0062C006A0B19 /* ConcurrentOperation.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		384A72A60FB0050B006A0B19 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				384A72B80FB006DF006A0B19 /* IPAddress.m in Sources */,
+				384A72B90FB006DF006A0B19 /* TCPConnection.m in Sources */,
+				384A72BA0FB006DF006A0B19 /* TCPEndpoint.m in Sources */,
+				384A72BB0FB006DF006A0B19 /* TCPListener.m in Sources */,
+				384A72BC0FB006DF006A0B19 /* TCPStream.m in Sources */,
+				384A72BD0FB006DF006A0B19 /* TCPWriter.m in Sources */,
+				384A72BE0FB006DF006A0B19 /* BLIPConnection.m in Sources */,
+				384A72BF0FB006DF006A0B19 /* BLIPDispatcher.m in Sources */,
+				384A72C00FB006DF006A0B19 /* BLIPMessage.m in Sources */,
+				384A72C10FB006DF006A0B19 /* BLIPRequest.m in Sources */,
+				384A72C20FB006DF006A0B19 /* BLIPProperties.m in Sources */,
+				384A72C30FB006DF006A0B19 /* BLIPReader.m in Sources */,
+				384A72C40FB006DF006A0B19 /* BLIPWriter.m in Sources */,
+				384A72C50FB006DF006A0B19 /* CollectionUtils.m in Sources */,
+				384A72C60FB006DF006A0B19 /* ExceptionUtils.m in Sources */,
+				384A72C70FB006DF006A0B19 /* Logging.m in Sources */,
+				384A72C80FB006DF006A0B19 /* Target.m in Sources */,
+				384A72C90FB006DF006A0B19 /* Test.m in Sources */,
+				384A72CA0FB006DF006A0B19 /* GTMNSData+zlib.m in Sources */,
+				384A72CB0FB006DF006A0B19 /* MYPortMapper.m in Sources */,
+				384A72CC0FB006DF006A0B19 /* PortMapperTest.m in Sources */,
+				384A72CD0FB006DF006A0B19 /* MYDNSService.m in Sources */,
+				384A72CE0FB006DF006A0B19 /* MYAddressLookup.m in Sources */,
+				384A72CF0FB006DF006A0B19 /* MYBonjourBrowser.m in Sources */,
+				384A72D00FB006DF006A0B19 /* MYBonjourService.m in Sources */,
+				384A72D10FB006DF006A0B19 /* MYBonjourQuery.m in Sources */,
+				384A72D20FB006DF006A0B19 /* MYBonjourRegistration.m in Sources */,
+				384A72D30FB006DF006A0B19 /* ConcurrentOperation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -457,6 +573,31 @@
 			buildSettings = {
 				INFOPLIST_FILE = iPhone/Info.plist;
 				PRODUCT_NAME = BLIPEcho;
+			};
+			name = Release;
+		};
+		384A72AA0FB0050C006A0B19 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				PREBINDING = NO;
+				PRODUCT_NAME = MYNetwork;
+			};
+			name = Debug;
+		};
+		384A72AB0FB0050C006A0B19 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				PREBINDING = NO;
+				PRODUCT_NAME = MYNetwork;
+				ZERO_LINK = NO;
 			};
 			name = Release;
 		};
@@ -490,6 +631,15 @@
 			buildConfigurations = (
 				1D6058940D05DD3E006BFB54 /* Debug */,
 				1D6058950D05DD3E006BFB54 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		384A72B40FB00534006A0B19 /* Build configuration list for PBXNativeTarget "MYNetwork" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				384A72AA0FB0050C006A0B19 /* Debug */,
+				384A72AB0FB0050C006A0B19 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
