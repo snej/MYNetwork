@@ -25,7 +25,7 @@
             return nil;
         }
         _hostname = [hostname copy];
-        _addresses = [[NSMutableArray alloc] init];
+        _addresses = [[NSMutableSet alloc] init];
     }
     return self;
 }
@@ -62,10 +62,10 @@
     if (address) {
         if (flags & kDNSServiceFlagsAdd) {
             LogTo(DNS,@"%@ got %@ [TTL = %u]", self, address, ttl);
-            [_addresses addObject: address];
+            kvAddToSet(self, @"addresses", _addresses, address);
         } else {
             LogTo(DNS,@"%@ lost %@ [TTL = %u]", self, address, ttl);
-            [_addresses removeObject: address];
+            kvRemoveFromSet(self, @"addresses", _addresses, address);
         }
         [address release];
     }
@@ -96,7 +96,7 @@ static void lookupCallback(DNSServiceRef                    sdRef,
 
 
 - (DNSServiceErrorType) createServiceRef: (DNSServiceRef*)sdRefPtr {
-    [_addresses removeAllObjects];
+    kvSetSet(self, @"addresses", _addresses, nil);
     return DNSServiceGetAddrInfo(sdRefPtr,
                                  kDNSServiceFlagsShareConnection,
                                  _interfaceIndex, 0,

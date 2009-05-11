@@ -351,23 +351,23 @@
 		270461220DE49055003D9D3F /* MYUtilities */ = {
 			isa = PBXGroup;
 			children = (
-				278C1BB50F9F975700954AE1 /* ConcurrentOperation.h */,
-				278C1BB60F9F975700954AE1 /* ConcurrentOperation.m */,
-				270462C10DE4A64B003D9D3F /* MYUtilitiesTest_main.m */,
-				270462C00DE4A639003D9D3F /* MYUtilities_Prefix.pch */,
 				270461880DE49634003D9D3F /* CollectionUtils.h */,
 				270461870DE49634003D9D3F /* CollectionUtils.m */,
+				278C1BB50F9F975700954AE1 /* ConcurrentOperation.h */,
+				278C1BB60F9F975700954AE1 /* ConcurrentOperation.m */,
 				270461360DE4918D003D9D3F /* ExceptionUtils.h */,
 				270461350DE4918D003D9D3F /* ExceptionUtils.m */,
+				27E0DBEC0DF3450F00E7F648 /* GoogleToolboxSubset */,
 				2704612B0DE49088003D9D3F /* Logging.h */,
 				2704612A0DE49088003D9D3F /* Logging.m */,
+				274122DD0F9CDD1600F21842 /* MYUtilities_Debug.xcconfig */,
+				270462C00DE4A639003D9D3F /* MYUtilities_Prefix.pch */,
+				274122DE0F9CDD1600F21842 /* MYUtilities_Release.xcconfig */,
+				270462C10DE4A64B003D9D3F /* MYUtilitiesTest_main.m */,
 				270461450DE491A6003D9D3F /* Target.h */,
 				270461460DE491A6003D9D3F /* Target.m */,
 				270461290DE49088003D9D3F /* Test.h */,
 				270461280DE49088003D9D3F /* Test.m */,
-				274122DD0F9CDD1600F21842 /* MYUtilities_Debug.xcconfig */,
-				274122DE0F9CDD1600F21842 /* MYUtilities_Release.xcconfig */,
-				27E0DBEC0DF3450F00E7F648 /* GoogleToolboxSubset */,
 			);
 			name = MYUtilities;
 			sourceTree = MYUtilities;

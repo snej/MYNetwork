@@ -200,6 +200,7 @@ static void browseCallback (DNSServiceRef                       sdRef,
 
 
 
+
 #pragma mark -
 #pragma mark TESTING:
 
@@ -221,8 +222,12 @@ static void browseCallback (DNSServiceRef                       sdRef,
     self = [super init];
     if (self != nil) {
         _browser = [[MYBonjourBrowser alloc] initWithServiceType: @"_presence._tcp"];
-        [_browser addObserver: self forKeyPath: @"services" options: NSKeyValueObservingOptionNew context: NULL];
-        [_browser addObserver: self forKeyPath: @"browsing" options: NSKeyValueObservingOptionNew context: NULL];
+        [_browser addObserver: self forKeyPath: @"services" 
+                      options: NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew 
+                      context: NULL];
+        [_browser addObserver: self forKeyPath: @"browsing" 
+                      options: NSKeyValueObservingOptionNew
+                      context: NULL];
         [_browser start];
         
         MYBonjourRegistration *myReg = _browser.myRegistration;
@@ -243,7 +248,7 @@ static void browseCallback (DNSServiceRef                       sdRef,
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
-    LogTo(Bonjour,@"Observed change in %@: %@",keyPath,change);
+    Log(@"Observed change in %@: %@",keyPath,change);
     if( $equal(keyPath,@"services") ) {
         if( [[change objectForKey: NSKeyValueChangeKindKey] intValue]==NSKeyValueChangeInsertion ) {
             NSSet *newServices = [change objectForKey: NSKeyValueChangeNewKey];
@@ -252,7 +257,17 @@ static void browseCallback (DNSServiceRef                       sdRef,
                 Log(@"##### %@ : at %@:%hu, TXT=%@", 
                       service, hostname, service.port, service.txtRecord);
                 service.addressLookup.continuous = YES;
+                [service.addressLookup addObserver: self
+                                        forKeyPath: @"addresses"
+                                           options: NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew
+                                           context: NULL];
                 [service queryForRecord: kDNSServiceType_NULL];
+            }
+        } else if( [[change objectForKey: NSKeyValueChangeKindKey] intValue]==NSKeyValueChangeRemoval ) {
+            NSSet *oldServices = [change objectForKey: NSKeyValueChangeOldKey];
+            for( MYBonjourService *service in oldServices ) {
+                Log(@"##### REMOVED: %@", service);
+                [service.addressLookup removeObserver: self forKeyPath: @"addresses"];
             }
         }
     }
