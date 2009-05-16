@@ -107,7 +107,7 @@ static NSMutableArray *sAllConnections;
     NSNetService *netService = [[NSNetService alloc] initWithDomain: service.domain
                                                                type: service.type name: service.name];
     self = [self initToNetService: netService];
-    [service release];
+    [netService release];
     return self;
 }
 
