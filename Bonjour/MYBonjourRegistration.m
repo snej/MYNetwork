@@ -148,10 +148,24 @@ static void regCallback(DNSServiceRef                       sdRef,
 }
 
 
++ (NSData*) dataFromTXTRecordDictionary: (NSDictionary*)txtDict {
+    // First translate any non-NSData values into UTF-8 formatted description data:
+    NSMutableDictionary *encodedDict = $mdict();
+    for (NSString *key in txtDict) {
+        id value = [txtDict objectForKey: key];
+        if (![value isKindOfClass: [NSData class]]) {
+            value = [[value description] dataUsingEncoding: NSUTF8StringEncoding];
+        }
+        [encodedDict setObject: value forKey: key];
+    }
+    return [NSNetService dataFromTXTRecordDictionary: encodedDict];
+}
+
+
 - (void) updateTxtRecord {
     [NSObject cancelPreviousPerformRequestsWithTarget: self selector: @selector(updateTxtRecord) object: nil];
     if (self.serviceRef) {
-        NSData *data = [NSNetService dataFromTXTRecordDictionary: _txtRecord];
+        NSData *data = [[self class] dataFromTXTRecordDictionary: _txtRecord];
         Assert(data!=nil, @"Can't convert dictionary to TXT record");
         DNSServiceErrorType err = DNSServiceUpdateRecord(self.serviceRef,
                                                          NULL,

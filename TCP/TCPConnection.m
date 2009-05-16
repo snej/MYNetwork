@@ -150,9 +150,11 @@ static NSMutableArray *sAllConnections;
 }
 
 
-@synthesize address=_address, isIncoming=_isIncoming, status=_status, delegate=_delegate,
+@synthesize address=_address, isIncoming=_isIncoming, status=_status,
             reader=_reader, writer=_writer, server=_server, openTimeout=_openTimeout;
 
+- (id<TCPConnectionDelegate>) delegate                      {return _delegate;}
+- (void) setDelegate: (id<TCPConnectionDelegate>) delegate  {_delegate = delegate;}
 
 - (NSError*) error
 {

@@ -52,11 +52,15 @@ static void TCPListenerAcceptCallBack(CFSocketRef socket, CFSocketCallBackType t
 }
 
 
-@synthesize delegate=_delegate, port=_port, useIPv6=_useIPv6,
+@synthesize port=_port, useIPv6=_useIPv6,
             bonjourServiceType=_bonjourServiceType, bonjourServiceOptions=_bonjourServiceOptions,
             bonjourPublished=_bonjourPublished, bonjourError=_bonjourError,
             bonjourService=_netService,
             pickAvailablePort=_pickAvailablePort;
+
+
+- (id<TCPListenerDelegate>) delegate                      {return _delegate;}
+- (void) setDelegate: (id<TCPListenerDelegate>) delegate  {_delegate = delegate;}
 
 
 - (NSString*) description
