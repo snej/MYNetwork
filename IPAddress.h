@@ -25,6 +25,12 @@
     be returned instead. */
 - (id) initWithHostname: (NSString*)hostname port: (UInt16)port;
 
+/** Creates an IPAddress from a host name (which may be a DNS name or dotted-quad numeric form)
+    and port number.
+    If the hostname is not in dotted-quad form, an instance of the subclass HostAddress will
+    be returned instead. */
++ (IPAddress*) addressWithHostname: (NSString*)hostname port: (UInt16)port;
+
 /** Initializes an IPAddress from a raw IPv4 address (in network byte order, i.e. big-endian)
     and port number (in native byte order) */
 - (id) initWithIPv4: (UInt32)ipv4 port: (UInt16)port;

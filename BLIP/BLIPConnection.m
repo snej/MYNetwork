@@ -121,6 +121,12 @@ NSError *BLIPMakeError( int errorCode, NSString *message, ... )
 
 - (BLIPResponse*) sendRequest: (BLIPRequest*)request
 {
+    if (!request.isMine || request.sent) {
+        // This was an incoming request that I'm being asked to forward or echo;
+        // or it's an outgoing request being sent to multiple connections.
+        // Since a particular BLIPRequest can only be sent once, make a copy of it to send:
+        request = [[request mutableCopy] autorelease];
+    }
     BLIPConnection *itsConnection = request.connection;
     if( itsConnection==nil )
         request.connection = self;
@@ -187,9 +193,9 @@ NSError *BLIPMakeError( int errorCode, NSString *message, ... )
 #pragma mark -
 @implementation BLIPListener
 
-- (id) initWithPort: (UInt16)port
+- (id) init
 {
-    self = [super initWithPort: port];
+    self = [super init];
     if (self != nil) {
         self.connectionClass = [BLIPConnection class];
     }

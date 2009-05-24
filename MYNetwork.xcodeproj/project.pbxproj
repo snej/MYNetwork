@@ -25,6 +25,9 @@
 		270461470DE491A6003D9D3F /* Target.m in Sources */ = {isa = PBXBuildFile; fileRef = 270461460DE491A6003D9D3F /* Target.m */; };
 		270461890DE49634003D9D3F /* CollectionUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 270461870DE49634003D9D3F /* CollectionUtils.m */; };
 		2706F1D90F9D3EF300292CCF /* SecurityInterface.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2706F1D80F9D3EF300292CCF /* SecurityInterface.framework */; };
+		27375DFB0FC9FB5C0033F8F5 /* TCPEndpoint+Certs.m in Sources */ = {isa = PBXBuildFile; fileRef = 27375DFA0FC9FB5C0033F8F5 /* TCPEndpoint+Certs.m */; };
+		27375DFC0FC9FB5C0033F8F5 /* TCPEndpoint+Certs.m in Sources */ = {isa = PBXBuildFile; fileRef = 27375DFA0FC9FB5C0033F8F5 /* TCPEndpoint+Certs.m */; };
+		27375DFD0FC9FB5C0033F8F5 /* TCPEndpoint+Certs.m in Sources */ = {isa = PBXBuildFile; fileRef = 27375DFA0FC9FB5C0033F8F5 /* TCPEndpoint+Certs.m */; };
 		273B457B0FA681EE00276298 /* MYBonjourRegistration.h in Headers */ = {isa = PBXBuildFile; fileRef = 273B45790FA681EE00276298 /* MYBonjourRegistration.h */; };
 		273B457C0FA681EE00276298 /* MYBonjourRegistration.m in Sources */ = {isa = PBXBuildFile; fileRef = 273B457A0FA681EE00276298 /* MYBonjourRegistration.m */; };
 		273B457D0FA681EE00276298 /* MYBonjourRegistration.m in Sources */ = {isa = PBXBuildFile; fileRef = 273B457A0FA681EE00276298 /* MYBonjourRegistration.m */; };
@@ -168,6 +171,7 @@
 		270462C10DE4A64B003D9D3F /* MYUtilitiesTest_main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MYUtilitiesTest_main.m; sourceTree = "<group>"; };
 		270462C30DE4A65B003D9D3F /* BLIP Overview.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "BLIP Overview.txt"; path = "BLIP/BLIP Overview.txt"; sourceTree = "<group>"; wrapsLines = 1; };
 		2706F1D80F9D3EF300292CCF /* SecurityInterface.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SecurityInterface.framework; path = System/Library/Frameworks/SecurityInterface.framework; sourceTree = SDKROOT; };
+		27375DFA0FC9FB5C0033F8F5 /* TCPEndpoint+Certs.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "TCPEndpoint+Certs.m"; sourceTree = "<group>"; };
 		273B45790FA681EE00276298 /* MYBonjourRegistration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MYBonjourRegistration.h; sourceTree = "<group>"; };
 		273B457A0FA681EE00276298 /* MYBonjourRegistration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MYBonjourRegistration.m; sourceTree = "<group>"; };
 		274122DD0F9CDD1600F21842 /* MYUtilities_Debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = MYUtilities_Debug.xcconfig; sourceTree = "<group>"; };
@@ -337,6 +341,7 @@
 				2704610A0DE49030003D9D3F /* TCPConnection.m */,
 				2704610B0DE49030003D9D3F /* TCPEndpoint.h */,
 				2704610C0DE49030003D9D3F /* TCPEndpoint.m */,
+				27375DFA0FC9FB5C0033F8F5 /* TCPEndpoint+Certs.m */,
 				2704610D0DE49030003D9D3F /* TCPListener.h */,
 				2704610E0DE49030003D9D3F /* TCPListener.m */,
 				2704610F0DE49030003D9D3F /* TCPStream.h */,
@@ -561,6 +566,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				279DDCD10F9E38DD00D75D91 /* BLIPEchoClient.m in Sources */,
+				27375DFC0FC9FB5C0033F8F5 /* TCPEndpoint+Certs.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -569,6 +575,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				277905240DE9E5BC00C6D295 /* BLIPEchoServer.m in Sources */,
+				27375DFD0FC9FB5C0033F8F5 /* TCPEndpoint+Certs.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -641,6 +648,7 @@
 				2780F43A0FA28F4400C0FB83 /* MYBonjourQuery.m in Sources */,
 				2780F4A30FA2C59000C0FB83 /* MYAddressLookup.m in Sources */,
 				273B457D0FA681EE00276298 /* MYBonjourRegistration.m in Sources */,
+				27375DFB0FC9FB5C0033F8F5 /* TCPEndpoint+Certs.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

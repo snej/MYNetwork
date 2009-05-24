@@ -7,7 +7,6 @@
 //
 
 #import "MYDNSService.h"
-#import "ConcurrentOperation.h"
 @class MYBonjourQuery, MYAddressLookup;
 
 

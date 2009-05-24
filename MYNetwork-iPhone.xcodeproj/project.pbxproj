@@ -41,6 +41,7 @@
 		278C1B2F0F9F865800954AE1 /* PortMapperTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 278C1B2D0F9F865800954AE1 /* PortMapperTest.m */; };
 		278C1B350F9F86A100954AE1 /* MYUtilities_Debug.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 278C1B330F9F86A100954AE1 /* MYUtilities_Debug.xcconfig */; };
 		278C1B360F9F86A100954AE1 /* MYUtilities_Release.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 278C1B340F9F86A100954AE1 /* MYUtilities_Release.xcconfig */; };
+		27C6A22B0FC5D92000EFF2A7 /* TCPEndpoint+Certs.m in Sources */ = {isa = PBXBuildFile; fileRef = 27C6A22A0FC5D92000EFF2A7 /* TCPEndpoint+Certs.m */; };
 		27D915BF0FA8EABC002B0DEC /* MYDNSService.m in Sources */ = {isa = PBXBuildFile; fileRef = 27D915BC0FA8EABC002B0DEC /* MYDNSService.m */; };
 		27D915C00FA8EABC002B0DEC /* MYAddressLookup.m in Sources */ = {isa = PBXBuildFile; fileRef = 27D915BE0FA8EABC002B0DEC /* MYAddressLookup.m */; };
 		27D915C90FA8EAD0002B0DEC /* MYBonjourBrowser.m in Sources */ = {isa = PBXBuildFile; fileRef = 27D915C20FA8EAD0002B0DEC /* MYBonjourBrowser.m */; };
@@ -147,6 +148,7 @@
 		278C1B2D0F9F865800954AE1 /* PortMapperTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PortMapperTest.m; sourceTree = "<group>"; };
 		278C1B330F9F86A100954AE1 /* MYUtilities_Debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = MYUtilities_Debug.xcconfig; sourceTree = "<group>"; };
 		278C1B340F9F86A100954AE1 /* MYUtilities_Release.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = MYUtilities_Release.xcconfig; sourceTree = "<group>"; };
+		27C6A22A0FC5D92000EFF2A7 /* TCPEndpoint+Certs.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "TCPEndpoint+Certs.m"; sourceTree = "<group>"; };
 		27D915BB0FA8EABC002B0DEC /* MYDNSService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MYDNSService.h; path = PortMapper/MYDNSService.h; sourceTree = "<group>"; };
 		27D915BC0FA8EABC002B0DEC /* MYDNSService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MYDNSService.m; path = PortMapper/MYDNSService.m; sourceTree = "<group>"; };
 		27D915BD0FA8EABC002B0DEC /* MYAddressLookup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MYAddressLookup.h; path = Bonjour/MYAddressLookup.h; sourceTree = "<group>"; };
@@ -233,6 +235,7 @@
 				270E9AA50EE61113003F17CA /* TCPConnection.m */,
 				270E9AA60EE61113003F17CA /* TCPEndpoint.h */,
 				270E9AA70EE61113003F17CA /* TCPEndpoint.m */,
+				27C6A22A0FC5D92000EFF2A7 /* TCPEndpoint+Certs.m */,
 				270E9AA80EE61113003F17CA /* TCPListener.h */,
 				270E9AA90EE61113003F17CA /* TCPListener.m */,
 				270E9AAA0EE61113003F17CA /* TCPStream.h */,
@@ -519,6 +522,7 @@
 				27D915CB0FA8EAD0002B0DEC /* MYBonjourQuery.m in Sources */,
 				27D915CC0FA8EAD0002B0DEC /* MYBonjourRegistration.m in Sources */,
 				384A72B70FB0062C006A0B19 /* ConcurrentOperation.m in Sources */,
+				27C6A22B0FC5D92000EFF2A7 /* TCPEndpoint+Certs.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

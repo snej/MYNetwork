@@ -56,6 +56,11 @@
     return self;
 }
 
++ (IPAddress*) addressWithHostname: (NSString*)hostname port: (UInt16)port
+{
+    return [[[self alloc] initWithHostname: hostname port: port] autorelease];
+}
+
 
 - (id) initWithIPv4: (UInt32)ipv4 port: (UInt16)port
 {

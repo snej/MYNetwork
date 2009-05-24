@@ -361,7 +361,8 @@ static NSMutableArray *sAllConnections;
                     allow = NO; // Server MUST have a cert!
                 else {
                     SecCertificateRef cert = certs.count ?(SecCertificateRef)[certs objectAtIndex:0] :NULL;
-                    LogTo(TCP,@"%@: Peer cert = %@",self,[TCPEndpoint describeCert: cert]);
+                    if ([TCPEndpoint respondsToSelector: @selector(describeCert:)])
+                        LogTo(TCP,@"%@: Peer cert = %@",self,[TCPEndpoint describeCert: cert]);
                     if( [_delegate respondsToSelector: @selector(connection:authorizeSSLPeer:)] )
                         allow = [_delegate connection: self authorizeSSLPeer: cert];
                 }

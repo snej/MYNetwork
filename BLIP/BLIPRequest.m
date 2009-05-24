@@ -44,10 +44,25 @@
     return [[[self alloc] _initWithConnection: nil body: body properties: nil] autorelease];
 }
 
++ (BLIPRequest*) requestWithBodyString: (NSString*)bodyString {
+    return [self requestWithBody: [bodyString dataUsingEncoding: NSUTF8StringEncoding]];
+}
+
 + (BLIPRequest*) requestWithBody: (NSData*)body
                       properties: (NSDictionary*)properties
 {
     return [[[self alloc] _initWithConnection: nil body: body properties: properties] autorelease];
+}
+
+- (id)mutableCopyWithZone:(NSZone *)zone
+{
+    Assert(self.complete);
+    BLIPRequest *copy = [[self class] requestWithBody: self.body 
+                                           properties: self.properties.allProperties];
+    copy.compressed = self.compressed;
+    copy.urgent = self.urgent;
+    copy.noReply = self.noReply;
+    return [copy retain];
 }
 
 
