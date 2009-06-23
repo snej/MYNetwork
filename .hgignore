@@ -13,3 +13,4 @@ uploadDocs
 *.mpkg
 *.framework
 *.orig
+*.pyc
