@@ -161,6 +161,7 @@ class Connection (asynchat.async_chat):
                 log.debug("pendingResponses[%i] := %s",requestNo,response)
             return self._sendMessage(req)
         else:
+            log.warning("%s: Attempt to send a request after the connection has started closing: %s" % (self, req))
             return False
     
     def _outQueueMessage(self, msg,isNew=True):
@@ -292,21 +293,7 @@ class Connection (asynchat.async_chat):
     def _dispatchMetaRequest(self, request):
         """Handles dispatching internal meta requests."""
         if request['Profile'] == kMsgProfile_Bye:
-            shouldClose = True
-            if self.onCloseRequest:
-                shouldClose = self.onCloseRequest()
-            if not shouldClose:
-                log.debug("Sending resfusal to close...")
-                response = request.response
-                response.isError = True
-                response['Error-Domain'] = "BLIP"
-                response['Error-Code'] = 403
-                response.body = "Close request denied"
-                response.send()
-            else:
-                log.debug("Sending permission to close...")
-                response = request.response
-                response.send()
+            self._handleCloseRequest(request)
         else:
             response = request.response
             response.isError = True
@@ -316,6 +303,24 @@ class Connection (asynchat.async_chat):
             response.send()
     
     ### CLOSING:
+    
+    def _handleCloseRequest(self, request):
+        """Handles requests from a peer to close."""
+        shouldClose = True
+        if self.onCloseRequest:
+            shouldClose = self.onCloseRequest()
+        if not shouldClose:
+            log.debug("Sending resfusal to close...")
+            response = request.response
+            response.isError = True
+            response['Error-Domain'] = "BLIP"
+            response['Error-Code'] = 403
+            response.body = "Close request denied"
+            response.send()
+        else:
+            log.debug("Sending permission to close...")
+            response = request.response
+            response.send()
     
     def close(self):
         """Publicly callable close method. Sends close request to peer."""
