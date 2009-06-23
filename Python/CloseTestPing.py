@@ -24,7 +24,7 @@ class CloseTestPing(unittest.TestCase):
         req.response.onComplete = self.handleResponse
         req.send()
         
-        asyncore.loop(timeout=1, count=5)
+        asyncore.loop(timeout=0, count=5)
         
         self.connection.close()
         

@@ -361,6 +361,7 @@ class Connection (asynchat.async_chat):
             self.status = kClosed
         else:
             self.status = kDisconnected
+        asyncore.dispatcher.close(self)
 
 
 ### MESSAGE CLASSES:
