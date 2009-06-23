@@ -27,7 +27,7 @@ kClosing = 3
 
 # INTERNAL CONSTANTS -- NO TOUCHIES!
 
-kFrameMagicNumber   = 0x9B34F205
+kFrameMagicNumber   = 0x9B34F206
 kFrameHeaderFormat  = '!LLHH'
 kFrameHeaderSize    = 12
 
@@ -36,10 +36,14 @@ kMsgFlag_Compressed = 0x0010
 kMsgFlag_Urgent     = 0x0020
 kMsgFlag_NoReply    = 0x0040
 kMsgFlag_MoreComing = 0x0080
+kMsgFlag_Meta       = 0x0100
 
 kMsgType_Request    = 0
 kMsgType_Response   = 1
 kMsgType_Error      = 2
+
+kMsgProfile_Hi      = "Hi"
+kMsgProfile_Bye     = "Bye"
 
 
 log = logging.getLogger('BLIP')
@@ -104,7 +108,7 @@ class Connection (asynchat.async_chat):
             self.connect(address)
         self.address = address
         self.listener = listener
-        self.onRequest = None
+        self.onRequest = self.onCloseRequest = self.onCloseRefused = None
         self.pendingRequests = {}
         self.pendingResponses = {}
         self.outBox = []
@@ -112,12 +116,7 @@ class Connection (asynchat.async_chat):
         self.inNumRequests = self.outNumRequests = 0
         self.sending = False
         self._endOfFrame()
-    
-    def close(self):
-        if self.status > kClosed:
-            self.status = kClosing
-            log.info("Connection closing...")
-        asynchat.async_chat.close(self)
+        self._closeWhenPossible = False
     
     def handle_connect(self):
         log.info("Connection open!")
@@ -130,25 +129,19 @@ class Connection (asynchat.async_chat):
         self.status = kDisconnected
         self.close()
     
-    def handle_close(self):
-        log.info("Connection closed!")
-        self.pendingRequests = self.pendingResponses = None
-        self.outBox = None
-        if self.status == kClosing:
-            self.status = kClosed
-        else:
-            self.status = kDisconnected
-        asynchat.async_chat.handle_close(self)
-        
     
     ### SENDING:
     
     @property
-    def canSend(self):
+    def isOpen(self):
         return self.status==kOpening or self.status==kOpen
     
+    @property
+    def canSend(self):
+        return self.isOpen and not self._closeWhenPossible
+    
     def _sendMessage(self, msg):
-        if self.canSend:
+        if self.isOpen:
             self._outQueueMessage(msg,True)
             if not self.sending:
                 log.debug("Waking up the output stream")
@@ -208,6 +201,7 @@ class Connection (asynchat.async_chat):
         else:
             log.debug("Nothing more to send")
             self.sending = False
+            self._closeIfReady()
             return None
     
     ### RECEIVING:
@@ -255,6 +249,7 @@ class Connection (asynchat.async_chat):
                 self.inNumRequests += 1
         elif msgType==kMsgType_Response or msgType==kMsgType_Error:
             message = self.pendingResponses.get(requestNo)
+            message._updateFlags(flags)
         
         if message != None:
             message._beginFrame(flags)
@@ -284,10 +279,88 @@ class Connection (asynchat.async_chat):
         try:
             msg._finished()
             if not msg.isResponse:
-                self.onRequest(msg)
+                if msg._meta:
+                    self._dispatchMetaRequest(msg)
+                else:
+                    self.onRequest(msg)
         except Exception, x:
             log.error("Exception handling incoming message: %s", traceback.format_exc())
             #FIX: Send an error reply
+        # Check to see if we're done and ready to close:
+        self._closeIfReady()
+    
+    def _dispatchMetaRequest(self, request):
+        """Handles dispatching internal meta requests."""
+        if request['Profile'] == kMsgProfile_Bye:
+            shouldClose = True
+            if self.onCloseRequest:
+                shouldClose = self.onCloseRequest()
+            if not shouldClose:
+                log.debug("Sending resfusal to close...")
+                response = request.response
+                response.isError = True
+                response['Error-Domain'] = "BLIP"
+                response['Error-Code'] = 403
+                response.body = "Close request denied"
+                response.send()
+            else:
+                log.debug("Sending permission to close...")
+                response = request.response
+                response.send()
+        else:
+            response = request.response
+            response.isError = True
+            response['Error-Domain'] = "BLIP"
+            response['Error-Code'] = 404
+            response.body = "Unknown meta profile"
+            response.send()
+    
+    ### CLOSING:
+    
+    def close(self):
+        """Publicly callable close method. Sends close request to peer."""
+        if self.status != kOpen:
+            return False
+        log.info("Sending close request...")
+        req = OutgoingRequest(self, None, {'Profile': kMsgProfile_Bye})
+        req._meta = True
+        req.response.onComplete = self._handleCloseResponse
+        if not req.send():
+            log.error("Error sending close request.")
+            return False
+        else:
+            self.status = kClosing
+        return True
+    
+    def _handleCloseResponse(self, response):
+        """Called when we receive a response to a close request."""
+        log.info("Received close response.")
+        if response.isError:
+            # remote refused to close
+            if self.onCloseRefused:
+                self.onCloseRefused(response)
+            self.status = kOpen
+        else:
+            # now wait until everything has finished sending, then actually close
+            log.info("No refusal, actually closing...")
+            self._closeWhenPossible = True
+    
+    def _closeIfReady(self):
+        """Checks if all transmissions are complete and then closes the actual socket."""
+        if self._closeWhenPossible and len(self.outBox) == 0 and len(self.pendingRequests) == 0 and len(self.pendingResponses) == 0:
+            # self._closeWhenPossible = False
+            log.debug("_closeIfReady closing.")
+            asynchat.async_chat.close(self)
+    
+    def handle_close(self):
+        """Called when the socket actually closes."""
+        log.info("Connection closed!")
+        self.pendingRequests = self.pendingResponses = None
+        self.outBox = None
+        if self.status == kClosing:
+            self.status = kClosed
+        else:
+            self.status = kDisconnected
 
 
 ### MESSAGE CLASSES:
@@ -305,13 +378,17 @@ class Message (object):
     @property
     def flags(self):
         if self.isResponse:
-            flags = kMsgType_Response
+            if self.isError:
+                flags = kMsgType_Error
+            else:
+                flags = kMsgType_Response
         else:
             flags = kMsgType_Request
         if self.urgent:     flags |= kMsgFlag_Urgent
         if self.compressed: flags |= kMsgFlag_Compressed
         if self.noReply:    flags |= kMsgFlag_NoReply
         if self._moreComing:flags |= kMsgFlag_MoreComing
+        if self._meta:      flags |= kMsgFlag_Meta
         return flags
     
     def __str__(self):
@@ -322,6 +399,7 @@ class Message (object):
         if self.compressed: s += " CMP"
         if self.noReply:    s += " NOR"
         if self._moreComing:s += " MOR"
+        if self._meta:      s += " MET"
         if self.body:       s += " %i bytes" %len(self.body)
         return s+"]"
     
@@ -352,11 +430,16 @@ class IncomingMessage (Message):
     def __init__(self, connection, requestNo, flags):
         super(IncomingMessage,self).__init__(connection)
         self.requestNo  = requestNo
+        self._updateFlags(flags)
+        self.frames     = []
+    
+    def _updateFlags(self, flags):
         self.urgent     = (flags & kMsgFlag_Urgent) != 0
         self.compressed = (flags & kMsgFlag_Compressed) != 0
         self.noReply    = (flags & kMsgFlag_NoReply) != 0
         self._moreComing= (flags & kMsgFlag_MoreComing) != 0
-        self.frames     = []
+        self._meta      = (flags & kMsgFlag_Meta) != 0
+        self.isError    = (flags & kMsgType_Error) != 0
     
     def _beginFrame(self, flags):
         """Received a frame header."""
@@ -377,16 +460,18 @@ class IncomingMessage (Message):
         if propSize>len(encoded): raise MessageException, "properties too long to fit"
         if propSize>2 and encoded[propSize-1] != '\000': raise MessageException, "properties are not nul-terminated"
         
-        proplist = encoded[2:propSize-1].split('\000')
-        encoded = encoded[propSize:]
-        if len(proplist) & 1: raise MessageException, "odd number of property strings"
-        for i in xrange(0,len(proplist),2):
-            def expand(str):
-                if len(str)==1:
-                    str = IncomingMessage.__expandDict.get(str,str)
-                return str
-            self.properties[ expand(proplist[i])] = expand(proplist[i+1])
+        if propSize > 2:
+            proplist = encoded[2:propSize-1].split('\000')
         
+            if len(proplist) & 1: raise MessageException, "odd number of property strings"
+            for i in xrange(0,len(proplist),2):
+                def expand(str):
+                    if len(str)==1:
+                        str = IncomingMessage.__expandDict.get(str,str)
+                    return str
+                self.properties[ expand(proplist[i])] = expand(proplist[i+1])
+        
+        encoded = encoded[propSize:]
         # Decode the body:
         if self.compressed and len(encoded)>0:
             try:
@@ -411,7 +496,7 @@ class OutgoingMessage (Message):
     
     def __init__(self, connection, body=None, properties=None):
         Message.__init__(self,connection,body,properties)
-        self.urgent = self.compressed = self.noReply = False
+        self.urgent = self.compressed = self.noReply = self._meta = self.isError = False
         self._moreComing = True
     
     def __setitem__(self, key,val):
@@ -435,7 +520,7 @@ class OutgoingMessage (Message):
         propertiesSize = out.tell()
         assert propertiesSize<65536     #FIX: Return an error instead
         
-        body = self.body
+        body = self.body or ""
         if self.compressed:
             z = zlib.compressobj(6,zlib.DEFLATED,31)   # window size of 31 needed for gzip format
             out.write(z.compress(body))

@@ -42,5 +42,5 @@ class BLIPListenerTest(unittest.TestCase):
             logging.info("KeyboardInterrupt")
 
 if __name__ == '__main__':
-    logging.basicConfig(level=logging.INFO)
+    logging.basicConfig(level=logging.DEBUG)
     unittest.main()

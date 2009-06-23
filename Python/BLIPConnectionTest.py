@@ -72,7 +72,8 @@ class BLIPConnectionTest(unittest.TestCase):
     
     def tearDown(self):
         self.connection.close()
+        asyncore.loop() # got to give it time to negotiate close; this call should exit eventually
 
 if __name__ == '__main__':
-    logging.basicConfig(level=logging.INFO)
+    logging.basicConfig(level=logging.DEBUG)
     unittest.main()
