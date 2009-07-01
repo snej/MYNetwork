@@ -7,11 +7,13 @@
 //
 
 #import "MYDNSService.h"
+@class MYBonjourService;
 
 
 /** An asynchronous DNS address lookup. Supports both Bonjour services and traditional hostnames. */
 @interface MYAddressLookup : MYDNSService
 {
+    MYBonjourService *_service;
     NSString *_hostname;
     UInt16 _interfaceIndex;
     NSMutableSet *_addresses;
@@ -23,6 +25,8 @@
     (If you've got a Bonjour service already, as a MYBonjourService object, it's more convenient
     to access its addressLookup property instead of creating your own instance.) */
 - (id) initWithHostname: (NSString*)hostname;
+
+@property (readonly, copy) NSString *hostname;
 
 /** The port number; this will be copied into the resulting IPAddress objects.
     Defaults to zero, but you can set it before calling -start. */
@@ -41,5 +45,10 @@
     If you set the service to continuous mode, addresses will never expire since the
     query will continue to update them. */
 @property (readonly) NSTimeInterval timeToLive;
+
+
+//internal:
+- (id) _initWithBonjourService: (MYBonjourService*)service;
+- (void) _serviceGotResponse;
 
 @end

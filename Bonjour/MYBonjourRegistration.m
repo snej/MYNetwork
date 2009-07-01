@@ -60,6 +60,7 @@ static NSMutableDictionary *sAllRegistrations;
     [_name release];
     [_type release];
     [_domain release];
+    [_txtRecord release];
     [super dealloc];
 }
 
@@ -149,6 +150,8 @@ static void regCallback(DNSServiceRef                       sdRef,
 
 
 + (NSData*) dataFromTXTRecordDictionary: (NSDictionary*)txtDict {
+    if (!txtDict)
+        return nil;
     // First translate any non-NSData values into UTF-8 formatted description data:
     NSMutableDictionary *encodedDict = $mdict();
     for (NSString *key in txtDict) {
@@ -166,7 +169,7 @@ static void regCallback(DNSServiceRef                       sdRef,
     [NSObject cancelPreviousPerformRequestsWithTarget: self selector: @selector(updateTxtRecord) object: nil];
     if (self.serviceRef) {
         NSData *data = [[self class] dataFromTXTRecordDictionary: _txtRecord];
-        Assert(data!=nil, @"Can't convert dictionary to TXT record");
+        Assert(data!=nil || _txtRecord==nil, @"Can't convert dictionary to TXT record: %@", _txtRecord);
         DNSServiceErrorType err = DNSServiceUpdateRecord(self.serviceRef,
                                                          NULL,
                                                          0,
@@ -187,10 +190,7 @@ static void regCallback(DNSServiceRef                       sdRef,
 
 - (void) setTxtRecord: (NSDictionary*)txtDict {
     if (!$equal(_txtRecord,txtDict)) {
-        if (txtDict)
-            [_txtRecord setDictionary: txtDict];
-        else
-            setObj(&_txtRecord,nil);
+        setObjCopy(&_txtRecord, txtDict);
         [NSObject cancelPreviousPerformRequestsWithTarget: self selector: @selector(updateTxtRecord) object: nil];
         [self performSelector: @selector(updateTxtRecord) withObject: nil afterDelay: 0.1];
     }
@@ -235,6 +235,7 @@ static void regCallback(DNSServiceRef                       sdRef,
 - (void) updateTXT {
     NSDictionary *txt = $dict({@"time", $sprintf(@"%.3lf", CFAbsoluteTimeGetCurrent())});
     _reg.txtRecord = txt;
+    CAssertEqual(_reg.txtRecord, txt);
     [self performSelector: @selector(updateTXT) withObject: nil afterDelay: 3.0];
 }
 

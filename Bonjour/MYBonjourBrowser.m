@@ -51,7 +51,7 @@ static void browseCallback (DNSServiceRef                       sdRef,
 
 - (void) dealloc
 {
-    LogTo(Bonjour,@"DEALLOC BonjourBrowser");
+    LogTo(Bonjour,@"DEALLOC MYBonjourBrowser");
     [_myRegistration cancel];
     [_myRegistration release];
     [_serviceType release];
@@ -160,18 +160,18 @@ static void browseCallback (DNSServiceRef                       sdRef,
 }
 
 
-static void browseCallback (DNSServiceRef                       sdRef,
-                            DNSServiceFlags                     flags,
-                            uint32_t                            interfaceIndex,
-                            DNSServiceErrorType                 errorCode,
-                            const char                          *serviceName,
-                            const char                          *regtype,
-                            const char                          *replyDomain,
-                            void                                *context)
+static void browseCallback (DNSServiceRef        sdRef,
+                            DNSServiceFlags      flags,
+                            uint32_t             interfaceIndex,
+                            DNSServiceErrorType  errorCode,
+                            const char           *serviceName,
+                            const char           *regtype,
+                            const char           *replyDomain,
+                            void                 *context)
 {
     MYBonjourBrowser *browser = context;
     @try{
-        //LogTo(Bonjour,@"browseCallback (error=%i, name='%s')", errorCode,serviceName);
+        LogTo(Bonjour,@"browseCallback (error=%i, name='%s', intf=%u)", errorCode,serviceName,interfaceIndex);
         if (!errorCode)
             [browser priv_gotServiceName: [NSString stringWithUTF8String: serviceName]
                                     type: [NSString stringWithUTF8String: regtype]
@@ -253,9 +253,8 @@ static void browseCallback (DNSServiceRef                       sdRef,
         if( [[change objectForKey: NSKeyValueChangeKindKey] intValue]==NSKeyValueChangeInsertion ) {
             NSSet *newServices = [change objectForKey: NSKeyValueChangeNewKey];
             for( MYBonjourService *service in newServices ) {
-                NSString *hostname = service.hostname;  // block till it's resolved
                 Log(@"##### %@ : at %@:%hu, TXT=%@", 
-                      service, hostname, service.port, service.txtRecord);
+                      service, service.hostname, service.port, service.txtRecord);
                 service.addressLookup.continuous = YES;
                 [service.addressLookup addObserver: self
                                         forKeyPath: @"addresses"
