@@ -21,6 +21,8 @@ NSString* const kBonjourServiceResolvedAddressesNotification = @"BonjourServiceR
 
 
 @interface MYBonjourService ()
+@property (copy) NSString *hostname;
+@property UInt16 port;
 @end
 
 
@@ -60,7 +62,8 @@ NSString* const kBonjourServiceResolvedAddressesNotification = @"BonjourServiceR
 }
 
 
-@synthesize name=_name, type=_type, domain=_domain, fullName=_fullName, interfaceIndex=_interfaceIndex;
+@synthesize name=_name, type=_type, domain=_domain, fullName=_fullName,
+            hostname=_hostname, port=_port, interfaceIndex=_interfaceIndex;
 
 
 - (NSString*) description {
@@ -105,21 +108,15 @@ NSString* const kBonjourServiceResolvedAddressesNotification = @"BonjourServiceR
 }
 
 
-- (void) priv_finishResolve {
-    // If I haven't finished my resolve yet, run it *synchronously* now so I can return a valid value:
+- (NSString*) hostname {
     if (!_startedResolve )
         [self start];
-    if (self.serviceRef)
-        [self waitForReply];
-}    
-
-- (NSString*) hostname {
-    if (!_hostname) [self priv_finishResolve];
     return _hostname;
 }
 
 - (UInt16) port {
-    if (!_port) [self priv_finishResolve];
+    if (!_startedResolve )
+        [self start];
     return _port;
 }
 
@@ -185,14 +182,17 @@ NSString* const kBonjourServiceResolvedAddressesNotification = @"BonjourServiceR
     LogTo(Bonjour, @"%@: hostname=%@, port=%u, txt=%u bytes", 
           self, hostname, port, txtData.length);
 
-    // Don't call a setter method to set these properties: the getters are synchronous, so
-    // I might already be blocked in a call to one of them, in which case creating a KV
-    // notification could cause trouble...
-    _hostname = hostname.copy;
-    _port = port;
+    if (port!=_port || !$equal(hostname,_hostname)) {
+        self.hostname = hostname;
+        self.port = port;
+    }
     
-    // TXT getter is async, though, so I can use a setter to announce the data's availability:
     [self setTxtData: txtData];
+}
+
+- (void) gotResponse: (DNSServiceErrorType)errorCode {
+    [super gotResponse: errorCode];
+    [_addressLookup _serviceGotResponse];
 }
 
 
@@ -236,8 +236,7 @@ static void resolveCallback(DNSServiceRef                       sdRef,
 - (MYAddressLookup*) addressLookup {
     if (!_addressLookup) {
         // Create the lookup the first time this is called:
-        _addressLookup = [[MYAddressLookup alloc] initWithHostname: self.hostname];
-        _addressLookup.port = _port;
+        _addressLookup = [[MYAddressLookup alloc] _initWithBonjourService: self];
         _addressLookup.interfaceIndex = _interfaceIndex;
     }
     // (Re)start the lookup if it's expired:

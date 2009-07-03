@@ -7,11 +7,17 @@
 //
 
 #import "MYAddressLookup.h"
+#import "MYBonjourService.h"
 #import "IPAddress.h"
 #import "ExceptionUtils.h"
 #import "Test.h"
 #import "Logging.h"
 #import <dns_sd.h>
+
+
+@interface MYAddressLookup ()
+@property (copy) NSString *hostname;
+@end
 
 
 @implementation MYAddressLookup
@@ -30,10 +36,21 @@
     return self;
 }
 
+
+- (id) _initWithBonjourService: (MYBonjourService*)service {
+    self = [super init];
+    if (self) {
+        _service = [service retain];
+        _addresses = [[NSMutableSet alloc] init];
+    }
+    return self;
+}
+
 - (void) dealloc
 {
     [_hostname release];
     [_addresses release];
+    [_service release];
     [super dealloc];
 }
 
@@ -44,11 +61,43 @@
 }
 
 
-@synthesize port=_port, interfaceIndex=_interfaceIndex, addresses=_addresses;
+@synthesize hostname=_hostname, port=_port, interfaceIndex=_interfaceIndex, addresses=_addresses;
 
 
 - (NSTimeInterval) timeToLive {
     return MAX(0.0, _expires - CFAbsoluteTimeGetCurrent());
+}
+
+
+- (BOOL) start {
+    if (_hostname) {
+        return [super start];
+    } else {
+        // Service doesn't know its hostname yet; wait till it does:
+        LogTo(DNS,@"MYAddressLookup requesting hostname of %@ ...", _service);
+        Assert(_service);
+        return [_service start];
+    }
+}
+
+
+// Called by my _service's gotResponse method:
+- (void) _serviceGotResponse {
+    Assert(_service);
+    DNSServiceErrorType err = _service.error;
+    if (err) {
+        [self cancel];
+        self.error = err;
+    } else {
+        NSString *hostname = _service.hostname;
+        UInt16 port = _service.port;
+        if (port!=_port || !$equal(hostname,_hostname)) {
+            self.hostname = hostname;
+            self.port = port;
+            if (_hostname)
+                [self start];
+        }
+    }
 }
 
 
@@ -85,7 +134,7 @@ static void lookupCallback(DNSServiceRef                    sdRef,
 {
     MYAddressLookup *lookup = context;
     @try{
-        //LogTo(Bonjour, @"lookupCallback for %s (err=%i)", hostname,errorCode);
+        LogTo(DNS, @"lookupCallback for %s (err=%i)", hostname,errorCode);
         if (errorCode)
             [lookup setError: errorCode];
         else
@@ -96,10 +145,12 @@ static void lookupCallback(DNSServiceRef                    sdRef,
 
 
 - (DNSServiceErrorType) createServiceRef: (DNSServiceRef*)sdRefPtr {
+    Assert(_hostname);
     kvSetSet(self, @"addresses", _addresses, nil);
     return DNSServiceGetAddrInfo(sdRefPtr,
                                  kDNSServiceFlagsShareConnection,
-                                 _interfaceIndex, 0,
+                                 _interfaceIndex, 
+                                 kDNSServiceProtocol_IPv4,
                                  _hostname.UTF8String,
                                  &lookupCallback, self);
 }

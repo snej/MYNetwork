@@ -38,6 +38,9 @@
 /** Stops the service. */
 - (void) stop;
 
+/** Has the service started up? */
+@property (readonly) BOOL isRunning;
+
 
 /** The error status, a DNSServiceErrorType enum; nonzero if something went wrong. 
     This property is KV observable. */

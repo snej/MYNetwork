@@ -143,6 +143,11 @@ static void serviceCallback(CFSocketRef s,
 }
 
 
+- (BOOL) isRunning {
+    return _serviceRef != NULL;
+}
+
+
 + (NSString*) fullNameOfService: (NSString*)serviceName
                          ofType: (NSString*)type
                        inDomain: (NSString*)domain
@@ -291,8 +296,12 @@ MYDNSConnection *sSharedConnection;
     NSAutoreleasePool *pool = [NSAutoreleasePool new];
     LogTo(DNS,@"---serviceCallback----");
     DNSServiceErrorType err = DNSServiceProcessResult(_connectionRef);
-    if (err)
+    if (err) {
         Warn(@"%@: DNSServiceProcessResult failed, err=%i !!!", self,err);
+        //FIX: Are errors here fatal, meaning I should close the connection?
+        // I've run into infinite loops constantly getting kDNSServiceErr_ServiceNotRunning
+        // or kDNSServiceErr_BadReference ...
+    }
     [pool drain];
     return !err;
 }

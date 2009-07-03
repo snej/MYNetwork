@@ -262,7 +262,7 @@
     if( complete && _onComplete ) {
         @try{
             [_onComplete invokeWithSender: self];
-        }catchAndReport(@"BLIPResponse onComplete target");
+        }catchAndReport(@"BLIPRequest onComplete target");
     }
 }
 

@@ -10,7 +10,7 @@
 @class MYBonjourQuery, MYAddressLookup;
 
 
-/** Represents a Bonjour service discovered by a BonjourBrowser. */
+/** Represents a Bonjour service discovered by a MYBonjourBrowser. */
 @interface MYBonjourService : MYDNSService 
 {
     @private

@@ -22,7 +22,7 @@
     MYBonjourRegistration *_myRegistration;
 }
 
-/** Initializes a new BonjourBrowser.
+/** Initializes a new MYBonjourBrowser.
     Call -start to begin browsing.
     @param serviceType  The name of the service type to look for, e.g. "_http._tcp". */
 - (id) initWithServiceType: (NSString*)serviceType;
@@ -31,12 +31,12 @@
 @property (readonly) BOOL browsing;
 
 /** The set of currently found services. These are instances of the serviceClass,
-    which is BonjourService by default.
+    which is MYBonjourService by default.
     This is KV-observable. */
 @property (readonly) NSSet *services;
 
 /** The class of objects to create to represent services.
-    The default value is [BonjourService class]; you can change this, but only
+    The default value is [MYBonjourService class]; you can change this, but only
     to a subclass of that. */
 @property Class serviceClass;
 
