@@ -567,6 +567,7 @@
 		1D6058940D05DD3E006BFB54 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				GCC_C_LANGUAGE_STANDARD = c99;
 				INFOPLIST_FILE = iPhone/Info.plist;
 				PRODUCT_NAME = BLIPEcho;
 			};
