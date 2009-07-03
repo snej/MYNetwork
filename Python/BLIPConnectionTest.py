@@ -18,7 +18,7 @@ import unittest
 
 
 kSendInterval = 0.2
-kNBatchedMessages = 10
+kNBatchedMessages = 4 # send only 40 requests total
 kUrgentEvery = 4
 
 def randbool():
@@ -75,5 +75,5 @@ class BLIPConnectionTest(unittest.TestCase):
         asyncore.loop() # got to give it time to negotiate close; this call should exit eventually
 
 if __name__ == '__main__':
-    logging.basicConfig(level=logging.DEBUG)
+    logging.basicConfig(level=logging.INFO)
     unittest.main()

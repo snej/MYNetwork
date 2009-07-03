@@ -17,8 +17,13 @@ import unittest
 class BLIPListenerTest(unittest.TestCase):
     
     def testListener(self):
+        def handleConnection(conn):
+            logging.info("Got new connection: %r", conn)
+            conn.ListenerTestNumRequests = 0
+        
         def handleRequest(request):
             logging.info("Got request!: %r",request)
+            request.connection.ListenerTestNumRequests += 1
             body = request.body
             assert len(body)<32768
             assert request.contentType == 'application/octet-stream'
@@ -31,8 +36,11 @@ class BLIPListenerTest(unittest.TestCase):
             response.body = request.body
             response['Content-Type'] = request.contentType
             response.send()
+            if request.connection.ListenerTestNumRequests >= 50:
+                request.connection.close()
         
         listener = Listener(46353)
+        listener.onConnected = handleConnection
         listener.onRequest = handleRequest
         logging.info("Listener is waiting...")
         
@@ -42,5 +50,5 @@ class BLIPListenerTest(unittest.TestCase):
             logging.info("KeyboardInterrupt")
 
 if __name__ == '__main__':
-    logging.basicConfig(level=logging.DEBUG)
+    logging.basicConfig(level=logging.INFO)
     unittest.main()

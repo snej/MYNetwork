@@ -45,8 +45,14 @@ kMsgType_Error      = 2
 kMsgProfile_Hi      = "Hi"
 kMsgProfile_Bye     = "Bye"
 
+# Logging Setup
+class NullLoggingHandler(logging.Handler):
+    def emit(self, record):
+        pass
 
 log = logging.getLogger('BLIP')
+# This line prevents the "No handlers found" warning if the calling code does not use logging.
+log.addHandler(NullLoggingHandler())
 log.propagate = True
 
 

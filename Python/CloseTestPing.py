@@ -24,7 +24,7 @@ class CloseTestPing(unittest.TestCase):
         req.response.onComplete = self.handleResponse
         req.send()
         
-        asyncore.loop(timeout=0, count=5)
+        asyncore.loop(timeout=0, count=5) # give things time to send
         
         self.connection.close()
         
@@ -32,5 +32,5 @@ class CloseTestPing(unittest.TestCase):
 
 
 if __name__ == '__main__':
-    logging.basicConfig(level=logging.DEBUG)
+    logging.basicConfig(level=logging.INFO)
     unittest.main()
