@@ -140,7 +140,7 @@ class Connection (asynchat.async_chat):
     
     @property
     def isOpen(self):
-        return self.status==kOpening or self.status==kOpen
+        return self.status==kOpening or self.status==kOpen or self.status==kClosing
     
     @property
     def canSend(self):
@@ -290,6 +290,8 @@ class Connection (asynchat.async_chat):
                     self._dispatchMetaRequest(msg)
                 else:
                     self.onRequest(msg)
+                    if not msg.response.sent:
+                        log.error("**** Request received, but a response was never sent! Request: %r", msg)
         except Exception, x:
             log.error("Exception handling incoming message: %s", traceback.format_exc())
             #FIX: Send an error reply
