@@ -20,12 +20,15 @@
     NSMutableSet *_services, *_addServices, *_rmvServices;
     BOOL _pendingUpdate;
     MYBonjourRegistration *_myRegistration;
+    id _delegate;
 }
 
 /** Initializes a new MYBonjourBrowser.
     Call -start to begin browsing.
     @param serviceType  The name of the service type to look for, e.g. "_http._tcp". */
 - (id) initWithServiceType: (NSString*)serviceType;
+
+@property (assign) id delegate;
 
 /** Is the browser currently browsing? */
 @property (readonly) BOOL browsing;

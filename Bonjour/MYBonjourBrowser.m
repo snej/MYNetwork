@@ -62,7 +62,7 @@ static void browseCallback (DNSServiceRef                       sdRef,
 }
 
 
-@synthesize browsing=_browsing, services=_services, serviceClass=_serviceClass;
+@synthesize delegate=_delegate, browsing=_browsing, services=_services, serviceClass=_serviceClass;
 
 
 - (NSString*) description
@@ -92,10 +92,11 @@ static void browseCallback (DNSServiceRef                       sdRef,
                        flags: (DNSServiceFlags)flags
 {
     // Create (or reuse existing) MYBonjourService object:
-    MYBonjourService *service = [[_serviceClass alloc] initWithName: serviceName
-                                                               type: regtype
-                                                             domain: domain
-                                                          interface: interfaceIndex];
+    MYBonjourService *service = [[_serviceClass alloc] initWithBrowser: self
+                                                                  name: serviceName
+                                                                  type: regtype
+                                                                domain: domain
+                                                             interface: interfaceIndex];
     if ([_myRegistration isSameAsService: service]) {
         // This is an echo of my own registration, so ignore it
         LogTo(Bonjour,@"%@ ignoring echo %@", self,service);

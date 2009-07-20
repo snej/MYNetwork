@@ -7,13 +7,14 @@
 //
 
 #import "MYDNSService.h"
-@class MYBonjourQuery, MYAddressLookup;
+@class MYBonjourBrowser, MYBonjourQuery, MYAddressLookup;
 
 
 /** Represents a Bonjour service discovered by a MYBonjourBrowser. */
 @interface MYBonjourService : MYDNSService 
 {
     @private
+    MYBonjourBrowser *_bonjourBrowser;
     NSString *_name, *_fullName, *_type, *_domain, *_hostname;
     uint32_t _interfaceIndex;
     BOOL _startedResolve;
@@ -22,6 +23,9 @@
     MYBonjourQuery *_txtQuery;
     MYAddressLookup *_addressLookup;
 }
+
+/** The browser I belong to. */
+@property (readonly) MYBonjourBrowser *bonjourBrowser;
 
 /** The service's name. */
 @property (readonly) NSString *name;
@@ -81,10 +85,11 @@
 
 /** Designated initializer. You probably don't want to create MYBonjourService instances yourself,
     but if you subclass you might need to override this initializer. */
-- (id) initWithName: (NSString*)serviceName
-               type: (NSString*)type
-             domain: (NSString*)domain
-          interface: (UInt32)interfaceIndex;
+- (id) initWithBrowser: (MYBonjourBrowser*)browser
+                  name: (NSString*)serviceName
+                  type: (NSString*)type
+                domain: (NSString*)domain
+             interface: (UInt32)interfaceIndex;
 
 /** Called when this service is officially added to its browser's service set.
     You can override this, but be sure to call the superclass method. */

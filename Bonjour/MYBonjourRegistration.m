@@ -165,6 +165,65 @@ static void regCallback(DNSServiceRef                       sdRef,
 }
 
 
+static int compareData (id data1, id data2, void *context) {
+    size_t length1 = [data1 length], length2 = [data2 length];
+    int result = memcmp([data1 bytes], [data2 bytes], MIN(length1,length2));
+    if (result==0) {
+        if (length1>length2)
+            result = 1;
+        else if (length1<length2)
+            result = -1;
+    }
+    return result;
+}
+
++ (NSData*) canonicalFormOfTXTRecordDictionary: (NSDictionary*)txtDict
+{
+    if (!txtDict)
+        return nil;
+    
+    // First convert keys and values to NSData:
+    NSMutableDictionary *dataDict = $mdict();
+    for (NSString *key in txtDict) {
+        if (![key hasPrefix: @"("]) {               // ignore parenthesized keys
+            if (![key isKindOfClass: [NSString class]]) {
+                Warn(@"TXT dictionary cannot have %@ as key", [key class]);
+                return nil;
+            }
+            NSData *keyData = [key dataUsingEncoding: NSUTF8StringEncoding];
+            if (keyData.length > 255) {
+                Warn(@"TXT dictionary key too long: %@", key);
+                return nil;
+            }
+            id value = [txtDict objectForKey: key];
+            if (![value isKindOfClass: [NSData class]]) {
+                value = [[value description] dataUsingEncoding: NSUTF8StringEncoding];
+            }
+            if ([value length] > 255) {
+                Warn(@"TXT dictionary value too long: %@", value);
+                return nil;
+            }
+            [dataDict setObject: value forKey: keyData];
+        }
+    }
+    
+    // Add key/value pairs, sorted by increasing key:
+    NSMutableData *canonical = [NSMutableData dataWithCapacity: 1000];
+    for (NSData *key in [[dataDict allKeys] sortedArrayUsingFunction: compareData context: NULL]) {
+        // Append key prefixed with length:
+        UInt8 length = [key length];
+        [canonical appendBytes: &length length: sizeof(length)];
+        [canonical appendData: key];
+        // Append value prefixed with length:
+        NSData *value = [dataDict objectForKey: key];
+        length = [value length];
+        [canonical appendBytes: &length length: sizeof(length)];
+        [canonical appendData: value];
+    }
+    return canonical;
+}
+
+
 - (void) updateTxtRecord {
     [NSObject cancelPreviousPerformRequestsWithTarget: self selector: @selector(updateTxtRecord) object: nil];
     if (self.serviceRef) {
@@ -179,7 +238,7 @@ static void regCallback(DNSServiceRef                       sdRef,
         if (err)
             Warn(@"%@ failed to update TXT (err=%i)", self,err);
         else
-            LogTo(Bonjour,@"%@ updated TXT to %@", self,data);
+            LogTo(Bonjour,@"%@ updated TXT to %u bytes: %@", self,data.length,data);
     }
 }
 

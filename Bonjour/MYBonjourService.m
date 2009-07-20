@@ -29,16 +29,18 @@ NSString* const kBonjourServiceResolvedAddressesNotification = @"BonjourServiceR
 @implementation MYBonjourService
 
 
-- (id) initWithName: (NSString*)serviceName
-               type: (NSString*)type
-             domain: (NSString*)domain
-          interface: (UInt32)interfaceIndex
+- (id) initWithBrowser: (MYBonjourBrowser*)browser
+                  name: (NSString*)serviceName
+                  type: (NSString*)type
+                domain: (NSString*)domain
+             interface: (UInt32)interfaceIndex
 {
     Assert(serviceName);
     Assert(type);
     Assert(domain);
     self = [super init];
     if (self != nil) {
+        _bonjourBrowser = browser;
         _name = [serviceName copy];
         _type = [type copy];
         _domain = [domain copy];
@@ -62,8 +64,8 @@ NSString* const kBonjourServiceResolvedAddressesNotification = @"BonjourServiceR
 }
 
 
-@synthesize name=_name, type=_type, domain=_domain, fullName=_fullName,
-            hostname=_hostname, port=_port, interfaceIndex=_interfaceIndex;
+@synthesize bonjourBrowser=_bonjourBrowser, name=_name, type=_type, domain=_domain, 
+            fullName=_fullName, hostname=_hostname, port=_port, interfaceIndex=_interfaceIndex;
 
 
 - (NSString*) description {

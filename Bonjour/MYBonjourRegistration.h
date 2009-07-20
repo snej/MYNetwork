@@ -45,8 +45,10 @@
 /** The registration's full name -- the name, type and domain concatenated together. */
 @property (readonly) NSString *fullName;
 
+
 /** Is the registration currently active? */
 @property (readonly) BOOL registered;
+
 
 /** The service's metadata dictionary, stored in its DNS TXT record */
 @property (copy) NSDictionary *txtRecord;
@@ -75,6 +77,10 @@
 
 /** Is this browsed service an echo of this local registration? (Compares fullNames.) */
 - (BOOL) isSameAsService: (MYBonjourService*)service;
+
+/** Converts a TXT record dictionary to data in a consistent way.
+    This is used when signing (and verifying signatures of) TXT records. */
++ (NSData*) canonicalFormOfTXTRecordDictionary: (NSDictionary*)txtDict;
 
 //@}
 

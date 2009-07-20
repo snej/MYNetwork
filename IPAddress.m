@@ -97,6 +97,15 @@
     return self;
 }
 
+- (id) initWithData: (NSData*)data
+{
+    const struct sockaddr* addr = data.bytes;
+    if (data.length < sizeof(struct sockaddr_in))
+        addr = nil;
+    return [self initWithSockAddr: addr];
+}
+
+
 + (IPAddress*) addressOfSocket: (CFSocketNativeHandle)socket
 {
     uint8_t name[SOCK_MAXADDRLEN];
@@ -163,6 +172,16 @@
 - (NSString*) hostname
 {
     return [self ipv4name];
+}
+
+- (NSData*) asData
+{
+    struct sockaddr_in addr = {
+        .sin_len    = sizeof(struct sockaddr_in),
+        .sin_family = AF_INET,
+        .sin_port   = htons(_port),
+        .sin_addr   = {htonl(_ipv4)} };
+    return [NSData dataWithBytes: &addr length: sizeof(addr)];
 }
 
 - (NSString*) description

@@ -42,6 +42,9 @@
 /** Initializes an IPAddress from a BSD struct sockaddr. */
 - (id) initWithSockAddr: (const struct sockaddr*)sockaddr;
 
+/** Initializes an IPAddress from NSData containing a BSD struct sockaddr. */
+- (id) initWithData: (NSData*)data;
+
 /** Returns the IP address of this host (plus the specified port number).
     If multiple network interfaces are active, the main one's address is returned. */
 + (IPAddress*) localAddressWithPort: (UInt16)port;
@@ -70,6 +73,9 @@
 
 /** The port number, or zero if none was specified, in native byte order. */
 @property (readonly) UInt16 port;
+
+/** The address as an NSData object containing a struct sockaddr. */
+@property (readonly) NSData* asData;
 
 /** Is this IP address in a designated private/local address range, such as 10.0.1.X?
     If so, the address is not globally meaningful outside of the local subnet. */
