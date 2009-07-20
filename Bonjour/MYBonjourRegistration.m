@@ -19,6 +19,7 @@
 
 @interface MYBonjourRegistration ()
 @property BOOL registered;
+- (void) _updateNullRecord;
 @end
 
 
@@ -125,7 +126,8 @@ static void regCallback(DNSServiceRef                       sdRef,
     NSData *txtData = nil;
     if (_txtRecord)
         txtData = [NSNetService dataFromTXTRecordDictionary: _txtRecord];
-    return DNSServiceRegister(sdRefPtr,
+    DNSServiceErrorType err;
+    err = DNSServiceRegister(sdRefPtr,
                               flags,
                               0,
                               _name.UTF8String,         // _name is likely to be nil
@@ -137,11 +139,20 @@ static void regCallback(DNSServiceRef                       sdRef,
                               txtData.bytes,
                               &regCallback,
                               self);
+    if (!err && _nullRecord)
+        [self _updateNullRecord];
+    return err;
 }
 
 
 - (void) cancel {
+    if (_nullRecordReg && self.serviceRef) {
+        DNSServiceRemoveRecord(self.serviceRef, _nullRecordReg, 0);
+        _nullRecordReg = NULL;
+    }
+    
     [super cancel];
+  
     if (_registered) {
         [[self class] priv_removeRegistration: self];
         self.registered = NO;
@@ -267,6 +278,44 @@ static int compareData (id data1, id data2, void *context) {
         [NSObject cancelPreviousPerformRequestsWithTarget: self selector: @selector(updateTxtRecord) object: nil];
         [self performSelector: @selector(updateTxtRecord) withObject: nil afterDelay: 0.1];
     }
+}
+
+
+- (NSData*) nullRecord {
+  return _nullRecord;
+}
+
+- (void) setNullRecord: (NSData*)nullRecord {
+    if (ifSetObj(&_nullRecord, nullRecord))
+        if (self.serviceRef)
+            [self _updateNullRecord];
+}
+
+
+- (void) _updateNullRecord {
+    DNSServiceRef serviceRef = self.serviceRef;
+    Assert(serviceRef);
+    DNSServiceErrorType err = 0;
+    if (!_nullRecord) {
+        if (_nullRecordReg) {
+            err = DNSServiceRemoveRecord(serviceRef, _nullRecordReg, 0);
+            _nullRecordReg = NULL;
+        }
+    } else if (!_nullRecordReg) {
+        err = DNSServiceAddRecord(serviceRef, &_nullRecordReg, 0,
+                                  kDNSServiceType_NULL, 
+                                  _nullRecord.length, _nullRecord.bytes, 
+                                  0);
+    } else {
+        err = DNSServiceUpdateRecord(serviceRef, _nullRecordReg, 0,
+                                     _nullRecord.length, _nullRecord.bytes, 
+                                     0);
+    }
+    if (err)
+        Warn(@"MYBonjourRegistration: Couldn't update NULL record, err=%i",err);
+    else
+        LogTo(DNS, @"MYBonjourRegistration: Set NULL record (%u bytes) %@",
+              _nullRecord.length, _nullRecord);
 }
 
 @end

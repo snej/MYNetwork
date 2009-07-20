@@ -18,6 +18,8 @@
     BOOL _autoRename;
     BOOL _registered;
     NSMutableDictionary *_txtRecord;
+    NSData *_nullRecord;
+    struct _DNSRecordRef_t *_nullRecordReg;
 }
 
 /** Initializes a new registration.
@@ -81,6 +83,11 @@
 /** Converts a TXT record dictionary to data in a consistent way.
     This is used when signing (and verifying signatures of) TXT records. */
 + (NSData*) canonicalFormOfTXTRecordDictionary: (NSDictionary*)txtDict;
+
+/** A DNS 'NULL' record that can be used to publish other metadata about the service.
+    For example, iChat uses this to store the user's buddy icon.
+    As with all DNS records, try not to exceed 1500 bytes in size. */
+@property (copy) NSData *nullRecord;
 
 //@}
 

@@ -99,6 +99,10 @@
 
 - (id) initWithData: (NSData*)data
 {
+    if (!data) {
+        [self release];
+        return nil;
+    }
     const struct sockaddr* addr = data.bytes;
     if (data.length < sizeof(struct sockaddr_in))
         addr = nil;

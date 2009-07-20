@@ -169,15 +169,15 @@
 		270461880DE49634003D9D3F /* CollectionUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CollectionUtils.h; sourceTree = "<group>"; };
 		270462C00DE4A639003D9D3F /* MYUtilities_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MYUtilities_Prefix.pch; sourceTree = "<group>"; };
 		270462C10DE4A64B003D9D3F /* MYUtilitiesTest_main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MYUtilitiesTest_main.m; sourceTree = "<group>"; };
-		270462C30DE4A65B003D9D3F /* BLIP Overview.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "BLIP Overview.txt"; path = "BLIP/BLIP Overview.txt"; sourceTree = "<group>"; wrapsLines = 1; };
+		270462C30DE4A65B003D9D3F /* BLIP Overview.txt */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = text; name = "BLIP Overview.txt"; path = "BLIP/BLIP Overview.txt"; sourceTree = "<group>"; wrapsLines = 1; };
 		2706F1D80F9D3EF300292CCF /* SecurityInterface.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SecurityInterface.framework; path = System/Library/Frameworks/SecurityInterface.framework; sourceTree = SDKROOT; };
 		27375DFA0FC9FB5C0033F8F5 /* TCPEndpoint+Certs.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "TCPEndpoint+Certs.m"; sourceTree = "<group>"; };
-		273B45790FA681EE00276298 /* MYBonjourRegistration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MYBonjourRegistration.h; sourceTree = "<group>"; };
-		273B457A0FA681EE00276298 /* MYBonjourRegistration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MYBonjourRegistration.m; sourceTree = "<group>"; };
+		273B45790FA681EE00276298 /* MYBonjourRegistration.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = MYBonjourRegistration.h; sourceTree = "<group>"; };
+		273B457A0FA681EE00276298 /* MYBonjourRegistration.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = MYBonjourRegistration.m; sourceTree = "<group>"; };
 		274122DD0F9CDD1600F21842 /* MYUtilities_Debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = MYUtilities_Debug.xcconfig; sourceTree = "<group>"; };
 		274122DE0F9CDD1600F21842 /* MYUtilities_Release.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = MYUtilities_Release.xcconfig; sourceTree = "<group>"; };
 		2777C9100F7602A7007F8D30 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
-		277903830DE8C2DD00C6D295 /* maindocs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = maindocs.h; sourceTree = "<group>"; wrapsLines = 1; };
+		277903830DE8C2DD00C6D295 /* maindocs.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = maindocs.h; sourceTree = "<group>"; wrapsLines = 1; };
 		277903D50DE8EE4800C6D295 /* BLIPEchoServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLIPEchoServer.h; sourceTree = "<group>"; };
 		277903D60DE8EE4800C6D295 /* BLIPEchoServer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLIPEchoServer.m; sourceTree = "<group>"; };
 		277903D80DE8EFC900C6D295 /* BLIP.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLIP.h; sourceTree = "<group>"; };
@@ -189,24 +189,24 @@
 		2779052D0DE9E5BC00C6D295 /* BLIPEchoServer */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = BLIPEchoServer; sourceTree = BUILT_PRODUCTS_DIR; };
 		2780F20A0FA194BD00C0FB83 /* MYDNSService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MYDNSService.h; path = PortMapper/MYDNSService.h; sourceTree = "<group>"; };
 		2780F20B0FA194BD00C0FB83 /* MYDNSService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MYDNSService.m; path = PortMapper/MYDNSService.m; sourceTree = "<group>"; };
-		2780F4360FA28F4400C0FB83 /* MYBonjourQuery.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MYBonjourQuery.h; sourceTree = "<group>"; };
-		2780F4370FA28F4400C0FB83 /* MYBonjourQuery.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MYBonjourQuery.m; sourceTree = "<group>"; };
+		2780F4360FA28F4400C0FB83 /* MYBonjourQuery.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = MYBonjourQuery.h; sourceTree = "<group>"; };
+		2780F4370FA28F4400C0FB83 /* MYBonjourQuery.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = MYBonjourQuery.m; sourceTree = "<group>"; };
 		2780F49F0FA2C59000C0FB83 /* MYAddressLookup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MYAddressLookup.h; path = Bonjour/MYAddressLookup.h; sourceTree = "<group>"; };
 		2780F4A00FA2C59000C0FB83 /* MYAddressLookup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MYAddressLookup.m; path = Bonjour/MYAddressLookup.m; sourceTree = "<group>"; };
 		278C1A340F9F687800954AE1 /* PortMapperTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PortMapperTest.m; sourceTree = "<group>"; };
 		278C1A350F9F687800954AE1 /* MYPortMapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MYPortMapper.h; sourceTree = "<group>"; };
 		278C1A360F9F687800954AE1 /* MYPortMapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MYPortMapper.m; sourceTree = "<group>"; };
-		278C1B9E0F9F92EA00954AE1 /* MYBonjourBrowser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MYBonjourBrowser.h; sourceTree = "<group>"; };
-		278C1B9F0F9F92EA00954AE1 /* MYBonjourBrowser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MYBonjourBrowser.m; sourceTree = "<group>"; };
-		278C1BA00F9F92EA00954AE1 /* MYBonjourService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MYBonjourService.h; sourceTree = "<group>"; };
-		278C1BA10F9F92EA00954AE1 /* MYBonjourService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MYBonjourService.m; sourceTree = "<group>"; };
+		278C1B9E0F9F92EA00954AE1 /* MYBonjourBrowser.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = MYBonjourBrowser.h; sourceTree = "<group>"; };
+		278C1B9F0F9F92EA00954AE1 /* MYBonjourBrowser.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = MYBonjourBrowser.m; sourceTree = "<group>"; };
+		278C1BA00F9F92EA00954AE1 /* MYBonjourService.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = MYBonjourService.h; sourceTree = "<group>"; };
+		278C1BA10F9F92EA00954AE1 /* MYBonjourService.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = MYBonjourService.m; sourceTree = "<group>"; };
 		278C1BB50F9F975700954AE1 /* ConcurrentOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConcurrentOperation.h; sourceTree = "<group>"; };
 		278C1BB60F9F975700954AE1 /* ConcurrentOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConcurrentOperation.m; sourceTree = "<group>"; };
 		279DD99E0F9E290500D75D91 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		279DD9B10F9E296200D75D91 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		279DD9B30F9E296E00D75D91 /* CoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreServices.framework; path = System/Library/Frameworks/CoreServices.framework; sourceTree = SDKROOT; };
 		279DDC9A0F9E2F2A00D75D91 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
-		279DDCCB0F9E381500D75D91 /* MYNetwork.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MYNetwork.h; sourceTree = "<group>"; };
+		279DDCCB0F9E381500D75D91 /* MYNetwork.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = MYNetwork.h; sourceTree = "<group>"; };
 		279E8F9E0F9FDD0800608D8D /* libMYNetwork.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libMYNetwork.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		27D5EC050DE5FEDE00CD84FA /* BLIPRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLIPRequest.h; sourceTree = "<group>"; };
 		27D5EC060DE5FEDE00CD84FA /* BLIPRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLIPRequest.m; sourceTree = "<group>"; };
@@ -308,6 +308,7 @@
 				270461070DE49030003D9D3F /* TCP */,
 				270460F10DE49030003D9D3F /* BLIP */,
 			);
+			indentWidth = 4;
 			name = MYNetwork;
 			sourceTree = "<group>";
 		};
@@ -331,6 +332,7 @@
 				270461000DE49030003D9D3F /* BLIPWriter.m */,
 				270460F70DE49030003D9D3F /* BLIP_Internal.h */,
 			);
+			indentWidth = 4;
 			path = BLIP;
 			sourceTree = "<group>";
 		};
@@ -350,6 +352,7 @@
 				270461120DE49030003D9D3F /* TCPWriter.m */,
 				270461080DE49030003D9D3F /* TCP_Internal.h */,
 			);
+			indentWidth = 4;
 			path = TCP;
 			sourceTree = "<group>";
 		};
@@ -374,6 +377,7 @@
 				270461290DE49088003D9D3F /* Test.h */,
 				270461280DE49088003D9D3F /* Test.m */,
 			);
+			indentWidth = 4;
 			name = MYUtilities;
 			sourceTree = MYUtilities;
 		};
@@ -388,6 +392,7 @@
 				2779048A0DE9204300C6D295 /* BLIPEchoClient.xib */,
 				277904280DE91C7900C6D295 /* BLIP Echo Client-Info.plist */,
 			);
+			indentWidth = 4;
 			name = Demo;
 			path = BLIP/Demo;
 			sourceTree = "<group>";
@@ -402,6 +407,7 @@
 				2780F49F0FA2C59000C0FB83 /* MYAddressLookup.h */,
 				2780F4A00FA2C59000C0FB83 /* MYAddressLookup.m */,
 			);
+			indentWidth = 4;
 			name = Addressing;
 			sourceTree = "<group>";
 		};
@@ -412,6 +418,7 @@
 				278C1A360F9F687800954AE1 /* MYPortMapper.m */,
 				278C1A340F9F687800954AE1 /* PortMapperTest.m */,
 			);
+			indentWidth = 4;
 			path = PortMapper;
 			sourceTree = "<group>";
 		};
@@ -427,6 +434,7 @@
 				273B45790FA681EE00276298 /* MYBonjourRegistration.h */,
 				273B457A0FA681EE00276298 /* MYBonjourRegistration.m */,
 			);
+			indentWidth = 4;
 			path = Bonjour;
 			sourceTree = "<group>";
 		};
