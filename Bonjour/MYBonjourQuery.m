@@ -106,6 +106,7 @@ static void queryCallback( DNSServiceRef                       DNSServiceRef,
                            void                                *context)
 {
     MYBonjourQuery *query = context;
+    [query retain];
     @try{
         //LogTo(Bonjour, @"queryCallback for %@ (err=%i)", context,errorCode);
         if (!errorCode)
@@ -116,6 +117,7 @@ static void queryCallback( DNSServiceRef                       DNSServiceRef,
                                  flags: flags];
     }catchAndReport(@"MYBonjourResolver query callback");
     [query gotResponse: errorCode];
+    [query release];
 }
 
 
