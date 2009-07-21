@@ -160,6 +160,10 @@ static void regCallback(DNSServiceRef                       sdRef,
 }
 
 
+#pragma mark 
+#pragma mark TXT RECORD:
+
+
 + (NSData*) dataFromTXTRecordDictionary: (NSDictionary*)txtDict {
     if (!txtDict)
         return nil;
@@ -235,8 +239,8 @@ static int compareData (id data1, id data2, void *context) {
 }
 
 
-- (void) updateTxtRecord {
-    [NSObject cancelPreviousPerformRequestsWithTarget: self selector: @selector(updateTxtRecord) object: nil];
+- (void) updateTXTRecord {
+    [NSObject cancelPreviousPerformRequestsWithTarget: self selector: @selector(updateTXTRecord) object: nil];
     if (self.serviceRef) {
         NSData *data = [[self class] dataFromTXTRecordDictionary: _txtRecord];
         Assert(data!=nil || _txtRecord==nil, @"Can't convert dictionary to TXT record: %@", _txtRecord);
@@ -254,19 +258,19 @@ static int compareData (id data1, id data2, void *context) {
 }
 
 
-- (NSDictionary*) txtRecord {
+- (NSDictionary*) TXTRecord {
     return _txtRecord;
 }
 
-- (void) setTxtRecord: (NSDictionary*)txtDict {
+- (void) setTXTRecord: (NSDictionary*)txtDict {
     if (!$equal(_txtRecord,txtDict)) {
         setObjCopy(&_txtRecord, txtDict);
-        [NSObject cancelPreviousPerformRequestsWithTarget: self selector: @selector(updateTxtRecord) object: nil];
-        [self performSelector: @selector(updateTxtRecord) withObject: nil afterDelay: 0.1];
+        [NSObject cancelPreviousPerformRequestsWithTarget: self selector: @selector(updateTXTRecord) object: nil];
+        [self performSelector: @selector(updateTXTRecord) withObject: nil afterDelay: 0.1];
     }
 }
 
-- (void) setString: (NSString*)value forTxtKey: (NSString*)key
+- (void) setString: (NSString*)value forTXTKey: (NSString*)key
 {
     NSData *data = [value dataUsingEncoding: NSUTF8StringEncoding];
     if (!$equal(data, [_txtRecord objectForKey: key])) {
@@ -275,8 +279,8 @@ static int compareData (id data1, id data2, void *context) {
             [_txtRecord setObject: data forKey: key];
         } else
             [_txtRecord removeObjectForKey: key];
-        [NSObject cancelPreviousPerformRequestsWithTarget: self selector: @selector(updateTxtRecord) object: nil];
-        [self performSelector: @selector(updateTxtRecord) withObject: nil afterDelay: 0.1];
+        [NSObject cancelPreviousPerformRequestsWithTarget: self selector: @selector(updateTXTRecord) object: nil];
+        [self performSelector: @selector(updateTXTRecord) withObject: nil afterDelay: 0.1];
     }
 }
 
@@ -342,8 +346,8 @@ static int compareData (id data1, id data2, void *context) {
 
 - (void) updateTXT {
     NSDictionary *txt = $dict({@"time", $sprintf(@"%.3lf", CFAbsoluteTimeGetCurrent())});
-    _reg.txtRecord = txt;
-    CAssertEqual(_reg.txtRecord, txt);
+    _reg.TXTRecord = txt;
+    CAssertEqual(_reg.TXTRecord, txt);
     [self performSelector: @selector(updateTXT) withObject: nil afterDelay: 3.0];
 }
 

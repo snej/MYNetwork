@@ -53,10 +53,10 @@
 
 
 /** The service's metadata dictionary, stored in its DNS TXT record */
-@property (copy) NSDictionary *txtRecord;
+@property (copy) NSDictionary *TXTRecord;
 
 /** Convenience to store a string value in a single TXT record key. */
-- (void) setString: (NSString*)value forTxtKey: (NSString*)key;
+- (void) setString: (NSString*)value forTXTKey: (NSString*)key;
 
 
 /** @name Expert
@@ -79,6 +79,10 @@
 
 /** Is this browsed service an echo of this local registration? (Compares fullNames.) */
 - (BOOL) isSameAsService: (MYBonjourService*)service;
+
+/** Immediately broadcast the current TXT record. (Normally, there is a 0.1 second delay
+    after you make changes, in order to coalesce multiple changes.) */
+- (void) updateTXTRecord;
 
 /** Converts a TXT record dictionary to data in a consistent way.
     This is used when signing (and verifying signatures of) TXT records. */
