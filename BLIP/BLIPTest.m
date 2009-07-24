@@ -127,6 +127,18 @@ static SecIdentityRef GetListenerIdentity(void) {
 {
     if( _conn.status==kTCP_Open || _conn.status==kTCP_Opening ) {
         if(_pending.count<100) {
+            Log(@"** Sending a message that will fail to be handled...");
+            BLIPRequest *q = [_conn requestWithBody: nil
+                                         properties: $dict({@"Profile", @"BLIPTest/DontHandleMe"},
+                                                           {@"User-Agent", @"BLIPConnectionTester"},
+                                                           {@"Date", [[NSDate date] description]})];
+            BLIPResponse *response = [q send];
+            Assert(response);
+            Assert(q.number>0);
+            Assert(response.number==q.number);
+            [_pending setObject: [NSNull null] forKey: $object(q.number)];
+            response.onComplete = $target(self,responseArrived:);
+            
             Log(@"** Sending another %i messages...", kNBatchedMessages);
             for( int i=0; i<kNBatchedMessages; i++ ) {
                 size_t size = random() % 32768;
@@ -135,11 +147,12 @@ static SecIdentityRef GetListenerIdentity(void) {
                 for( size_t i=0; i<size; i++ )
                     bytes[i] = i % 256;
                 
-                BLIPRequest *q = [_conn requestWithBody: body
-                                             properties: $dict({@"Content-Type", @"application/octet-stream"},
-                                                               {@"User-Agent", @"BLIPConnectionTester"},
-                                                               {@"Date", [[NSDate date] description]},
-                                                               {@"Size",$sprintf(@"%u",size)})];
+                q = [_conn requestWithBody: body
+                                 properties: $dict({@"Profile", @"BLIPTest/EchoData"},
+                                                   {@"Content-Type", @"application/octet-stream"},
+                                                   {@"User-Agent", @"BLIPConnectionTester"},
+                                                   {@"Date", [[NSDate date] description]},
+                                                   {@"Size",$sprintf(@"%u",size)})];
                 Assert(q);
                 if( kUseCompression && (random()%2==1) )
                     q.compressed = YES;
@@ -189,29 +202,35 @@ static SecIdentityRef GetListenerIdentity(void) {
     [NSObject cancelPreviousPerformRequestsWithTarget: self];
     CFRunLoopStop(CFRunLoopGetCurrent());
 }
-- (void) connection: (BLIPConnection*)connection receivedRequest: (BLIPRequest*)request
+- (BOOL) connection: (BLIPConnection*)connection receivedRequest: (BLIPRequest*)request
 {
     Log(@"***** %@ received %@",connection,request);
     [request respondWithData: request.body contentType: request.contentType];
+    return YES;
 }
 
 - (void) connection: (BLIPConnection*)connection receivedResponse: (BLIPResponse*)response
 {
     Log(@"********** %@ received %@",connection,response);
-    NSNumber *sizeObj = [_pending objectForKey: $object(response.number)];
-
-    if( response.error )
-        Warn(@"Got error response: %@",response.error);
-    else {
-        NSData *body = response.body;
-        size_t size = body.length;
-        Assert(size<32768);
-        const UInt8 *bytes = body.bytes;
-        for( size_t i=0; i<size; i++ )
-            AssertEq(bytes[i],i % 256);
-        AssertEq(size,sizeObj.unsignedIntValue);
-    }
+    id sizeObj = [_pending objectForKey: $object(response.number)];
     Assert(sizeObj);
+    
+    if (sizeObj == [NSNull null]) {
+        AssertEqual(response.error.domain, BLIPErrorDomain);
+        AssertEq(response.error.code, kBLIPError_NotFound);
+    } else {
+        if( response.error )
+            Warn(@"Got error response: %@",response.error);
+        else {
+            NSData *body = response.body;
+            size_t size = body.length;
+            Assert(size<32768);
+            const UInt8 *bytes = body.bytes;
+            for( size_t i=0; i<size; i++ )
+                AssertEq(bytes[i],i % 256);
+            AssertEq(size,[sizeObj unsignedIntValue]);
+        }
+    }
     [_pending removeObjectForKey: $object(response.number)];
     Log(@"Now %u replies pending", _pending.count);
 }
@@ -326,26 +345,35 @@ TestCase(BLIPConnection) {
         Log(@"** %@ didClose", connection);
     [connection release];
 }
-- (void) connection: (BLIPConnection*)connection receivedRequest: (BLIPRequest*)request
+- (BOOL) connection: (BLIPConnection*)connection receivedRequest: (BLIPRequest*)request
 {
     Log(@"***** %@ received %@",connection,request);
-    NSData *body = request.body;
-    size_t size = body.length;
-    Assert(size<32768);
-    const UInt8 *bytes = body.bytes;
-    for( size_t i=0; i<size; i++ )
-        AssertEq(bytes[i],i % 256);
     
-    AssertEqual([request valueOfProperty: @"Content-Type"], @"application/octet-stream");
-    Assert([request valueOfProperty: @"User-Agent"] != nil);
-    AssertEq((size_t)[[request valueOfProperty: @"Size"] intValue], size);
+    if ([request.profile isEqualToString: @"BLIPTest/EchoData"]) {
+        NSData *body = request.body;
+        size_t size = body.length;
+        Assert(size<32768);
+        const UInt8 *bytes = body.bytes;
+        for( size_t i=0; i<size; i++ )
+            AssertEq(bytes[i],i % 256);
+        
+        AssertEqual([request valueOfProperty: @"Content-Type"], @"application/octet-stream");
+        Assert([request valueOfProperty: @"User-Agent"] != nil);
+        AssertEq((size_t)[[request valueOfProperty: @"Size"] intValue], size);
 
-    [request respondWithData: body contentType: request.contentType];
+        [request respondWithData: body contentType: request.contentType];
+    } else if ([request.profile isEqualToString: @"BLIPTest/DontHandleMe"]) {
+        // Deliberately don't handle this, to test unhandled request handling.
+        return NO;
+    } else {
+        Assert(NO, @"Unknown profile in request %@", request);
+    }
     
     if( ++ _nReceived == kListenerCloseAfter ) {
         Log(@"********** Closing BLIPTestListener after %i requests",_nReceived);
         [connection close];
     }
+    return YES;
 }
 
 - (BOOL) connectionReceivedCloseRequest: (BLIPConnection*)connection;

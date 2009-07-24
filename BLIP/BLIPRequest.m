@@ -271,13 +271,17 @@
 {
     [super _connectionClosed];
     if( !_isMine && !_complete ) {
+        NSError *error = _connection.error;
+        if (!error)
+            error = BLIPMakeError(kBLIPError_Disconnected,
+                                  @"Connection closed before response was received");
         // Change incoming response to an error:
         _isMutable = YES;
         [_properties autorelease];
         _properties = [_properties mutableCopy];
-        [self _setError: BLIPMakeError(kBLIPError_Disconnected,
-                                         @"Connection closed before response was received")];
+        [self _setError: error];
         _isMutable = NO;
+        
         self.complete = YES;    // Calls onComplete target
     }
 }

@@ -50,10 +50,11 @@
     NSLog(@"** %@ failedToOpen: %@",connection,error);
 }
 
-- (void) connection: (BLIPConnection*)connection receivedRequest: (BLIPRequest*)request
+- (BOOL) connection: (BLIPConnection*)connection receivedRequest: (BLIPRequest*)request
 {
     NSLog(@"***** %@ received %@",connection,request);
     [request respondWithData: request.body contentType: request.contentType];
+    return YES;
 }
 
 
