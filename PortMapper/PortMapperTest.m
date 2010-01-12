@@ -110,4 +110,4 @@ TestCase(MYPortMapper) {
     [test release];
 }
 
-#endif DEBUG
+#endif //DEBUG

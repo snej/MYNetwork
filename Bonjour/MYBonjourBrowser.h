@@ -41,7 +41,7 @@
 /** The class of objects to create to represent services.
     The default value is [MYBonjourService class]; you can change this, but only
     to a subclass of that. */
-@property Class serviceClass;
+@property (assign) Class serviceClass;
 
 /** My own registration for this service type.
     This object is created on demand and won't be started up until you tell it to.

@@ -19,6 +19,10 @@
 #include <unistd.h>
 
 
+#ifndef __has_feature
+#define __has_feature(x) 0 // Compatibility with non-clang compilers.
+#endif
+
 static void TCPListenerAcceptCallBack(CFSocketRef socket, CFSocketCallBackType type, 
                                       CFDataRef address, const void *data, void *info);
 
@@ -28,6 +32,11 @@ static void TCPListenerAcceptCallBack(CFSocketRef socket, CFSocketCallBackType t
 @property BOOL bonjourPublished;
 @property NSInteger bonjourError;
 - (void) _updateTXTRecord;
+#if __has_feature(attribute_cf_returns_retained)
+- (CFSocketRef) _openProtocol: (SInt32) protocolFamily 
+                      address: (struct sockaddr*)address
+                        error: (NSError**)error __attribute__((cf_returns_retained));
+#endif
 @end
 
 
@@ -36,11 +45,7 @@ static void TCPListenerAcceptCallBack(CFSocketRef socket, CFSocketCallBackType t
 
 - (id) init
 {
-    self = [super init];
-    if (self != nil) {
-        _connectionClass = [TCPConnection class];
-    }
-    return self;
+    return [self initWithPort: 0];
 }
 
 
@@ -49,6 +54,7 @@ static void TCPListenerAcceptCallBack(CFSocketRef socket, CFSocketCallBackType t
     self = [self init];
     if (self != nil) {
         _port = port;
+        _connectionClass = [TCPConnection class];
     }
     return self;
 }
@@ -132,7 +138,7 @@ static CFSocketRef closeSocket( CFSocketRef socket ) {
 
 - (BOOL) open: (NSError**)outError 
 {
-    // set up the IPv4 endpoint; if port is 0, this will cause the kernel to choose a port for us
+    // set up the IPv4 endpoint; if _port is 0, this will cause the kernel to choose a port for us
     do{
         struct sockaddr_in addr4;
         memset(&addr4, 0, sizeof(addr4));
@@ -145,7 +151,7 @@ static CFSocketRef closeSocket( CFSocketRef socket ) {
         _ipv4socket = [self _openProtocol: PF_INET address: (struct sockaddr*)&addr4 error: &error];
         if( ! _ipv4socket ) {
             if( error.code==EADDRINUSE && _pickAvailablePort && _port<0xFFFF ) {
-                LogTo(BLIPVerbose,@"%@: port busy, trying %hu...",self,_port+1);
+                LogTo(TCPVerbose,@"%@: port busy, trying %hu...",self,_port+1);
                 self.port += 1;        // try the next port
             } else {
                 if( outError ) *outError = error;
@@ -200,7 +206,7 @@ static CFSocketRef closeSocket( CFSocketRef socket ) {
         _ipv4socket = closeSocket(_ipv4socket);
         _ipv6socket = closeSocket(_ipv6socket);
 
-        LogTo(BLIP,@"%@ is closed",self);
+        LogTo(TCP,@"%@ is closed",self);
         [self tellDelegate: @selector(listenerDidClose:) withObject: nil];
     }
 }
@@ -326,7 +332,7 @@ static void TCPListenerAcceptCallBack(CFSocketRef socket, CFSocketCallBackType t
         if( _bonjourTXTRecord ) {
             data = [NSNetService dataFromTXTRecordDictionary: _bonjourTXTRecord];
             if( data )
-                LogTo(BLIP,@"%@: Set %u-byte TXT record", self,data.length);
+                LogTo(TCP,@"%@: Set %u-byte TXT record", self,data.length);
             else
                 Warn(@"TCPListener: Couldn't convert txt dict to data: %@",_bonjourTXTRecord);
         } else
@@ -338,21 +344,21 @@ static void TCPListenerAcceptCallBack(CFSocketRef socket, CFSocketCallBackType t
 
 - (void)netServiceWillPublish:(NSNetService *)sender
 {
-    LogTo(BLIP,@"%@: Advertising %@",self,sender);
+    LogTo(TCP,@"%@: Advertising %@",self,sender);
     self.bonjourPublished = YES;
 }
 
 - (void)netService:(NSNetService *)sender didNotPublish:(NSDictionary *)errorDict
 {
     self.bonjourError = [[errorDict objectForKey:NSNetServicesErrorCode] intValue];
-    LogTo(BLIP,@"%@: Failed to advertise %@: error %i",self,sender,self.bonjourError);
+    LogTo(TCP,@"%@: Failed to advertise %@: error %i",self,sender,self.bonjourError);
     [_netService release];
     _netService = nil;
 }
 
 - (void)netServiceDidStop:(NSNetService *)sender
 {
-    LogTo(BLIP,@"%@: Stopped advertising %@",self,sender);
+    LogTo(TCP,@"%@: Stopped advertising %@",self,sender);
     self.bonjourPublished = NO;
     [_netService release];
     _netService = nil;

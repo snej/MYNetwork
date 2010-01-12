@@ -84,6 +84,8 @@
     after you make changes, in order to coalesce multiple changes.) */
 - (void) updateTXTRecord;
 
++ (NSData*) dataFromTXTRecordDictionary: (NSDictionary*)txtDict;
+
 /** Converts a TXT record dictionary to data in a consistent way.
     This is used when signing (and verifying signatures of) TXT records. */
 + (NSData*) canonicalFormOfTXTRecordDictionary: (NSDictionary*)txtDict;
