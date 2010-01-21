@@ -32,9 +32,11 @@
     Setting a value of [NSNull null] completely disables host-name checking. */
 #define kTCPPropertySSLPeerName      ((NSString*)kCFStreamSSLPeerName)
 
+#if !TARGET_OS_IPHONE   /* not supported on iPhone, unfortunately */
 /** Specifies whether the client (the peer that opened the connection) will use a certificate.
     The value is a TCPAuthenticate enum value wrapped in an NSNumber. */
 extern NSString* const kTCPPropertySSLClientSideAuthentication;
+#endif
 
 typedef enum {
 	kTCPNeverAuthenticate,			/* skip client authentication */
