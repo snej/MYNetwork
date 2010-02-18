@@ -202,9 +202,9 @@ NSError *BLIPMakeError( int errorCode, NSString *message, ... )
 #pragma mark -
 @implementation BLIPListener
 
-- (id) init
+- (id) initWithPort: (UInt16)port
 {
-    self = [super init];
+    self = [super initWithPort: port];
     if (self != nil) {
         self.connectionClass = [BLIPConnection class];
     }

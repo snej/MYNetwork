@@ -51,7 +51,7 @@ static void TCPListenerAcceptCallBack(CFSocketRef socket, CFSocketCallBackType t
 
 - (id) initWithPort: (UInt16)port
 {
-    self = [self init];
+    self = [super init];
     if (self != nil) {
         _port = port;
         _connectionClass = [TCPConnection class];
