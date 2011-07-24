@@ -14,7 +14,7 @@
 {
     NSMutableArray *_queue;
     NSData *_currentData;
-    SInt32 _currentDataPos;
+    NSInteger _currentDataPos;
 }
 
 /** The connection's TCPReader. */

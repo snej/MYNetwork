@@ -44,7 +44,7 @@
 
 - (void) _queueMessage: (BLIPMessage*)msg isNew: (BOOL)isNew
 {
-    int n = _outBox.count, index;
+    NSInteger n = _outBox.count, index;
     if( msg.urgent && n > 1 ) {
         // High-priority gets queued after the last existing high-priority message,
         // leaving one regular-priority message in between if possible.

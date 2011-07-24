@@ -33,7 +33,7 @@
         NSInteger octet;
         if( ! [scanner scanInteger: &octet] || octet<0 || octet>255 )
             return 0;
-        ipv4 = (ipv4<<8) | octet;
+        ipv4 = (ipv4<<8) | (UInt8)octet;
     }
     if( ! [scanner isAtEnd] )
         return 0;

@@ -91,7 +91,7 @@
 
 - (IBAction)serverClicked:(id)sender {
     NSTableView * table = (NSTableView *)sender;
-    int selectedRow = [table selectedRow];
+    NSInteger selectedRow = [table selectedRow];
     
     [self closeConnection];
     if (-1 != selectedRow)

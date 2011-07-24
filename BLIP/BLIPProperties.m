@@ -28,6 +28,7 @@ static const char* kAbbreviations[] = {
 
 
 
+// Concrete implementation that stores properties in a packed binary form.
 @interface BLIPPackedProperties : BLIPProperties
 {
     NSData *_data;
@@ -137,7 +138,7 @@ static const char* kAbbreviations[] = {
         for( const char *str=bytes; str < end; str += strlen(str)+1, _nStrings++ ) {
             if( _nStrings >= capacity ) {
                 capacity = capacity ?(2*capacity) :4;
-                _strings = realloc(_strings, capacity*sizeof(const char**));
+                _strings = realloc(_strings, capacity*sizeof(const char*));
             }
             UInt8 first = (UInt8)str[0];
             if( first>'\0' && first<' ' && str[1]=='\0' ) {
@@ -200,7 +201,6 @@ static const char* kAbbreviations[] = {
     NSMutableDictionary *props = [NSMutableDictionary dictionaryWithCapacity: _nStrings/2];
     // Add values in forward order so that later ones will overwrite (take precedence over)
     // earlier ones, which matches the behavior of -valueOfProperty.
-    // (However, note that unlike -valueOfProperty, this dictionary is case-sensitive!)
     for( int i=0; i<_nStrings; i+=2 ) {
         NSString *key = [[NSString alloc] initWithUTF8String: _strings[i]];
         NSString *value = [[NSString alloc] initWithUTF8String: _strings[i+1]];
@@ -214,7 +214,7 @@ static const char* kAbbreviations[] = {
 
 
 - (NSUInteger) count        {return _nStrings/2;}
-- (NSData*) encodedData            {return _data;}
+- (NSData*) encodedData     {return _data;}
 - (NSUInteger) dataLength   {return _data.length;}
 
 

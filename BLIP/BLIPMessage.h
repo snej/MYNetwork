@@ -45,7 +45,7 @@ NSError *BLIPMakeError( int errorCode, NSString *message, ... ) __attribute__ ((
     NSMutableData *_encodedBody;
     NSMutableData *_mutableBody;
     BOOL _isMine, _isMutable, _sent, _propertiesAvailable, _complete;
-    SInt32 _bytesWritten;
+    NSInteger _bytesWritten;
     id _representedObject;
 };
 
@@ -60,7 +60,7 @@ NSError *BLIPMakeError( int errorCode, NSString *message, ... ) __attribute__ ((
 /** Is this a message sent by me (as opposed to the peer)? */
 @property (readonly) BOOL isMine;
 
-/** Has this message been sent yet? (Only makes sense when isMe is set.) */
+/** Has this message been sent yet? (Only makes sense when isMine is true.) */
 @property (readonly) BOOL sent;
 
 /** Has enough of the message arrived to read its properies? */

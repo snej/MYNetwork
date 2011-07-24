@@ -18,8 +18,6 @@
     BOOL _usePrivateConnection;
     MYDNSConnection *_connection;
     struct _DNSServiceRef_t *_serviceRef;
-    CFSocketRef _socket;
-    CFRunLoopSourceRef _socketSource;
     SInt32 _error;
     BOOL _continuous, _gotResponse;
 }

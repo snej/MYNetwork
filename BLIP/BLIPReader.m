@@ -99,7 +99,7 @@
 
 - (void) _canRead
 {
-    SInt32 headerLeft = sizeof(BLIPFrameHeader) - _curBytesRead;
+    ssize_t headerLeft = sizeof(BLIPFrameHeader) - _curBytesRead;
     if( headerLeft > 0 ) {
         // Read (more of) the header:
         NSInteger bytesRead = [self read: (uint8_t*)&_curHeader +_curBytesRead
@@ -128,7 +128,7 @@
         
     } else {
         // Read (more of) the current frame's body:
-        SInt32 bodyRemaining = (SInt32)_curBody.length + headerLeft;
+        ssize_t bodyRemaining = (SInt32)_curBody.length + headerLeft;
         if( bodyRemaining > 0 ) {
             uint8_t *dst = _curBody.mutableBytes;
             dst += _curBody.length - bodyRemaining;

@@ -27,7 +27,7 @@ static void serviceCallback(CFSocketRef s,
 
 - (void) dealloc
 {
-    Log(@"DEALLOC %@ %p", self.class,self);
+    LogTo(DNS, @"DEALLOC %@ %p", self.class,self);
     if( _serviceRef )
         [self cancel];
     [super dealloc];
@@ -47,7 +47,7 @@ static void serviceCallback(CFSocketRef s,
 
 - (void) setError: (DNSServiceErrorType)error {
     if (error)
-        Warn(@"%@ error := %i", self,error);
+        LogTo(DNS, @"%@ error := %i", self,error);
     _error = error;
 }
 
@@ -65,7 +65,7 @@ static void serviceCallback(CFSocketRef s,
     if (!_continuous)
         [self cancel];
     if (errorCode && errorCode != _error) {
-        Log(@"%@ got error %i", self,errorCode);
+        LogTo(DNS, @"%@ got error %i", self,errorCode);
         self.error = errorCode;
     }
 }
@@ -96,7 +96,7 @@ static void serviceCallback(CFSocketRef s,
         setObj(&_connection,nil);
         if (!_error)
             self.error = kDNSServiceErr_Unknown;
-        LogTo(DNS,@"Failed to open %@ -- err=%i",self,_error);
+        LogTo(DNS,@"%@ failed to open -- err=%i",self,_error);
         return NO;
     }
     

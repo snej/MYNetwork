@@ -69,7 +69,7 @@ typedef struct {
                     number: (UInt32)msgNo
                       body: (NSData*)body;
 - (BOOL) _writeFrameTo: (BLIPWriter*)writer maxSize: (UInt16)maxSize;
-@property (readonly) SInt32 _bytesWritten;
+@property (readonly) NSInteger _bytesWritten;
 - (void) _assignedNumber: (UInt32)number;
 - (BOOL) _receivedFrameWithHeader: (const BLIPFrameHeader*)header body: (NSData*)body;
 - (void) _connectionClosed;

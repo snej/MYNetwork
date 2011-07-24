@@ -88,6 +88,7 @@ static NSMutableArray *sAllConnections;
 
 - (id) initToNetService: (NSNetService*)service
 {
+    LogTo(TCP,@"Opening %@ to %@ ...", [self class], service);
     IPAddress *address = nil;
     NSInputStream *input;
     NSOutputStream *output;

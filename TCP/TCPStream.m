@@ -270,7 +270,7 @@ static NSError* fixStreamError( NSError *error )
 {
     // NSStream incorrectly returns SSL errors without the correct error domain:
     if( $equal(error.domain,@"NSUnknownErrorDomain") ) {
-        int code = error.code;
+        NSInteger code = error.code;
         if( -9899 <= code && code <= -9800 ) {
             NSMutableDictionary *userInfo = error.userInfo.mutableCopy;
             if( ! [userInfo objectForKey: NSLocalizedFailureReasonErrorKey] ) {
@@ -286,6 +286,7 @@ static NSError* fixStreamError( NSError *error )
             }
             error = [NSError errorWithDomain: NSStreamSocketSSLErrorDomain
                                         code: code userInfo: userInfo];
+            [userInfo release];
         } else
             Warn(@"NSStream returned error with unknown domain: %@",error);
     }

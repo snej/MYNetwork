@@ -118,7 +118,9 @@ static CFSocketRef closeSocket( CFSocketRef socket ) {
     NSData *addressData = [NSData dataWithBytes:address length:address->sa_len];
     if (kCFSocketSuccess != CFSocketSetAddress(socket, (CFDataRef)addressData)) {
         getLastCFSocketError(error);
-        return closeSocket(socket);
+        CFSocketInvalidate(socket);
+        CFRelease(socket);
+        return NULL;
     }
     // set up the run loop source for the socket
     CFRunLoopRef cfrl = CFRunLoopGetCurrent();

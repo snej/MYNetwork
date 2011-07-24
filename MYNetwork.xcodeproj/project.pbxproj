@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 45;
+	objectVersion = 46;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -543,8 +543,12 @@
 		08FB7793FE84155DC02AAC07 /* Project object */ = {
 			isa = PBXProject;
 			buildConfigurationList = 1DEB927808733DD40010E9CD /* Build configuration list for PBXProject "MYNetwork" */;
-			compatibilityVersion = "Xcode 3.1";
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
 			hasScannedForEncodings = 1;
+			knownRegions = (
+				en,
+			);
 			mainGroup = 08FB7794FE84155DC02AAC07 /* MYNetwork */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -694,6 +698,8 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 274122DD0F9CDD1600F21842 /* MYUtilities_Debug.xcconfig */;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx10.5;
 			};
 			name = Debug;
@@ -702,6 +708,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 274122DE0F9CDD1600F21842 /* MYUtilities_Release.xcconfig */;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				SDKROOT = macosx10.5;
 			};
 			name = Release;

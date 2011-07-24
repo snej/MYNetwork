@@ -170,9 +170,17 @@ static void regCallback(DNSServiceRef                       sdRef,
     // First translate any non-NSData values into UTF-8 formatted description data:
     NSMutableDictionary *encodedDict = $mdict();
     for (NSString *key in txtDict) {
+        if (![key isKindOfClass: [NSString class]]) {
+            Warn(@"TXT dictionary cannot have %@ as key", [key class]);
+            return nil;
+        }
         id value = [txtDict objectForKey: key];
         if (![value isKindOfClass: [NSData class]]) {
             value = [[value description] dataUsingEncoding: NSUTF8StringEncoding];
+        }
+        if ([value length] > 255) {
+            Warn(@"TXT dict value for '%@' is too long (%u bytes)", key, [value length]);
+            return nil;
         }
         [encodedDict setObject: value forKey: key];
     }
@@ -180,7 +188,7 @@ static void regCallback(DNSServiceRef                       sdRef,
 }
 
 
-static int compareData (id data1, id data2, void *context) {
+static NSInteger compareData (id data1, id data2, void *context) {
     size_t length1 = [data1 length], length2 = [data2 length];
     int result = memcmp([data1 bytes], [data2 bytes], MIN(length1,length2));
     if (result==0) {

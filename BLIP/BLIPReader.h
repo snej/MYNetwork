@@ -16,7 +16,7 @@
 {
     @private
     BLIPFrameHeader _curHeader;
-    UInt32 _curBytesRead;
+    NSUInteger _curBytesRead;
     NSMutableData *_curBody;
 
     UInt32 _numRequestsReceived;

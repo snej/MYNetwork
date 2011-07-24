@@ -306,13 +306,13 @@
         _flags &= ~kBLIP_MoreComing;
         if( ! _properties )
             return NO;
-        unsigned encodedLength = _encodedBody.length;
+        NSUInteger encodedLength = _encodedBody.length;
         if( self.compressed && encodedLength>0 ) {
             _body = [[NSData gtm_dataByInflatingData: _encodedBody] copy];
             if( ! _body )
                 return NO;
             LogTo(BLIPVerbose,@"Uncompressed %@ from %u bytes (%.1fx)", self, encodedLength,
-                  _body.length/(float)encodedLength);
+                  _body.length/(double)encodedLength);
         } else {
             _body = [_encodedBody copy];
         }

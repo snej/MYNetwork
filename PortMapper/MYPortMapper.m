@@ -43,7 +43,8 @@ NSString* const MYPortMapperChangedNotification = @"MYPortMapperChanged";
 {
     // A PortMapper with no port or protocols will cause the DNSService to look up 
     // our public address without creating a mapping.
-    if ([self initWithLocalPort: 0]) {
+    self = [self initWithLocalPort: 0];
+    if (self) {
         _mapTCP = _mapUDP = NO;
     }
     return self;
