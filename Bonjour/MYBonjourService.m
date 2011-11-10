@@ -21,8 +21,8 @@ NSString* const kBonjourServiceResolvedAddressesNotification = @"BonjourServiceR
 
 
 @interface MYBonjourService ()
-@property (copy) NSString *hostname;
-@property UInt16 port;
+@property (readwrite, copy, nonatomic) NSString *hostname;
+@property (readwrite, nonatomic) UInt16 port;
 @end
 
 

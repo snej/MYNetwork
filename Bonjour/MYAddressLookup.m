@@ -160,12 +160,12 @@ static void lookupCallback(DNSServiceRef                    sdRef,
 
 
 
-TestCase(MYDNSLookup) {
+TestCase(MYAddressLookup) {
     EnableLogTo(Bonjour,YES);
     EnableLogTo(DNS,YES);
     [NSRunLoop currentRunLoop]; // create runloop
 
-    MYAddressLookup *lookup = [[MYAddressLookup alloc] initWithHostname: @"www.apple.com" port: 80];
+    MYAddressLookup *lookup = [[MYAddressLookup alloc] initWithHostname: @"www.apple.com"];
     [lookup start];
     
     [[NSRunLoop currentRunLoop] runUntilDate: [NSDate dateWithTimeIntervalSinceNow: 10]];

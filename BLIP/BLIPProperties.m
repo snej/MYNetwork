@@ -37,6 +37,8 @@ static const char* kAbbreviations[] = {
     int _nStrings;
 }
 
+- (id) initWithBytes: (const char*)bytes length: (size_t)length;
+
 @end
 
 

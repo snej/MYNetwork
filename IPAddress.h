@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <sys/socket.h>
 
 
 /** Represents an Internet Protocol address and port number (similar to a sockaddr_in).

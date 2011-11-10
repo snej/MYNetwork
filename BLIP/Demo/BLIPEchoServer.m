@@ -42,7 +42,7 @@
 - (void) listener: (TCPListener*)listener didAcceptConnection: (TCPConnection*)connection
 {
     NSLog(@"** %@ accepted %@",self,connection);
-    connection.delegate = self;
+    connection.tcpDelegate = self;
 }
 
 - (void) connection: (TCPConnection*)connection failedToOpen: (NSError*)error

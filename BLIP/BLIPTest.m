@@ -305,7 +305,7 @@ TestCase(BLIPConnection) {
 - (void) listener: (TCPListener*)listener didAcceptConnection: (TCPConnection*)connection
 {
     Log(@"** %@ accepted %@",self,connection);
-    connection.delegate = self;
+    connection.tcpDelegate = self;
 }
 
 - (void) listener: (TCPListener*)listener failedToOpen: (NSError*)error

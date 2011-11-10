@@ -51,6 +51,7 @@ NSError *BLIPMakeError( int errorCode, NSString *message, ... )
 
 - (Class) readerClass                                       {return [BLIPReader class];}
 - (Class) writerClass                                       {return [BLIPWriter class];}
+
 - (id<BLIPConnectionDelegate>) delegate                     {return (id)_delegate;}
 - (void) setDelegate: (id<BLIPConnectionDelegate>)delegate  {_delegate = delegate;}
 
