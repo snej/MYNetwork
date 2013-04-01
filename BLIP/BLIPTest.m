@@ -55,7 +55,7 @@ static SecIdentityRef ChooseIdentity( NSString *prompt ) {
 		CFRelease( identity );
 	}
     CFRelease(search);
-    Log(@"Found %u identities -- prompting '%@'", identities.count, prompt);
+    Log(@"Found %lu identities -- prompting '%@'", (unsigned long)identities.count, prompt);
     if (identities.count > 0) {
         SFChooseIdentityPanel *panel = [SFChooseIdentityPanel sharedChooseIdentityPanel];
         if ([panel runModalForIdentities: identities message: prompt] == NSOKButton) {
@@ -152,7 +152,7 @@ static SecIdentityRef GetListenerIdentity(void) {
                                                    {@"Content-Type", @"application/octet-stream"},
                                                    {@"User-Agent", @"BLIPConnectionTester"},
                                                    {@"Date", [[NSDate date] description]},
-                                                   {@"Size",$sprintf(@"%u",size)})];
+                                                   {@"Size",$sprintf(@"%zu",size)})];
                 Assert(q);
                 if( kUseCompression && (random()%2==1) )
                     q.compressed = YES;
@@ -166,7 +166,7 @@ static SecIdentityRef GetListenerIdentity(void) {
                 response.onComplete = $target(self,responseArrived:);
             }
         } else {
-            Warn(@"There are %u pending messages; waiting for the listener to catch up...",_pending.count);
+            Warn(@"There are %lu pending messages; waiting for the listener to catch up...",(unsigned long)_pending.count);
         }
         [self performSelector: @selector(sendAMessage) withObject: nil afterDelay: kSendInterval];
     }
@@ -232,7 +232,7 @@ static SecIdentityRef GetListenerIdentity(void) {
         }
     }
     [_pending removeObjectForKey: $object(response.number)];
-    Log(@"Now %u replies pending", _pending.count);
+    Log(@"Now %lu replies pending", (unsigned long)_pending.count);
 }
 
 - (BOOL) connectionReceivedCloseRequest: (BLIPConnection*)connection
@@ -401,6 +401,14 @@ TestCase(BLIPListener) {
     [[NSRunLoop currentRunLoop] run];
     
     [listener release];
+}
+
+
+int main( int argc, const char **argv )
+{
+    NSAutoreleasePool *pool = [NSAutoreleasePool new];
+    RunTestCases(argc, argv);
+    [pool drain];
 }
 
 

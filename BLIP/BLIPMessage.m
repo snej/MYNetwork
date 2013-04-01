@@ -63,11 +63,11 @@
 - (NSString*) description
 {
     NSUInteger length = (_body.length ?: _mutableBody.length) ?: _encodedBody.length;
-    NSMutableString *desc = [NSMutableString stringWithFormat: @"%@[#%u, %u bytes",
-                             self.class,_number, length];
+    NSMutableString *desc = [NSMutableString stringWithFormat: @"%@[#%u, %lu bytes",
+                             self.class,(unsigned int)_number, (unsigned long)length];
     if( _flags & kBLIP_Compressed ) {
         if( _encodedBody && _encodedBody.length != length )
-            [desc appendFormat: @" (%u gzipped)", _encodedBody.length];
+            [desc appendFormat: @" (%lu gzipped)", (unsigned long)_encodedBody.length];
         else
             [desc appendString: @", gzipped"];
     }
@@ -214,7 +214,7 @@
     if( length > 0 ) {
         if( self.compressed ) {
             body = [NSData gtm_dataByGzippingData: body compressionLevel: 5];
-            LogTo(BLIPVerbose,@"Compressed %@ to %u bytes (%.0f%%)", self,body.length,
+            LogTo(BLIPVerbose,@"Compressed %@ to %lu bytes (%.0f%%)", self,(unsigned long)body.length,
                   body.length*100.0/length);
         }
         [_encodedBody appendData: body];
@@ -246,10 +246,10 @@
     if( lengthToWrite > maxSize ) {
         lengthToWrite = maxSize;
         flags |= kBLIP_MoreComing;
-        LogTo(BLIPVerbose,@"%@ pushing frame, bytes %u-%u", self, _bytesWritten, _bytesWritten+lengthToWrite);
+        LogTo(BLIPVerbose,@"%@ pushing frame, bytes %lu-%lu", self, (long)_bytesWritten, _bytesWritten+lengthToWrite);
     } else {
         flags &= ~kBLIP_MoreComing;
-        LogTo(BLIPVerbose,@"%@ pushing frame, bytes %u-%u (finished)", self, _bytesWritten, _bytesWritten+lengthToWrite);
+        LogTo(BLIPVerbose,@"%@ pushing frame, bytes %lu-%lu (finished)", self, (long)_bytesWritten, _bytesWritten+lengthToWrite);
     }
         
     // First write the frame header:
@@ -287,7 +287,8 @@
         [_encodedBody appendData: body];
     else
         _encodedBody = [body mutableCopy];
-    LogTo(BLIPVerbose,@"%@ rcvd bytes %u-%u", self, _encodedBody.length-body.length, _encodedBody.length);
+    LogTo(BLIPVerbose,@"%@ rcvd bytes %lu-%lu",
+          self, (unsigned long)_encodedBody.length-body.length, (unsigned long)_encodedBody.length);
     
     if( ! _properties ) {
         // Try to extract the properties:
@@ -311,7 +312,7 @@
             _body = [[NSData gtm_dataByInflatingData: _encodedBody] copy];
             if( ! _body )
                 return NO;
-            LogTo(BLIPVerbose,@"Uncompressed %@ from %u bytes (%.1fx)", self, encodedLength,
+            LogTo(BLIPVerbose,@"Uncompressed %@ from %lu bytes (%.1fx)", self, (unsigned long)encodedLength,
                   _body.length/(double)encodedLength);
         } else {
             _body = [_encodedBody copy];

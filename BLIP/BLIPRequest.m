@@ -223,7 +223,7 @@
                 [errorProps setValue: value ofProperty: key];
         }
         [errorProps setValue: error.domain ofProperty: @"Error-Domain"];
-        [errorProps setValue: $sprintf(@"%i",error.code) ofProperty: @"Error-Code"];
+        [errorProps setValue: $sprintf(@"%li",(long)error.code) ofProperty: @"Error-Code"];
         setObj(&_properties,errorProps);
         [errorProps release];
         

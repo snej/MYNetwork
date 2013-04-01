@@ -70,7 +70,7 @@
     [_outBox insertObject: msg atIndex: index];
     
     if( isNew ) {
-        LogTo(BLIP,@"%@ queuing outgoing %@ at index %i",self,msg,index);
+        LogTo(BLIP,@"%@ queuing outgoing %@ at index %li",self,msg,(long)index);
         if( n==0 )
             [self queueIsEmpty];
     }

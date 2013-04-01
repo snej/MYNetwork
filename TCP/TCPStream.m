@@ -36,7 +36,7 @@ static NSError* fixStreamError( NSError *error );
         _stream = [stream retain];
         _stream.delegate = self;
         [_stream scheduleInRunLoop: [NSRunLoop currentRunLoop] forMode: NSRunLoopCommonModes];
-        LogTo(TCPVerbose,@"%@ initialized; status=%i", self,_stream.streamStatus);
+        LogTo(TCPVerbose,@"%@ initialized; status=%li", self, (long)_stream.streamStatus);
     }
     return self;
 }
@@ -229,7 +229,7 @@ static NSError* fixStreamError( NSError *error );
             [self _gotEOF];
             break;
         default:
-            Warn(@"%@: unknown NSStreamEvent %i",self,streamEvent);
+            Warn(@"%@: unknown NSStreamEvent %u",self,(unsigned)streamEvent);
             break;
     }
     
@@ -276,7 +276,7 @@ static NSError* fixStreamError( NSError *error )
             if( ! [userInfo objectForKey: NSLocalizedFailureReasonErrorKey] ) {
                 // look up error message:
                 NSBundle *secBundle = [NSBundle bundleWithPath: @"/System/Library/Frameworks/Security.framework"];
-                NSString *message = [secBundle localizedStringForKey: $sprintf(@"%i",code)
+                NSString *message = [secBundle localizedStringForKey: $sprintf(@"%li",(long)code)
                                                                value: nil
                                                                table: @"SecErrorMessages"];
                 if( message ) {

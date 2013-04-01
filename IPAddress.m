@@ -226,7 +226,7 @@
 
 
 // Private IP address ranges. See RFC 3330.
-static const struct {UInt32 mask, value;} const kPrivateRanges[] = {
+static struct {UInt32 mask, value;} const kPrivateRanges[] = {
     {0xFF000000, 0x00000000},       //   0.x.x.x (hosts on "this" network)
     {0xFF000000, 0x0A000000},       //  10.x.x.x (private address range)
     {0xFF000000, 0x7F000000},       // 127.x.x.x (loopback)

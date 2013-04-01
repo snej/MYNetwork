@@ -70,7 +70,7 @@
     
     if( _curHeader.magic != kBLIPFrameHeaderMagicNumber )
         return $sprintf(@"Incorrect magic number (%08X not %08X)",
-                        _curHeader.magic,kBLIPFrameHeaderMagicNumber);
+                        (unsigned int)_curHeader.magic,kBLIPFrameHeaderMagicNumber);
     size_t bodyLength = _curHeader.size;
     if( bodyLength < sizeof(BLIPFrameHeader) )
         return @"Length is impossibly short";
@@ -108,8 +108,8 @@
             _curBytesRead += bytesRead;
             if( _curBytesRead < sizeof(BLIPFrameHeader) ) {
                 // Incomplete header:
-                LogTo(BLIPVerbose,@"%@ read %u bytes of header (%u left)",
-                      self,bytesRead,sizeof(BLIPFrameHeader)-_curBytesRead);
+                LogTo(BLIPVerbose,@"%@ read %luuu bytes of header (%lu left)",
+                      self,(long)bytesRead,sizeof(BLIPFrameHeader)-_curBytesRead);
             } else {
                 // Finished reading the header!
                 NSString *err = [self _validateHeader];
@@ -117,7 +117,7 @@
                     Warn(@"%@ read bogus frame header: %@",self,err);
                     return (void)[self _gotError: BLIPMakeError(kBLIPError_BadData, @"%@", err)];
                 }
-                LogTo(BLIPVerbose,@"%@: Read header; next is %u-byte body",self,_curBody.length);
+                LogTo(BLIPVerbose,@"%@: Read header; next is %lu-byte body",self,(unsigned long)_curBody.length);
                 
                 if( _curBody.length == 0 ) {
                     // Zero-byte body, so no need to wait for another read
@@ -136,7 +136,7 @@
             if( bytesRead > 0 ) {
                 _curBytesRead += bytesRead;
                 bodyRemaining -= bytesRead;
-                LogTo(BLIPVerbose,@"%@: Read %u bytes of frame body (%u left)",self,bytesRead,bodyRemaining);
+                LogTo(BLIPVerbose,@"%@: Read %lu bytes of frame body (%zu left)",self,(long)bytesRead,bodyRemaining);
             }
         }
         if( bodyRemaining==0 ) {
@@ -161,7 +161,7 @@
 {
     static const char* kTypeStrs[16] = {"MSG","RPY","ERR","3??","4??","5??","6??","7??"};
     BLIPMessageType type = header->flags & kBLIP_TypeMask;
-    LogTo(BLIPVerbose,@"%@ rcvd frame of %s #%u, length %u",self,kTypeStrs[type],header->number,body.length);
+    LogTo(BLIPVerbose,@"%@ rcvd frame of %s #%u, length %lu",self,kTypeStrs[type],(unsigned int)header->number,(unsigned long)body.length);
 
     id key = $object(header->number);
     BOOL complete = ! (header->flags & kBLIP_MoreComing);
@@ -189,7 +189,8 @@
             } else
                 return [self _gotError: BLIPMakeError(kBLIPError_BadFrame, 
                                                @"Received bad request frame #%u (next is #%u)",
-                                               header->number,_numRequestsReceived+1)];
+                                               (unsigned int)header->number,
+                                               (unsigned)_numRequestsReceived+1)];
             
             if( ! [request _receivedFrameWithHeader: header body: body] )
                 return [self _gotError: BLIPMakeError(kBLIPError_BadFrame, 
@@ -218,11 +219,11 @@
             } else {
                 if( header->number <= ((BLIPWriter*)self.writer).numRequestsSent )
                     LogTo(BLIP,@"??? %@ got unexpected response frame to my msg #%u",
-                          self,header->number); //benign
+                          self,(unsigned int)header->number); //benign
                 else
                     return [self _gotError: BLIPMakeError(kBLIPError_BadFrame, 
                                                           @"Bogus message number %u in response",
-                                                          header->number)];
+                                                          (unsigned int)header->number)];
             }
             break;
         }

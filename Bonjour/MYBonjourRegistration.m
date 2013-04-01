@@ -179,7 +179,7 @@ static void regCallback(DNSServiceRef                       sdRef,
             value = [[value description] dataUsingEncoding: NSUTF8StringEncoding];
         }
         if ([value length] > 255) {
-            Warn(@"TXT dict value for '%@' is too long (%u bytes)", key, [value length]);
+            Warn(@"TXT dict value for '%@' is too long (%lu bytes)", key, (unsigned long)[value length]);
             return nil;
         }
         [encodedDict setObject: value forKey: key];
@@ -261,7 +261,7 @@ static NSInteger compareData (id data1, id data2, void *context) {
         if (err)
             Warn(@"%@ failed to update TXT (err=%i)", self,err);
         else
-            LogTo(Bonjour,@"%@ updated TXT to %u bytes: %@", self,data.length,data);
+            LogTo(Bonjour,@"%@ updated TXT to %lu bytes: %@", self,(unsigned long)data.length,data);
     }
 }
 
@@ -326,8 +326,8 @@ static NSInteger compareData (id data1, id data2, void *context) {
     if (err)
         Warn(@"MYBonjourRegistration: Couldn't update NULL record, err=%i",err);
     else
-        LogTo(DNS, @"MYBonjourRegistration: Set NULL record (%u bytes) %@",
-              _nullRecord.length, _nullRecord);
+        LogTo(DNS, @"MYBonjourRegistration: Set NULL record (%lu bytes) %@",
+              (unsigned long)_nullRecord.length, _nullRecord);
 }
 
 @end

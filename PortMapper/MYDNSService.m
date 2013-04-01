@@ -96,7 +96,7 @@ static void serviceCallback(CFSocketRef s,
         setObj(&_connection,nil);
         if (!_error)
             self.error = kDNSServiceErr_Unknown;
-        LogTo(DNS,@"%@ failed to open -- err=%i",self,_error);
+        LogTo(DNS,@"%@ failed to open -- err=%i",self,(int)_error);
         return NO;
     }
     
