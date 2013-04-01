@@ -7,6 +7,7 @@
 //
 
 #import "TCPEndpoint.h"
+#import "TCP_Internal.h"
 #import "Test.h"
 #import "CollectionUtils.h"
 #import "ExceptionUtils.h"
@@ -18,8 +19,6 @@ NSString* const kTCPPropertySSLClientSideAuthentication = @"kTCPPropertySSLClien
 
 
 @implementation TCPEndpoint
-
-
 
 
 - (NSMutableDictionary*) SSLProperties {return _sslProperties;}

@@ -31,6 +31,15 @@ static void browseCallback (DNSServiceRef                       sdRef,
 
 
 @implementation MYBonjourBrowser
+{
+    NSString *_serviceType;
+    BOOL _browsing;
+    Class __strong _serviceClass;
+    NSMutableSet *_services, *_addServices, *_rmvServices;
+    BOOL _pendingUpdate;
+    MYBonjourRegistration *_myRegistration;
+    id __weak _delegate;
+}
 
 
 - (id) initWithServiceType: (NSString*)serviceType

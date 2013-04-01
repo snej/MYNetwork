@@ -12,23 +12,13 @@
 
 /** Searches for Bonjour services of a specific type. */
 @interface MYBonjourBrowser : MYDNSService
-{
-    @private
-    NSString *_serviceType;
-    BOOL _browsing;
-    Class __strong _serviceClass;
-    NSMutableSet *_services, *_addServices, *_rmvServices;
-    BOOL _pendingUpdate;
-    MYBonjourRegistration *_myRegistration;
-    id __strong _delegate;
-}
 
 /** Initializes a new MYBonjourBrowser.
     Call -start to begin browsing.
     @param serviceType  The name of the service type to look for, e.g. "_http._tcp". */
 - (id) initWithServiceType: (NSString*)serviceType;
 
-@property (strong) id delegate;
+@property (weak) id delegate;
 
 /** Is the browser currently browsing? */
 @property (readonly) BOOL browsing;

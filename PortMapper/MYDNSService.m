@@ -23,6 +23,13 @@ static void serviceCallback(CFSocketRef s,
         
 
 @implementation MYDNSService
+{
+    BOOL _usePrivateConnection;
+    MYDNSConnection *_connection;
+    struct _DNSServiceRef_t *_serviceRef;
+    SInt32 _error;
+    BOOL _continuous, _gotResponse;
+}
 
 
 - (void) dealloc

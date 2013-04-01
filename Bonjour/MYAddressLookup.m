@@ -21,6 +21,15 @@
 
 
 @implementation MYAddressLookup
+{
+    MYBonjourService *_service;
+    NSString *_hostname;
+    UInt16 _interfaceIndex;
+    NSMutableSet *_addresses;
+    UInt16 _port;
+    CFAbsoluteTime _expires;
+}
+
 
 - (id) initWithHostname: (NSString*)hostname
 {

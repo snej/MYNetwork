@@ -8,6 +8,7 @@
 
 #import "TCPListener.h"
 #import "TCPConnection.h"
+#import "TCP_Internal.h"
 
 #import "Logging.h"
 #import "Test.h"
@@ -41,6 +42,22 @@ static void TCPListenerAcceptCallBack(CFSocketRef socket, CFSocketCallBackType t
 
 
 @implementation TCPListener
+{
+    uint16_t _port;
+    BOOL _pickAvailablePort;
+    BOOL _useIPv6;
+    CFSocketRef _ipv4socket;
+    CFSocketRef _ipv6socket;
+
+    NSString *_bonjourServiceType, *_bonjourServiceName;
+    NSNetServiceOptions _bonjourServiceOptions;
+    NSNetService *_netService;
+    NSDictionary *_bonjourTXTRecord;
+    BOOL _bonjourPublished;
+    NSInteger /*NSNetServicesError*/ _bonjourError;
+
+    Class __strong _connectionClass;
+}
 
 
 - (id) init

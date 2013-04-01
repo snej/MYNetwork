@@ -36,6 +36,16 @@ NSString* const TCPErrorDomain = @"TCP";
 
 
 @implementation TCPConnection
+{
+    TCPListener *_server;
+    IPAddress *_address;
+    BOOL _isIncoming, _checkedPeerCert;
+    TCPConnectionStatus _status;
+    TCPReader *_reader;
+    TCPWriter *_writer;
+    NSError *_error;
+    NSTimeInterval _openTimeout;
+}
 
 
 static NSMutableArray *sAllConnections;

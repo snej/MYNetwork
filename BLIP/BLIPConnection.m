@@ -39,7 +39,10 @@ NSError *BLIPMakeError( int errorCode, NSString *message, ... )
 
 
 @implementation BLIPConnection
-
+{
+    BLIPDispatcher *_dispatcher;
+    BOOL _blipClosing;
+}
 
 
 - (Class) readerClass                                       {return [BLIPReader class];}
@@ -195,6 +198,10 @@ NSError *BLIPMakeError( int errorCode, NSString *message, ... )
 
 #pragma mark -
 @implementation BLIPListener
+{
+    BLIPDispatcher *_dispatcher;
+}
+
 
 - (id) initWithPort: (UInt16)port
 {

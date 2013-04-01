@@ -15,11 +15,6 @@
 #if (defined(MAC_OS_X_VERSION_10_6) && MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_6) || defined (TARGET_OS_IPHONE)
                                 <NSStreamDelegate>
 #endif
-{
-    TCPConnection *_conn;
-    NSStream *_stream;
-    BOOL _shouldClose;
-}
 
 - (id) initWithConnection: (TCPConnection*)conn stream: (NSStream*)stream;
 

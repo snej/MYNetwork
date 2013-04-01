@@ -12,14 +12,6 @@
 
 /** An asynchronous DNS address lookup. Supports both Bonjour services and traditional hostnames. */
 @interface MYAddressLookup : MYDNSService
-{
-    MYBonjourService *_service;
-    NSString *_hostname;
-    UInt16 _interfaceIndex;
-    NSMutableSet *_addresses;
-    UInt16 _port;
-    CFAbsoluteTime _expires;
-}
 
 /** Initializes the lookup with a DNS hostname.
     (If you've got a Bonjour service already, as a MYBonjourService object, it's more convenient

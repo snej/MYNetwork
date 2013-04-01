@@ -11,11 +11,6 @@
 
 /** Output stream for a TCPConnection. Writes a queue of arbitrary data blobs to the socket. */
 @interface TCPWriter : TCPStream 
-{
-    NSMutableArray *_queue;
-    NSData *_currentData;
-    NSInteger _currentDataPos;
-}
 
 /** The connection's TCPReader. */
 @property (readonly) TCPReader *reader;

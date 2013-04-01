@@ -26,23 +26,6 @@
 #if (defined(MAC_OS_X_VERSION_10_6) && MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_6) || defined(TARGET_OS_IPHONE)
                                 <NSNetServiceDelegate>
 #endif
-{
-    @private
-    uint16_t _port;
-    BOOL _pickAvailablePort;
-    BOOL _useIPv6;
-    CFSocketRef _ipv4socket;
-    CFSocketRef _ipv6socket;
-    
-    NSString *_bonjourServiceType, *_bonjourServiceName;
-    NSNetServiceOptions _bonjourServiceOptions;
-    NSNetService *_netService;
-    NSDictionary *_bonjourTXTRecord;
-    BOOL _bonjourPublished;
-    NSInteger /*NSNetServicesError*/ _bonjourError;
-
-    Class __strong _connectionClass;
-}
 
 /** Initializes a new TCPListener that will listen on the given port when opened.
     If port is 0, a random available TCP port number will be assigned; you can find the
@@ -54,7 +37,7 @@
 
 /** Delegate object that will be called when interesting things happen to the listener --
     most importantly, when a new incoming connection is accepted. */
-@property (strong) id<TCPListenerDelegate> delegate;
+@property (weak) id<TCPListenerDelegate> delegate;
 
 /** Should the server listen for IPv6 connections (on the same port number)? Defaults to NO. */
 @property BOOL useIPv6;

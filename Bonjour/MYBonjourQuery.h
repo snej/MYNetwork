@@ -15,12 +15,6 @@
     you won't need to use it directly, unless you're interested in the contents of some other
     record (such as the NULL record that iChat's _presence._tcp service uses for buddy icons.) */
 @interface MYBonjourQuery : MYDNSService 
-{
-    @private
-    MYBonjourService *_bonjourService;
-    uint16_t _recordType;
-    NSData *_recordData;
-}
 
 /** Initializes a query for a particular service and record type.
     @param service  The Bonjour service to query

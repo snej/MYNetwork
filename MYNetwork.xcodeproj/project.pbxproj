@@ -86,7 +86,7 @@
 		2777C9110F7602A7007F8D30 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2777C9100F7602A7007F8D30 /* Security.framework */; };
 		2779048B0DE9204300C6D295 /* BLIPEchoClient.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2779048A0DE9204300C6D295 /* BLIPEchoClient.xib */; };
 		277905240DE9E5BC00C6D295 /* BLIPEchoServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 277903D60DE8EE4800C6D295 /* BLIPEchoServer.m */; };
-		2779053B0DE9EDAA00C6D295 /* BLIPTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 270460FE0DE49030003D9D3F /* BLIPTest.m */; };
+		2779053B0DE9EDAA00C6D295 /* BLIPTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 270460FE0DE49030003D9D3F /* BLIPTest.m */; settings = {COMPILER_FLAGS = "-Wno-deprecated-declarations"; }; };
 		2780F20C0FA194BD00C0FB83 /* MYDNSService.h in Headers */ = {isa = PBXBuildFile; fileRef = 2780F20A0FA194BD00C0FB83 /* MYDNSService.h */; };
 		2780F20D0FA194BD00C0FB83 /* MYDNSService.m in Sources */ = {isa = PBXBuildFile; fileRef = 2780F20B0FA194BD00C0FB83 /* MYDNSService.m */; };
 		2780F20E0FA194BD00C0FB83 /* MYDNSService.m in Sources */ = {isa = PBXBuildFile; fileRef = 2780F20B0FA194BD00C0FB83 /* MYDNSService.m */; };
@@ -1046,7 +1046,6 @@
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CLANG_ENABLE_OBJC_ARC = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.6.8;
 				PRODUCT_NAME = MYNetwork;
 			};
 			name = Debug;
@@ -1056,7 +1055,6 @@
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CLANG_ENABLE_OBJC_ARC = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.6.8;
 				PRODUCT_NAME = MYNetwork;
 			};
 			name = Release;
@@ -1067,7 +1065,7 @@
 				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
 				WARNING_CFLAGS = "-Wall";
@@ -1079,7 +1077,7 @@
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				SDKROOT = macosx;
 				WARNING_CFLAGS = "-Wall";
 			};
@@ -1146,7 +1144,6 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				GCC_ENABLE_OBJC_GC = unsupported;
 				INSTALL_PATH = /usr/local/lib;
-				MACOSX_DEPLOYMENT_TARGET = 10.6.8;
 				PRODUCT_NAME = MYNetwork;
 			};
 			name = Debug;
@@ -1158,7 +1155,6 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				GCC_ENABLE_OBJC_GC = unsupported;
 				INSTALL_PATH = /usr/local/lib;
-				MACOSX_DEPLOYMENT_TARGET = 10.6.8;
 				PRODUCT_NAME = MYNetwork;
 			};
 			name = Release;
@@ -1180,7 +1176,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = MYNetwork;
 				SDKROOT = iphoneos;
@@ -1202,7 +1198,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = MYNetwork;
 				SDKROOT = iphoneos;
@@ -1237,7 +1233,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = iPhone/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				PRODUCT_NAME = "BLIP Echo";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1264,7 +1260,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = iPhone/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				PRODUCT_NAME = "BLIP Echo";
 				SDKROOT = iphoneos;

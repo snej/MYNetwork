@@ -14,11 +14,6 @@
     IPAddress itself only remembers the raw 32-bit IPv4 address; the subclass HostAddress
     also remembers the DNS host-name. */
 @interface IPAddress : NSObject <NSCoding, NSCopying>
-{
-    @private
-    UInt32 _ipv4;       // In network byte order (big-endian), just like struct in_addr
-    UInt16 _port;       // native byte order
-}
 
 /** Initializes an IPAddress from a host name (which may be a DNS name or dotted-quad numeric form)
     and port number.
@@ -88,10 +83,6 @@
 /** A subclass of IPAddress that remembers the DNS hostname instead of a raw address.
     An instance of HostAddress looks up its ipv4 address on the fly by calling gethostbyname. */
 @interface HostAddress : IPAddress
-{
-    @private
-    NSString *_hostname;
-}
 
 - (id) initWithHostname: (NSString*)hostname port: (UInt16)port;
 
@@ -109,11 +100,6 @@
     and the number of successful attempts. This is useful when keeping a cache of recent
     addresses for a peer that doesn't have a stable address. */
 @interface RecentAddress : IPAddress
-{
-    @private
-    CFAbsoluteTime _lastSuccess;
-    UInt32 _successes;
-}
 
 /** Initializes a RecentAddress from an IPAddress. (You can also initialize RecentAddress using
     any inherited initializer method.) */

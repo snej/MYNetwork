@@ -14,8 +14,11 @@
 
 
 @implementation TCPWriter
-
-
+{
+    NSMutableArray *_queue;
+    NSData *_currentData;
+    NSInteger _currentDataPos;
+}
 
 
 - (TCPReader*) reader

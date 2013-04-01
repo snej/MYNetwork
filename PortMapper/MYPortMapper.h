@@ -34,12 +34,6 @@
     * When closing the network service, close the MYPortMapper object too.
 */ 
 @interface MYPortMapper : MYDNSService
-{
-    @private
-    UInt16 _localPort, _desiredPublicPort;
-    BOOL _mapTCP, _mapUDP;
-    IPAddress *_publicAddress, *_localAddress;
-}
 
 /** Initializes a PortMapper that will map the given local (private) port.
     By default it will map TCP and not UDP, and will not suggest a desired public port,

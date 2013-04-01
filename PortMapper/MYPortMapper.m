@@ -25,6 +25,11 @@ NSString* const MYPortMapperChangedNotification = @"MYPortMapperChanged";
 
 
 @implementation MYPortMapper
+{
+    UInt16 _localPort, _desiredPublicPort;
+    BOOL _mapTCP, _mapUDP;
+    IPAddress *_publicAddress, *_localAddress;
+}
 
 
 - (id) initWithLocalPort: (UInt16)localPort

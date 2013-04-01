@@ -27,6 +27,16 @@ NSString* const kBonjourServiceResolvedAddressesNotification = @"BonjourServiceR
 
 
 @implementation MYBonjourService
+{
+    MYBonjourBrowser *_bonjourBrowser;
+    NSString *_name, *_fullName, *_type, *_domain, *_hostname;
+    uint32_t _interfaceIndex;
+    BOOL _startedResolve;
+    UInt16 _port;
+    NSDictionary *_txtRecord;
+    MYBonjourQuery *_txtQuery;
+    MYAddressLookup *_addressLookup;
+}
 
 
 - (id) initWithBrowser: (MYBonjourBrowser*)browser

@@ -12,15 +12,6 @@
 
 /** Registers a local network service with Bonjour, so it can be browsed by other computers. */
 @interface MYBonjourRegistration : MYDNSService
-{
-    NSString *_name, *_type, *_domain;
-    UInt16 _port;
-    BOOL _autoRename;
-    BOOL _registered;
-    NSMutableDictionary *_txtRecord;
-    NSData *_nullRecord;
-    struct _DNSRecordRef_t *_nullRecordReg;
-}
 
 /** Initializes a new registration.
     If you're also browsing for the same service type, you should instead get an instance of this via

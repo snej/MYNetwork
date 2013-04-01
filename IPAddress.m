@@ -20,6 +20,10 @@
 
 
 @implementation IPAddress
+{
+    UInt32 _ipv4;       // In network byte order (big-endian), just like struct in_addr
+    UInt16 _port;       // native byte order
+}
 
 
 + (UInt32) IPv4FromDottedQuadString: (NSString*)str
@@ -252,6 +256,9 @@ static struct {UInt32 mask, value;} const kPrivateRanges[] = {
 
 
 @implementation HostAddress
+{
+    NSString *_hostname;
+}
 
 
 - (id) initWithHostname: (NSString*)hostname port: (UInt16)port
@@ -345,6 +352,10 @@ static struct {UInt32 mask, value;} const kPrivateRanges[] = {
 
 
 @implementation RecentAddress
+{
+    CFAbsoluteTime _lastSuccess;
+    UInt32 _successes;
+}
 
 
 - (id) initWithIPAddress: (IPAddress*)addr

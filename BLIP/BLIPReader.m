@@ -10,6 +10,7 @@
 #import "BLIP_Internal.h"
 #import "BLIPWriter.h"
 #import "BLIPDispatcher.h"
+#import "TCP_Internal.h"
 
 #import "Logging.h"
 #import "Test.h"
@@ -22,6 +23,14 @@
 
 
 @implementation BLIPReader
+{
+    BLIPFrameHeader _curHeader;
+    NSUInteger _curBytesRead;
+    NSMutableData *_curBody;
+
+    UInt32 _numRequestsReceived;
+    NSMutableDictionary *_pendingRequests, *_pendingResponses;
+}
 
 
 #define _blipConn ((BLIPConnection*)_conn)

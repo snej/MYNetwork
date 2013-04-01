@@ -18,6 +18,9 @@
 
 
 @implementation BLIPRequest
+{
+    BLIPResponse *_response;
+}
 
 
 - (id) _initWithConnection: (BLIPConnection*)connection
@@ -151,6 +154,9 @@
 
 #pragma mark -
 @implementation BLIPResponse
+{
+    MYTarget *_onComplete;
+}
 
 - (id) _initWithRequest: (BLIPRequest*)request
 {

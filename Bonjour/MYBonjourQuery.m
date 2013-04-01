@@ -42,6 +42,11 @@ static NSString* kRecordTypeNames[] = {
 
 
 @implementation MYBonjourQuery
+{
+    MYBonjourService *_bonjourService;
+    uint16_t _recordType;
+    NSData *_recordData;
+}
 
 
 - (id) initWithBonjourService: (MYBonjourService*)service recordType: (uint16_t)recordType;

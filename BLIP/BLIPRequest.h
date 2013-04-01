@@ -12,10 +12,6 @@
 
 /** A Request, or initiating message, in the <a href=".#blipdesc">BLIP</a> protocol. */
 @interface BLIPRequest : BLIPMessage <NSMutableCopying>
-{
-    @private
-    BLIPResponse *_response;
-}
 
 /** Creates an outgoing request.
     The body may be nil.
@@ -86,11 +82,6 @@
 
 /** A reply to a BLIPRequest, in the <a href=".#blipdesc">BLIP</a> protocol. */
 @interface BLIPResponse : BLIPMessage
-{
-    @private
-    //NSError *_error;
-    MYTarget *_onComplete;
-}
 
 /** Sends this response. */
 - (BOOL) send;

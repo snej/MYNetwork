@@ -18,14 +18,9 @@
     delegate.
     Most of the API is inherited from TCPConnection. */
 @interface BLIPConnection : TCPConnection
-{
-    @private
-    BLIPDispatcher *_dispatcher;
-    BOOL _blipClosing;
-}
 
 /** The delegate object that will be called when the connection opens, closes or receives messages. */
-@property (strong) id<BLIPConnectionDelegate> delegate;
+@property (weak) id<BLIPConnectionDelegate> delegate;
 
 /** The connection's request dispatcher. By default it's not configured to do anything; but you
     can add rules to the dispatcher to call specific target methods based on properties of the
@@ -93,9 +88,6 @@
     BLIPConnection instances to handle them.
     Most of the API is inherited from TCPListener. */
 @interface BLIPListener : TCPListener
-{
-    BLIPDispatcher *_dispatcher;
-}
 
 /** The default request dispatcher that will be inherited by all BLIPConnections opened by this
     listener.

@@ -27,11 +27,26 @@
 
 
 @interface TCPStream ()
+{
+    @protected
+    TCPConnection *_conn;
+    NSStream *_stream;
+    BOOL _shouldClose;
+}
 - (void) _unclose;
 @end
 
 
 @interface TCPEndpoint ()
+{
+    @protected
+    NSMutableDictionary *_sslProperties;
+    __weak id _delegate;
+}
+@end
+
+
+@interface TCPEndpoint (Certificates)
 + (NSString*) describeCert: (SecCertificateRef)cert;
 + (NSString*) describeIdentity: (SecIdentityRef)identity;
 @end

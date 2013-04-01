@@ -221,6 +221,9 @@ static const char* kAbbreviations[] = {
 
 /** Mutable subclass that stores its properties in an NSMutableDictionary. */
 @implementation BLIPMutableProperties
+{
+    NSMutableDictionary *_properties;
+}
 
 
 + (BLIPProperties*) properties

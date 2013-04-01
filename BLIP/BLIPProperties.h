@@ -44,10 +44,6 @@
 
 /** Mutable subclass of BLIPProperties, used for creating new instances. */
 @interface BLIPMutableProperties : BLIPProperties
-{
-    @private
-    NSMutableDictionary *_properties;
-}
 
 /** Initializes a new instance, adding all the key/value pairs from the given NSDictionary. */
 - (id) initWithDictionary: (NSDictionary*)dict;

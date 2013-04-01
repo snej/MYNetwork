@@ -9,18 +9,11 @@
 #import <Foundation/Foundation.h>
 #import <CoreFoundation/CFSocket.h>
 @class MYDNSConnection;
+struct _DNSServiceRef_t;
 
 
 /** Abstract superclass for services based on DNSServiceRefs, such as MYPortMapper. */
 @interface MYDNSService : NSObject
-{
-    @private
-    BOOL _usePrivateConnection;
-    MYDNSConnection *_connection;
-    struct _DNSServiceRef_t *_serviceRef;
-    SInt32 _error;
-    BOOL _continuous, _gotResponse;
-}
 
 /** If NO (the default), the service will stop after it gets a result.
     If YES, it will continue to run until stopped. */

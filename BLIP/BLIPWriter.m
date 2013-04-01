@@ -9,6 +9,7 @@
 #import "BLIPReader.h"
 #import "BLIPWriter.h"
 #import "BLIP_Internal.h"
+#import "TCP_Internal.h"
 
 #import "Logging.h"
 #import "Test.h"
@@ -18,7 +19,10 @@
 
 
 @implementation BLIPWriter
-
+{
+    NSMutableArray *_outBox;
+    UInt32 _numRequestsSent;
+}
 
 
 - (void) disconnect

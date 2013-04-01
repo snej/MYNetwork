@@ -34,20 +34,7 @@ NSError *BLIPMakeError( int errorCode, NSString *message, ... ) __attribute__ ((
 
 
 /** Abstract superclass for <a href=".#blipdesc">BLIP</a> requests and responses. */
-@interface BLIPMessage : NSObject 
-{
-    @protected
-    BLIPConnection *_connection;
-    UInt16 _flags;
-    UInt32 _number;
-    BLIPProperties *_properties;
-    NSData *_body;
-    NSMutableData *_encodedBody;
-    NSMutableData *_mutableBody;
-    BOOL _isMine, _isMutable, _sent, _propertiesAvailable, _complete;
-    NSInteger _bytesWritten;
-    id _representedObject;
-};
+@interface BLIPMessage : NSObject
 
 /** The BLIPConnection associated with this message. */
 @property (readonly,strong) BLIPConnection *connection;

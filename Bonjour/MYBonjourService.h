@@ -12,17 +12,6 @@
 
 /** Represents a Bonjour service discovered by a MYBonjourBrowser. */
 @interface MYBonjourService : MYDNSService 
-{
-    @private
-    MYBonjourBrowser *_bonjourBrowser;
-    NSString *_name, *_fullName, *_type, *_domain, *_hostname;
-    uint32_t _interfaceIndex;
-    BOOL _startedResolve;
-    UInt16 _port;
-    NSDictionary *_txtRecord;
-    MYBonjourQuery *_txtQuery;
-    MYAddressLookup *_addressLookup;
-}
 
 /** The browser I belong to. */
 @property (readonly) MYBonjourBrowser *bonjourBrowser;

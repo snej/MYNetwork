@@ -15,6 +15,10 @@
 
 
 @implementation BLIPDispatcher
+{
+    NSMutableArray *_predicates, *_targets;
+    BLIPDispatcher *_parent;
+}
 
 
 - (id) init

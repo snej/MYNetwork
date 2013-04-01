@@ -55,6 +55,19 @@ typedef struct {
 
 
 @interface BLIPMessage ()
+{
+    @protected
+    BLIPConnection *_connection;
+    UInt16 _flags;
+    UInt32 _number;
+    BLIPProperties *_properties;
+    NSData *_body;
+    NSMutableData *_encodedBody;
+    NSMutableData *_mutableBody;
+    BOOL _isMine, _isMutable, _sent, _propertiesAvailable, _complete;
+    NSInteger _bytesWritten;
+    id _representedObject;
+}
 @property BOOL sent, propertiesAvailable, complete;
 - (BLIPMessageFlags) _flags;
 - (void) _setFlag: (BLIPMessageFlags)flag value: (BOOL)value;

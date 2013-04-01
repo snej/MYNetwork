@@ -24,6 +24,15 @@
 
 
 @implementation MYBonjourRegistration
+{
+    NSString *_name, *_type, *_domain;
+    UInt16 _port;
+    BOOL _autoRename;
+    BOOL _registered;
+    NSMutableDictionary *_txtRecord;
+    NSData *_nullRecord;
+    struct _DNSRecordRef_t *_nullRecordReg;
+}
 
 
 static NSMutableDictionary *sAllRegistrations;

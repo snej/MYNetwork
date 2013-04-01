@@ -27,17 +27,6 @@ typedef enum {
     TCPConnection itself mostly deals with SSL setup and opening/closing the socket.
     (The SSL related methods are inherited from TCPEndpoint.) */
 @interface TCPConnection : TCPEndpoint
-{
-    @private
-    TCPListener *_server;
-    IPAddress *_address;
-    BOOL _isIncoming, _checkedPeerCert;
-    TCPConnectionStatus _status;
-    TCPReader *_reader;
-    TCPWriter *_writer;
-    NSError *_error;
-    NSTimeInterval _openTimeout;
-}
 
 /** Initializes a TCPConnection to the given IP address.
     Afer configuring settings, you should call -open to begin the connection. */
@@ -59,7 +48,7 @@ typedef enum {
 @property NSTimeInterval openTimeout;
 
 /** The delegate object that will be called when the connection opens, closes or receives messages. */
-@property (strong) id<TCPConnectionDelegate> tcpDelegate;
+@property (weak) id<TCPConnectionDelegate> tcpDelegate;
 
 /** The certificate(s) of the connected peer, if this connection uses SSL.
     The items in the array are SecCertificateRefs; use the Keychain API to work with them. */

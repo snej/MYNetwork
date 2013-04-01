@@ -24,11 +24,6 @@
     custom handling. But it's often easier to use the dispatcher to associate handlers with
     request based on property values. */
 @interface BLIPDispatcher : NSObject 
-{
-    @private
-    NSMutableArray *_predicates, *_targets;
-    BLIPDispatcher *_parent;
-}
 
 /** The inherited parent dispatcher.
     If a message does not match any of this dispatcher's rules, it will next be passed to
