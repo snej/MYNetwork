@@ -53,7 +53,7 @@
             [self queueIsEmpty]; // this may call -writeData, which will call _canWrite again
             return;
         }
-        _currentData = [[_queue objectAtIndex: 0] retain];
+        _currentData = [_queue[0] retain];
         _currentDataPos = 0;
         LogTo(TCPVerbose,@"%@ using _currentData %p (%lu bytes)", self,_currentData,(unsigned long)_currentData.length);
         [_queue removeObjectAtIndex: 0];

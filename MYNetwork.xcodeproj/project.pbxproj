@@ -1044,6 +1044,8 @@
 		1DEB927508733DD40010E9CD /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				MACOSX_DEPLOYMENT_TARGET = 10.6.8;
 				PRODUCT_NAME = MYNetwork;
 			};
 			name = Debug;
@@ -1051,6 +1053,8 @@
 		1DEB927608733DD40010E9CD /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				MACOSX_DEPLOYMENT_TARGET = 10.6.8;
 				PRODUCT_NAME = MYNetwork;
 			};
 			name = Release;
@@ -1095,8 +1099,10 @@
 		277904290DE91C7A00C6D295 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				INFOPLIST_FILE = "BLIP/Demo/BLIP Echo Client-Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
+				MACOSX_DEPLOYMENT_TARGET = 10.6.8;
 				PRODUCT_NAME = "BLIP Echo Client";
 			};
 			name = Debug;
@@ -1104,8 +1110,10 @@
 		2779042A0DE91C7A00C6D295 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				INFOPLIST_FILE = "BLIP/Demo/BLIP Echo Client-Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
+				MACOSX_DEPLOYMENT_TARGET = 10.6.8;
 				PRODUCT_NAME = "BLIP Echo Client";
 			};
 			name = Release;
@@ -1113,6 +1121,8 @@
 		2779052B0DE9E5BC00C6D295 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				MACOSX_DEPLOYMENT_TARGET = 10.6.8;
 				PRODUCT_NAME = BLIPEchoServer;
 			};
 			name = Debug;
@@ -1120,6 +1130,8 @@
 		2779052C0DE9E5BC00C6D295 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				MACOSX_DEPLOYMENT_TARGET = 10.6.8;
 				PRODUCT_NAME = BLIPEchoServer;
 			};
 			name = Release;
@@ -1127,8 +1139,10 @@
 		279E8F9F0F9FDD0900608D8D /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				GCC_ENABLE_OBJC_GC = supported;
 				INSTALL_PATH = /usr/local/lib;
+				MACOSX_DEPLOYMENT_TARGET = 10.6.8;
 				PRODUCT_NAME = MYNetwork;
 			};
 			name = Debug;
@@ -1136,8 +1150,10 @@
 		279E8FA00F9FDD0900608D8D /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				GCC_ENABLE_OBJC_GC = supported;
 				INSTALL_PATH = /usr/local/lib;
+				MACOSX_DEPLOYMENT_TARGET = 10.6.8;
 				PRODUCT_NAME = MYNetwork;
 			};
 			name = Release;

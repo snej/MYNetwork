@@ -142,7 +142,7 @@ NSString* const kBonjourServiceResolvedAddressesNotification = @"BonjourServiceR
 }
 
 - (NSString*) txtStringForKey: (NSString*)key {
-    NSData *value = [self.txtRecord objectForKey: key];
+    NSData *value = (self.txtRecord)[key];
     if( ! value )
         return nil;
     if( ! [value isKindOfClass: [NSData class]] ) {
@@ -216,7 +216,7 @@ static void resolveCallback(DNSServiceRef                       sdRef,
             NSData *txtData = nil;
             if (txtRecord)
                 txtData = [NSData dataWithBytes: txtRecord length: txtLen];
-            [service priv_resolvedHostname: [NSString stringWithUTF8String: hosttarget]
+            [service priv_resolvedHostname: @(hosttarget)
                                       port: ntohs(port)
                                  txtRecord: txtData];
         }

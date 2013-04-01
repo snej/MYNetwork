@@ -95,7 +95,7 @@ static NSMutableArray *sAllConnections;
     if( [service getInputStream: &input outputStream: &output] ) {
         NSArray *addresses = service.addresses;
         if( addresses.count > 0 )
-            address = [[[IPAddress alloc] initWithSockAddr: [[addresses objectAtIndex: 0] bytes]] autorelease];
+            address = [[[IPAddress alloc] initWithSockAddr: [addresses[0] bytes]] autorelease];
     } else {
         input = nil;
         output = nil;
@@ -366,7 +366,7 @@ static NSMutableArray *sAllConnections;
                 if( ! certs && ! _isIncoming )
                     allow = NO; // Server MUST have a cert!
                 else {
-                    SecCertificateRef cert = certs.count ?(SecCertificateRef)[certs objectAtIndex:0] :NULL;
+                    SecCertificateRef cert = certs.count ?(SecCertificateRef)certs[0] :NULL;
                     if ([TCPEndpoint respondsToSelector: @selector(describeCert:)])
                         LogTo(TCP,@"%@: Peer cert = %@",self,[TCPEndpoint describeCert: cert]);
                     if( [_delegate respondsToSelector: @selector(connection:authorizeSSLPeer:)] )

@@ -84,7 +84,7 @@ static NSError* fixStreamError( NSError *error );
     [self setProperty: p forKey: kCFStreamPropertySSLSettings];
     
 #if !TARGET_OS_IPHONE
-    id clientAuth = [p objectForKey: kTCPPropertySSLClientSideAuthentication];
+    id clientAuth = p[kTCPPropertySSLClientSideAuthentication];
     if( clientAuth )
         [self setProperty: clientAuth forKey: _kCFStreamPropertySSLClientSideAuthentication];
 #endif
@@ -273,7 +273,7 @@ static NSError* fixStreamError( NSError *error )
         NSInteger code = error.code;
         if( -9899 <= code && code <= -9800 ) {
             NSMutableDictionary *userInfo = error.userInfo.mutableCopy;
-            if( ! [userInfo objectForKey: NSLocalizedFailureReasonErrorKey] ) {
+            if( ! userInfo[NSLocalizedFailureReasonErrorKey] ) {
                 // look up error message:
                 NSBundle *secBundle = [NSBundle bundleWithPath: @"/System/Library/Frameworks/Security.framework"];
                 NSString *message = [secBundle localizedStringForKey: $sprintf(@"%li",(long)code)
@@ -281,7 +281,7 @@ static NSError* fixStreamError( NSError *error )
                                                                table: @"SecErrorMessages"];
                 if( message ) {
                     if( ! userInfo ) userInfo = $mdict();
-                    [userInfo setObject: message forKey: NSLocalizedFailureReasonErrorKey];
+                    userInfo[NSLocalizedFailureReasonErrorKey] = message;
                 }
             }
             error = [NSError errorWithDomain: NSStreamSocketSSLErrorDomain

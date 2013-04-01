@@ -352,7 +352,7 @@ static void TCPListenerAcceptCallBack(CFSocketRef socket, CFSocketCallBackType t
 
 - (void)netService:(NSNetService *)sender didNotPublish:(NSDictionary *)errorDict
 {
-    self.bonjourError = [[errorDict objectForKey:NSNetServicesErrorCode] intValue];
+    self.bonjourError = [errorDict[NSNetServicesErrorCode] intValue];
     LogTo(TCP,@"%@: Failed to advertise %@: error %li",self,sender,(long)self.bonjourError);
     [_netService release];
     _netService = nil;

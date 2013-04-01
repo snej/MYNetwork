@@ -95,7 +95,7 @@
     
     [self closeConnection];
     if (-1 != selectedRow)
-        [self openConnection: [self.serviceList objectAtIndex:selectedRow]];
+        [self openConnection: (self.serviceList)[selectedRow]];
 }
 
 /* Send a BLIP request containing the string in the textfield */

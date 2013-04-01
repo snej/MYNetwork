@@ -41,12 +41,12 @@ NSString* const kTCPPropertySSLClientSideAuthentication = @"kTCPPropertySSLClien
     if( value ) {
         if( ! _sslProperties )
             _sslProperties = [[NSMutableDictionary alloc] init];
-        [_sslProperties setObject: value forKey: key];
+        _sslProperties[key] = value;
     } else
         [_sslProperties removeObjectForKey: key];
 }
 
-- (NSString*) securityLevel                 {return [_sslProperties objectForKey: (id)kCFStreamSSLLevel];}
+- (NSString*) securityLevel                 {return _sslProperties[(id)kCFStreamSSLLevel];}
 - (void) setSecurityLevel: (NSString*)level {[self setSSLProperty: level forKey: (id)kCFStreamSSLLevel];}
 
 - (void) setPeerToPeerIdentity: (SecIdentityRef)identity {

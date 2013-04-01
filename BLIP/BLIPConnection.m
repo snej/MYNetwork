@@ -28,8 +28,7 @@ NSError *BLIPMakeError( int errorCode, NSString *message, ... )
     message = [[NSString alloc] initWithFormat: message arguments: args];
     va_end(args);
     LogTo(BLIP,@"BLIPError #%i: %@",errorCode,message);
-    NSDictionary *userInfo = [NSDictionary dictionaryWithObject: message
-                                                         forKey: NSLocalizedDescriptionKey];
+    NSDictionary *userInfo = @{NSLocalizedDescriptionKey: message};
     [message release];
     return [NSError errorWithDomain: BLIPErrorDomain code: errorCode userInfo: userInfo];
 }

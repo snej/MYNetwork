@@ -94,7 +94,7 @@ static const char* kAbbreviations[] = {
 }
 
 - (NSString*) valueOfProperty: (NSString*)prop  {return nil;}
-- (NSDictionary*) allProperties                 {return [NSDictionary dictionary];}
+- (NSDictionary*) allProperties                 {return @{};}
 - (NSUInteger) count                            {return 0;}
 - (NSUInteger) dataLength                       {return sizeof(UInt16);}
 
@@ -192,7 +192,7 @@ static const char* kAbbreviations[] = {
     // Search in reverse order so that later values will take precedence over earlier ones.
     for( int i=_nStrings-2; i>=0; i-=2 ) {
         if( strcmp(propStr, _strings[i]) == 0 )
-            return [NSString stringWithUTF8String: _strings[i+1]];
+            return @(_strings[i+1]);
     }
     return nil;
 }
@@ -207,7 +207,7 @@ static const char* kAbbreviations[] = {
         NSString *key = [[NSString alloc] initWithUTF8String: _strings[i]];
         NSString *value = [[NSString alloc] initWithUTF8String: _strings[i+1]];
         if( key && value )
-            [props setObject: value forKey: key];
+            props[key] = value;
         [key release];
         [value release];
     }
@@ -273,7 +273,7 @@ static const char* kAbbreviations[] = {
 
 - (NSString*) valueOfProperty: (NSString*)prop
 {
-    return [_properties objectForKey: prop];
+    return _properties[prop];
 }
 
 - (NSDictionary*) allProperties
@@ -302,7 +302,7 @@ static void appendStr( NSMutableData *data, NSString *str ) {
     [data setLength: sizeof(UInt16)]; // leave room for length
     for( NSString *name in _properties ) {
         appendStr(data,name);
-        appendStr(data,[_properties objectForKey: name]);
+        appendStr(data,_properties[name]);
     }
     
     NSUInteger length = data.length - sizeof(UInt16);
@@ -317,7 +317,7 @@ static void appendStr( NSMutableData *data, NSString *str ) {
 {
     Assert(prop.length>0);
     if( value )
-        [_properties setObject: value forKey: prop];
+        _properties[prop] = value;
     else
         [_properties removeObjectForKey: prop];
 }
@@ -329,7 +329,7 @@ static void appendStr( NSMutableData *data, NSString *str ) {
         for( id key in properties ) {
             Assert([key isKindOfClass: [NSString class]]);
             Assert([key length] > 0);
-            Assert([[properties objectForKey: key] isKindOfClass: [NSString class]]);
+            Assert([properties[key] isKindOfClass: [NSString class]]);
         }
         [_properties setDictionary: properties];
     } else
@@ -385,7 +385,7 @@ TestCase(BLIPProperties) {
     
     NSDictionary *all = mprops.allProperties;
     for( NSString *prop in all )
-        CAssertEqual([props valueOfProperty: prop],[all objectForKey: prop]);
+        CAssertEqual([props valueOfProperty: prop],all[prop]);
 	
 	[mprops release];
 }

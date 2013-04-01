@@ -191,8 +191,8 @@
         return nil;
     
     NSMutableDictionary *userInfo = [[[self.properties allProperties] mutableCopy] autorelease];
-    NSString *domain = [userInfo objectForKey: @"Error-Domain"];
-    int code = [[userInfo objectForKey: @"Error-Code"] intValue];
+    NSString *domain = userInfo[@"Error-Domain"];
+    int code = [userInfo[@"Error-Code"] intValue];
     if( domain==nil || code==0 ) {
         domain = BLIPErrorDomain;
         if( code==0 )
@@ -218,7 +218,7 @@
             errorProps = [[BLIPMutableProperties alloc] init];
         NSDictionary *userInfo = error.userInfo;
         for( NSString *key in userInfo ) {
-            id value = $castIf(NSString,[userInfo objectForKey: key]);
+            id value = $castIf(NSString,userInfo[key]);
             if( value )
                 [errorProps setValue: value ofProperty: key];
         }

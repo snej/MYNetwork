@@ -49,7 +49,7 @@
         // High-priority gets queued after the last existing high-priority message,
         // leaving one regular-priority message in between if possible.
         for( index=n-1; index>0; index-- ) {
-            BLIPMessage *otherMsg = [_outBox objectAtIndex: index];
+            BLIPMessage *otherMsg = _outBox[index];
             if( [otherMsg urgent] ) {
                 index = MIN(index+2, n);
                 break;
@@ -104,13 +104,13 @@
 {
     if( _outBox.count > 0 ) {
         // Pop first message in queue:
-        BLIPMessage *msg = [[_outBox objectAtIndex: 0] retain];
+        BLIPMessage *msg = [_outBox[0] retain];
         [_outBox removeObjectAtIndex: 0];
         
         // As an optimization, allow message to send a big frame unless there's a higher-priority
         // message right behind it:
         size_t frameSize = kDefaultFrameSize;
-        if( msg.urgent || _outBox.count==0 || ! [[_outBox objectAtIndex: 0] urgent] )
+        if( msg.urgent || _outBox.count==0 || ! [_outBox[0] urgent] )
             frameSize *= 4;
         
         if( [msg _writeFrameTo: self maxSize: frameSize] ) {

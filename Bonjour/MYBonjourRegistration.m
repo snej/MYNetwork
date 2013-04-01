@@ -32,7 +32,7 @@ static NSMutableDictionary *sAllRegistrations;
 + (void) priv_addRegistration: (MYBonjourRegistration*)reg {
     if (!sAllRegistrations)
         sAllRegistrations = [[NSMutableDictionary alloc] init];
-    [sAllRegistrations setObject: reg forKey: reg.fullName];
+    sAllRegistrations[reg.fullName] = reg;
 }
 
 + (void) priv_removeRegistration: (MYBonjourRegistration*)reg {
@@ -40,7 +40,7 @@ static NSMutableDictionary *sAllRegistrations;
 }
 
 + (MYBonjourRegistration*) registrationWithFullName: (NSString*)fullName {
-    return [sAllRegistrations objectForKey: fullName];
+    return sAllRegistrations[fullName];
 }
 
 
@@ -111,9 +111,9 @@ static void regCallback(DNSServiceRef                       sdRef,
     MYBonjourRegistration *reg = context;
     @try{
         if (!errorCode)
-            [reg priv_registeredAsName: [NSString stringWithUTF8String: name]
-                                  type: [NSString stringWithUTF8String: regtype]
-                                domain: [NSString stringWithUTF8String: domain]];
+            [reg priv_registeredAsName: @(name)
+                                  type: @(regtype)
+                                domain: @(domain)];
     }catchAndReport(@"MYBonjourRegistration callback");
     [reg gotResponse: errorCode];
 }
@@ -174,7 +174,7 @@ static void regCallback(DNSServiceRef                       sdRef,
             Warn(@"TXT dictionary cannot have %@ as key", [key class]);
             return nil;
         }
-        id value = [txtDict objectForKey: key];
+        id value = txtDict[key];
         if (![value isKindOfClass: [NSData class]]) {
             value = [[value description] dataUsingEncoding: NSUTF8StringEncoding];
         }
@@ -182,7 +182,7 @@ static void regCallback(DNSServiceRef                       sdRef,
             Warn(@"TXT dict value for '%@' is too long (%lu bytes)", key, (unsigned long)[value length]);
             return nil;
         }
-        [encodedDict setObject: value forKey: key];
+        encodedDict[key] = value;
     }
     return [NSNetService dataFromTXTRecordDictionary: encodedDict];
 }
@@ -218,7 +218,7 @@ static NSInteger compareData (id data1, id data2, void *context) {
                 Warn(@"TXT dictionary key too long: %@", key);
                 return nil;
             }
-            id value = [txtDict objectForKey: key];
+            id value = txtDict[key];
             if (![value isKindOfClass: [NSData class]]) {
                 value = [[value description] dataUsingEncoding: NSUTF8StringEncoding];
             }
@@ -226,7 +226,7 @@ static NSInteger compareData (id data1, id data2, void *context) {
                 Warn(@"TXT dictionary value too long: %@", value);
                 return nil;
             }
-            [dataDict setObject: value forKey: keyData];
+            dataDict[keyData] = value;
         }
     }
     
@@ -238,7 +238,7 @@ static NSInteger compareData (id data1, id data2, void *context) {
         [canonical appendBytes: &length length: sizeof(length)];
         [canonical appendData: key];
         // Append value prefixed with length:
-        NSData *value = [dataDict objectForKey: key];
+        NSData *value = dataDict[key];
         length = [value length];
         [canonical appendBytes: &length length: sizeof(length)];
         [canonical appendData: value];
@@ -281,10 +281,10 @@ static NSInteger compareData (id data1, id data2, void *context) {
 - (void) setString: (NSString*)value forTXTKey: (NSString*)key
 {
     NSData *data = [value dataUsingEncoding: NSUTF8StringEncoding];
-    if (!$equal(data, [_txtRecord objectForKey: key])) {
+    if (!$equal(data, _txtRecord[key])) {
         if (data) {
             if (!_txtRecord) _txtRecord = [[NSMutableDictionary alloc] init];
-            [_txtRecord setObject: data forKey: key];
+            _txtRecord[key] = data;
         } else
             [_txtRecord removeObjectForKey: key];
         [NSObject cancelPreviousPerformRequestsWithTarget: self selector: @selector(updateTXTRecord) object: nil];

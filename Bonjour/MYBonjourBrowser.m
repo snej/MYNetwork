@@ -174,9 +174,9 @@ static void browseCallback (DNSServiceRef        sdRef,
     @try{
         LogTo(Bonjour,@"browseCallback (error=%i, name='%s', intf=%u)", errorCode,serviceName,interfaceIndex);
         if (!errorCode)
-            [browser priv_gotServiceName: [NSString stringWithUTF8String: serviceName]
-                                    type: [NSString stringWithUTF8String: regtype]
-                                  domain: [NSString stringWithUTF8String: replyDomain]
+            [browser priv_gotServiceName: @(serviceName)
+                                    type: @(regtype)
+                                  domain: @(replyDomain)
                                interface: interfaceIndex
                                    flags: flags];
     }catchAndReport(@"Bonjour");

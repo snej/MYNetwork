@@ -153,7 +153,7 @@
 
 - (void) _addPendingResponse: (BLIPResponse*)response
 {
-    [_pendingResponses setObject: response forKey: $object(response.number)];
+    _pendingResponses[$object(response.number)] = response;
 }
 
 
@@ -168,7 +168,7 @@
     switch(type) {
         case kBLIP_MSG: {
             // Incoming request:
-            BLIPRequest *request = [_pendingRequests objectForKey: key];
+            BLIPRequest *request = _pendingRequests[key];
             if( request ) {
                 // Continuation frame of a request:
                 if( complete ) {
@@ -184,7 +184,7 @@
                                                            body: nil]
                                 autorelease];
                 if( ! complete )
-                    [_pendingRequests setObject: request forKey: key];
+                    _pendingRequests[key] = request;
                 _numRequestsReceived++;
             } else
                 return [self _gotError: BLIPMakeError(kBLIPError_BadFrame, 
@@ -203,7 +203,7 @@
             
         case kBLIP_RPY:
         case kBLIP_ERR: {
-            BLIPResponse *response = [_pendingResponses objectForKey: key];
+            BLIPResponse *response = _pendingResponses[key];
             if( response ) {
                 if( complete ) {
                     [[response retain] autorelease];

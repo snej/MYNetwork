@@ -157,7 +157,7 @@ static void serviceCallback(CFSocketRef s,
     Assert(domain);
     char fullName[kDNSServiceMaxDomainName];
     if (DNSServiceConstructFullName(fullName, serviceName.UTF8String, type.UTF8String, domain.UTF8String) == 0)
-        return [NSString stringWithUTF8String: fullName];
+        return @(fullName);
     else
         return nil;
 }

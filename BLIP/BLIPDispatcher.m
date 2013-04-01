@@ -91,9 +91,9 @@ static BOOL testPredicate( id predicate, NSDictionary *properties ) {
     NSDictionary *properties = message.properties.allProperties;
     NSUInteger n = _predicates.count;
     for( NSUInteger i=0; i<n; i++ ) {
-        id p = [_predicates objectAtIndex: i];
+        id p = _predicates[i];
         if( testPredicate(p, properties) ) {
-            MYTarget *target = [_targets objectAtIndex: i];
+            MYTarget *target = _targets[i];
             LogTo(BLIP,@"Dispatcher matched %@ -- calling %@",p,target);
             [target invokeWithSender: message];
             return YES;

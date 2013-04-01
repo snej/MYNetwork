@@ -136,7 +136,7 @@ static SecIdentityRef GetListenerIdentity(void) {
             Assert(response);
             Assert(q.number>0);
             Assert(response.number==q.number);
-            [_pending setObject: [NSNull null] forKey: $object(q.number)];
+            _pending[$object(q.number)] = [NSNull null];
             response.onComplete = $target(self,responseArrived:);
             
             Log(@"** Sending another %i messages...", kNBatchedMessages);
@@ -162,7 +162,7 @@ static SecIdentityRef GetListenerIdentity(void) {
                 Assert(response);
                 Assert(q.number>0);
                 Assert(response.number==q.number);
-                [_pending setObject: $object(size) forKey: $object(q.number)];
+                _pending[$object(q.number)] = $object(size);
                 response.onComplete = $target(self,responseArrived:);
             }
         } else {
@@ -212,7 +212,7 @@ static SecIdentityRef GetListenerIdentity(void) {
 - (void) connection: (BLIPConnection*)connection receivedResponse: (BLIPResponse*)response
 {
     Log(@"********** %@ received %@",connection,response);
-    id sizeObj = [_pending objectForKey: $object(response.number)];
+    id sizeObj = _pending[$object(response.number)];
     Assert(sizeObj);
     
     if (sizeObj == [NSNull null]) {
