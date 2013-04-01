@@ -83,6 +83,7 @@
 		275E90061709F2A40008F577 /* Logging.m in Sources */ = {isa = PBXBuildFile; fileRef = 275E8F9D1709EF830008F577 /* Logging.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		275E90071709F2A80008F577 /* Target.m in Sources */ = {isa = PBXBuildFile; fileRef = 275E8FB21709EF830008F577 /* Target.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		275E90081709F2AB0008F577 /* Test.m in Sources */ = {isa = PBXBuildFile; fileRef = 275E8FB41709EF830008F577 /* Test.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		275E9019170A24100008F577 /* GTMNSData+zlib.m in Sources */ = {isa = PBXBuildFile; fileRef = 275E8FFB1709F0350008F577 /* GTMNSData+zlib.m */; };
 		2777C9110F7602A7007F8D30 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2777C9100F7602A7007F8D30 /* Security.framework */; };
 		2779048B0DE9204300C6D295 /* BLIPEchoClient.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2779048A0DE9204300C6D295 /* BLIPEchoClient.xib */; };
 		277905240DE9E5BC00C6D295 /* BLIPEchoServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 277903D60DE8EE4800C6D295 /* BLIPEchoServer.m */; };
@@ -987,6 +988,7 @@
 				275E90061709F2A40008F577 /* Logging.m in Sources */,
 				275E90071709F2A80008F577 /* Target.m in Sources */,
 				275E90081709F2AB0008F577 /* Test.m in Sources */,
+				275E9019170A24100008F577 /* GTMNSData+zlib.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
