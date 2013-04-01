@@ -27,7 +27,6 @@
     self = [super init];
     if (self != nil) {
         if (!hostname) {
-            [self release];
             return nil;
         }
         _hostname = [hostname copy];
@@ -40,19 +39,12 @@
 - (id) _initWithBonjourService: (MYBonjourService*)service {
     self = [super init];
     if (self) {
-        _service = [service retain];
+        _service = service;
         _addresses = [[NSMutableSet alloc] init];
     }
     return self;
 }
 
-- (void) dealloc
-{
-    [_hostname release];
-    [_addresses release];
-    [_service release];
-    [super dealloc];
-}
 
 
 - (NSString*) description
@@ -116,7 +108,6 @@
             LogTo(DNS,@"%@ lost %@ [TTL = %u]", self, address, ttl);
             kvRemoveFromSet(self, @"addresses", _addresses, address);
         }
-        [address release];
     }
     
     _expires = CFAbsoluteTimeGetCurrent() + ttl;
@@ -132,7 +123,7 @@ static void lookupCallback(DNSServiceRef                    sdRef,
                            uint32_t                         ttl,
                            void                             *context)
 {
-    MYAddressLookup *lookup = context;
+    MYAddressLookup *lookup = (__bridge MYAddressLookup *)(context);
     @try{
         LogTo(DNS, @"lookupCallback for %s (err=%i)", hostname,errorCode);
         if (errorCode)
@@ -152,7 +143,7 @@ static void lookupCallback(DNSServiceRef                    sdRef,
                                  _interfaceIndex, 
                                  kDNSServiceProtocol_IPv4,
                                  _hostname.UTF8String,
-                                 &lookupCallback, self);
+                                 &lookupCallback, (__bridge void *)(self));
 }
 
 
@@ -169,7 +160,6 @@ TestCase(MYAddressLookup) {
     [lookup start];
     
     [[NSRunLoop currentRunLoop] runUntilDate: [NSDate dateWithTimeIntervalSinceNow: 10]];
-    [lookup release];
 }    
 
 

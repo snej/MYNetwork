@@ -16,12 +16,6 @@
 @implementation TCPWriter
 
 
-- (void) dealloc
-{
-    [_queue release];
-    [_currentData release];
-    [super dealloc];
-}
 
 
 - (TCPReader*) reader
@@ -53,7 +47,7 @@
             [self queueIsEmpty]; // this may call -writeData, which will call _canWrite again
             return;
         }
-        _currentData = [_queue[0] retain];
+        _currentData = _queue[0];
         _currentDataPos = 0;
         LogTo(TCPVerbose,@"%@ using _currentData %p (%lu bytes)", self,_currentData,(unsigned long)_currentData.length);
         [_queue removeObjectAtIndex: 0];
@@ -70,7 +64,7 @@
         _currentDataPos += written;
     } else {
         LogTo(TCPVerbose,@"%@ wrote %li bytes, released %p", self,(long)written,_currentData);
-        setObj(&_currentData,nil);
+        (void)_currentData; _currentData = nil;
     }
 }
 

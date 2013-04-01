@@ -16,11 +16,11 @@
     @private
     NSString *_serviceType;
     BOOL _browsing;
-    Class _serviceClass;
+    Class __strong _serviceClass;
     NSMutableSet *_services, *_addServices, *_rmvServices;
     BOOL _pendingUpdate;
     MYBonjourRegistration *_myRegistration;
-    id _delegate;
+    id __strong _delegate;
 }
 
 /** Initializes a new MYBonjourBrowser.
@@ -28,7 +28,7 @@
     @param serviceType  The name of the service type to look for, e.g. "_http._tcp". */
 - (id) initWithServiceType: (NSString*)serviceType;
 
-@property (assign) id delegate;
+@property (strong) id delegate;
 
 /** Is the browser currently browsing? */
 @property (readonly) BOOL browsing;
@@ -41,7 +41,7 @@
 /** The class of objects to create to represent services.
     The default value is [MYBonjourService class]; you can change this, but only
     to a subclass of that. */
-@property (assign) Class serviceClass;
+@property (strong) Class serviceClass;
 
 /** My own registration for this service type.
     This object is created on demand and won't be started up until you tell it to.

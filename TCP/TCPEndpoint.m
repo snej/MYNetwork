@@ -11,6 +11,7 @@
 #import "CollectionUtils.h"
 #import "ExceptionUtils.h"
 #import <Security/Security.h>
+#import <objc/message.h>
 
 
 NSString* const kTCPPropertySSLClientSideAuthentication = @"kTCPPropertySSLClientSideAuthentication";
@@ -19,11 +20,6 @@ NSString* const kTCPPropertySSLClientSideAuthentication = @"kTCPPropertySSLClien
 @implementation TCPEndpoint
 
 
-- (void) dealloc
-{
-    [_sslProperties release];
-    [super dealloc];
-}
 
 
 - (NSMutableDictionary*) SSLProperties {return _sslProperties;}
@@ -31,7 +27,6 @@ NSString* const kTCPPropertySSLClientSideAuthentication = @"kTCPPropertySSLClien
 - (void) setSSLProperties: (NSMutableDictionary*)props
 {
     if( props != _sslProperties ) {
-        [_sslProperties release];
         _sslProperties = [props mutableCopy];
     }
 }
@@ -53,7 +48,7 @@ NSString* const kTCPPropertySSLClientSideAuthentication = @"kTCPPropertySSLClien
     Assert(identity);
     self.SSLProperties = $mdict(
              {(id)kCFStreamSSLLevel, NSStreamSocketSecurityLevelTLSv1},
-             {kTCPPropertySSLCertificates, $array((id)identity)},
+             {kTCPPropertySSLCertificates, $array((__bridge id)identity)},
              {kTCPPropertySSLAllowsAnyRoot, $true},
              {kTCPPropertySSLPeerName, [NSNull null]},
              {kTCPPropertySSLClientSideAuthentication, $object(kTCPAlwaysAuthenticate)});
@@ -63,7 +58,9 @@ NSString* const kTCPPropertySSLClientSideAuthentication = @"kTCPPropertySSLClien
 {
     if( [_delegate respondsToSelector: selector] ) {
         @try{
-            [_delegate performSelector: selector withObject: self withObject: param];
+            objc_msgSend(_delegate, selector, self, param);
+            //formerly [_delegate performSelector: selector withObject: self withObject: param];
+            // but the compiler doesn't like that with ARC
         }catchAndReport(@"%@ delegate",self.class);
     }
 }

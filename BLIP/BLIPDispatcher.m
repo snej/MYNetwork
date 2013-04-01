@@ -27,13 +27,6 @@
     return self;
 }
 
-- (void) dealloc
-{
-    [_targets release];
-    [_predicates release];
-    [_parent release];
-    [super dealloc];
-}
 
 
 @synthesize parent=_parent;

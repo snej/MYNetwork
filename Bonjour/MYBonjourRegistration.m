@@ -57,13 +57,6 @@ static NSMutableDictionary *sAllRegistrations;
     return self;
 }
 
-- (void) dealloc {
-    [_name release];
-    [_type release];
-    [_domain release];
-    [_txtRecord release];
-    [super dealloc];
-}
 
 
 @synthesize name=_name, type=_type, domain=_domain, port=_port, autoRename=_autoRename;
@@ -108,7 +101,7 @@ static void regCallback(DNSServiceRef                       sdRef,
                         const char                          *domain,
                         void                                *context)
 {
-    MYBonjourRegistration *reg = context;
+    MYBonjourRegistration *reg = (__bridge MYBonjourRegistration *)(context);
     @try{
         if (!errorCode)
             [reg priv_registeredAsName: @(name)
@@ -138,7 +131,7 @@ static void regCallback(DNSServiceRef                       sdRef,
                               txtData.length,
                               txtData.bytes,
                               &regCallback,
-                              self);
+                              (__bridge void *)(self));
     if (!err && _nullRecord)
         [self _updateNullRecord];
     return err;
@@ -272,7 +265,7 @@ static NSInteger compareData (id data1, id data2, void *context) {
 
 - (void) setTXTRecord: (NSDictionary*)txtDict {
     if (!$equal(_txtRecord,txtDict)) {
-        setObjCopy(&_txtRecord, txtDict);
+         _txtRecord = [ txtDict copy];
         [NSObject cancelPreviousPerformRequestsWithTarget: self selector: @selector(updateTXTRecord) object: nil];
         [self performSelector: @selector(updateTXTRecord) withObject: nil afterDelay: 0.1];
     }
@@ -298,9 +291,11 @@ static NSInteger compareData (id data1, id data2, void *context) {
 }
 
 - (void) setNullRecord: (NSData*)nullRecord {
-    if (ifSetObj(&_nullRecord, nullRecord))
+    if (!$equal(_nullRecord, nullRecord)) {
+        _nullRecord = [nullRecord copy];
         if (self.serviceRef)
             [self _updateNullRecord];
+    }
 }
 
 
@@ -378,8 +373,6 @@ static NSInteger compareData (id data1, id data2, void *context) {
     [_reg stop];
     [_reg removeObserver: self forKeyPath: @"registered"];
     [_reg removeObserver: self forKeyPath: @"name"];
-    [_reg release];
-    [super dealloc];
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
@@ -393,9 +386,9 @@ TestCase(BonjourReg) {
     EnableLogTo(Bonjour,YES);
     EnableLogTo(DNS,YES);
     [NSRunLoop currentRunLoop]; // create runloop
-    BonjourRegTester *tester = [[BonjourRegTester alloc] init];
+    __unused BonjourRegTester *tester = [[BonjourRegTester alloc] init];
     [[NSRunLoop currentRunLoop] runUntilDate: [NSDate dateWithTimeIntervalSinceNow: 15]];
-    [tester release];
+    tester = nil;
 }
 
 #endif

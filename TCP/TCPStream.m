@@ -32,8 +32,8 @@ static NSError* fixStreamError( NSError *error );
 {
     self = [super init];
     if (self != nil) {
-        _conn = [conn retain];
-        _stream = [stream retain];
+        _conn = conn;
+        _stream = stream;
         _stream.delegate = self;
         [_stream scheduleInRunLoop: [NSRunLoop currentRunLoop] forMode: NSRunLoopCommonModes];
         LogTo(TCPVerbose,@"%@ initialized; status=%li", self, (long)_stream.streamStatus);
@@ -47,18 +47,17 @@ static NSError* fixStreamError( NSError *error );
     LogTo(TCP,@"DEALLOC %@",self);
     if( _stream )
         [self disconnect];
-    [super dealloc];
 }
 
 
 - (id) propertyForKey: (CFStringRef)cfStreamProperty
 {
-    return [_stream propertyForKey: (NSString*)cfStreamProperty];
+    return [_stream propertyForKey: (__bridge NSString*)cfStreamProperty];
 }
 
 - (void) setProperty: (id)value forKey: (CFStringRef)cfStreamProperty
 {
-    if( ! [_stream setProperty: value forKey: (NSString*)cfStreamProperty] )
+    if( ! [_stream setProperty: value forKey: (__bridge NSString*)cfStreamProperty] )
         Warn(@"Failed to set property %@ on %@",cfStreamProperty,self);
 }
 
@@ -116,13 +115,11 @@ static NSError* fixStreamError( NSError *error );
         LogTo(TCP,@"Disconnect %@",self);
         _stream.delegate = nil;
         [_stream close];
-        setObj(&_stream,nil);
+        (void)_stream; _stream = nil;
     }
     if( _conn ) {
-        [self retain];
         [_conn _streamDisconnected: self];
-        setObj(&_conn,nil);
-        [self release];
+        (void)_conn; _conn = nil;
     }
 }
 
@@ -136,7 +133,7 @@ static NSError* fixStreamError( NSError *error );
     if( self.isBusy ) {
         return NO;
     } else {
-        [[self retain] autorelease];        // don't let myself be dealloced in the midst of this
+        MYDeferDealloc(self);  // don't let me be dealloced during this
         [_conn _streamCanClose: self];
         return YES;
     }
@@ -202,7 +199,7 @@ static NSError* fixStreamError( NSError *error );
 
 - (void) stream: (NSStream*)stream handleEvent: (NSStreamEvent)streamEvent 
 {
-    [[self retain] autorelease];
+    MYDeferDealloc(self);  // don't let me be dealloced during this
     switch(streamEvent) {
         case NSStreamEventOpenCompleted:
             LogTo(TCPVerbose,@"%@ opened",self);
@@ -286,7 +283,6 @@ static NSError* fixStreamError( NSError *error )
             }
             error = [NSError errorWithDomain: NSStreamSocketSSLErrorDomain
                                         code: code userInfo: userInfo];
-            [userInfo release];
         } else
             Warn(@"NSStream returned error with unknown domain: %@",error);
     }

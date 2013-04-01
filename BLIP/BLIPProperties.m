@@ -68,7 +68,7 @@ static const char* kAbbreviations[] = {
     // Complete -- try to create an object:
     BLIPProperties *props;
     if( length > sizeof(UInt16) )
-        props = [[[BLIPPackedProperties alloc] initWithBytes: bytes length: length] autorelease];
+        props = [[BLIPPackedProperties alloc] initWithBytes: bytes length: length];
     else
         props = [BLIPProperties properties];
     
@@ -79,7 +79,7 @@ static const char* kAbbreviations[] = {
 
 - (id) copyWithZone: (NSZone*)zone
 {
-    return [self retain];
+    return self;
 }
 
 - (id) mutableCopyWithZone: (NSZone*)zone
@@ -160,7 +160,6 @@ static const char* kAbbreviations[] = {
             
     fail:
         Warn(@"BLIPProperties: invalid data");
-        [self release];
         return nil;
     }
     return self;
@@ -170,13 +169,11 @@ static const char* kAbbreviations[] = {
 - (void) dealloc
 {
     if( _strings ) free(_strings);
-    [_data release];
-    [super dealloc];
 }
 
 - (id) copyWithZone: (NSZone*)zone
 {
-    return [self retain];
+    return self;
 }
 
 - (id) mutableCopyWithZone: (NSZone*)zone
@@ -208,8 +205,6 @@ static const char* kAbbreviations[] = {
         NSString *value = [[NSString alloc] initWithUTF8String: _strings[i+1]];
         if( key && value )
             props[key] = value;
-        [key release];
-        [value release];
     }
     return props;
 }
@@ -230,7 +225,7 @@ static const char* kAbbreviations[] = {
 
 + (BLIPProperties*) properties
 {
-    return [[[self alloc] initWithDictionary: nil] autorelease];
+    return [[self alloc] initWithDictionary: nil];
 }
 
 - (id) init
@@ -256,18 +251,13 @@ static const char* kAbbreviations[] = {
     return [self initWithDictionary: [properties allProperties]];
 }
 
-- (void) dealloc
-{
-    [_properties release];
-    [super dealloc];
-}
 
 - (id) copyWithZone: (NSZone*)zone
 {
     ssize_t usedLength;
     BLIPProperties *copy = [BLIPProperties propertiesWithEncodedData: self.encodedData usedLength: &usedLength];
     Assert(copy);
-    return [copy retain];
+    return copy;
 }
 
 
@@ -375,7 +365,7 @@ TestCase(BLIPProperties) {
     for( unsigned len=0; len<data.length; len++ ) {
         props = [BLIPProperties propertiesWithEncodedData: [data subdataWithRange: NSMakeRange(0,len)]
                                                                 usedLength: &used];
-        CAssertEq(props,nil);
+        CAssertEq(props,(id)nil);
         CAssertEq(used,0);
     }
     props = [BLIPProperties propertiesWithEncodedData: data usedLength: &used];
@@ -387,7 +377,6 @@ TestCase(BLIPProperties) {
     for( NSString *prop in all )
         CAssertEqual([props valueOfProperty: prop],all[prop]);
 	
-	[mprops release];
 }
 
 

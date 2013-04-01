@@ -37,13 +37,6 @@
     return self;
 }
 
-- (void) dealloc
-{
-    [_pendingRequests release];
-    [_pendingResponses release];
-    [_curBody release];
-    [super dealloc];
-}
 
 - (void) disconnect
 {
@@ -51,7 +44,7 @@
         [response _connectionClosed];
         [_conn tellDelegate: @selector(connection:receivedResponse:) withObject: response];
     }
-    setObj(&_pendingResponses,nil);
+    (void)_pendingResponses; _pendingResponses = nil;
     [super disconnect];
 }
 
@@ -82,12 +75,10 @@
 
 - (void) _endCurFrame
 {
-    [self retain];
     [self _receivedFrameWithHeader: &_curHeader body: _curBody];
     memset(&_curHeader,0,sizeof(_curHeader));
-    setObj(&_curBody,nil);
+    (void)_curBody; _curBody = nil;
     _curBytesRead = 0;
-    [self release];
 }
 
 
@@ -172,17 +163,15 @@
             if( request ) {
                 // Continuation frame of a request:
                 if( complete ) {
-                    [[request retain] autorelease];
                     [_pendingRequests removeObjectForKey: key];
                 }
             } else if( header->number == _numRequestsReceived+1 ) {
                 // Next new request:
-                request = [[[BLIPRequest alloc] _initWithConnection: _blipConn
+                request = [[BLIPRequest alloc] _initWithConnection: _blipConn
                                                          isMine: NO
                                                           flags: header->flags | kBLIP_MoreComing
                                                          number: header->number
-                                                           body: nil]
-                                autorelease];
+                                                           body: nil];
                 if( ! complete )
                     _pendingRequests[key] = request;
                 _numRequestsReceived++;
@@ -206,7 +195,6 @@
             BLIPResponse *response = _pendingResponses[key];
             if( response ) {
                 if( complete ) {
-                    [[response retain] autorelease];
                     [_pendingResponses removeObjectForKey: key];
                 }
                 

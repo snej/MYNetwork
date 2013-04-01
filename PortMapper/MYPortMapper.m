@@ -19,7 +19,7 @@ NSString* const MYPortMapperChangedNotification = @"MYPortMapperChanged";
 
 
 @interface MYPortMapper ()
-@property (retain) IPAddress* publicAddress, *localAddress; // redeclare as settable
+@property (strong) IPAddress* publicAddress, *localAddress; // redeclare as settable
 - (void) priv_updateLocalAddress;
 @end
 
@@ -51,12 +51,6 @@ NSString* const MYPortMapperChangedNotification = @"MYPortMapperChanged";
 }
 
 
-- (void) dealloc
-{
-    [_publicAddress release];
-    [_localAddress release];
-    [super dealloc];
-}
 
 
 @synthesize localAddress=_localAddress, publicAddress=_publicAddress,
@@ -79,7 +73,7 @@ NSString* const MYPortMapperChangedNotification = @"MYPortMapperChanged";
 
 static IPAddress* makeIPAddr( UInt32 rawAddr, UInt16 port ) {
     if (rawAddr)
-        return [[[IPAddress alloc] initWithIPv4: rawAddr port: port] autorelease];
+        return [[IPAddress alloc] initWithIPv4: rawAddr port: port];
     else
         return nil;
 }
@@ -129,7 +123,7 @@ static void portMapCallback (
                       )
 {
     @try{
-        [(MYPortMapper*)context priv_portMapStatus: errorCode 
+        [(__bridge MYPortMapper*)context priv_portMapStatus: errorCode
                                      publicAddress: publicAddress
                                         publicPort: ntohs(publicPort)];  // port #s in network byte order!
     }catchAndReport(@"PortMapper");
@@ -148,7 +142,7 @@ static void portMapCallback (
                                           htons(_desiredPublicPort),
                                           0 /*ttl*/,
                                           &portMapCallback, 
-                                          self);
+                                          (__bridge void *)(self));
 }
 
 
@@ -168,10 +162,9 @@ static void portMapCallback (
     MYPortMapper *mapper = [[self alloc] initWithNullMapping];
     mapper.continuous = NO;
     if( [mapper waitTillOpened] )
-        addr = [mapper.publicAddress retain];
+        addr = mapper.publicAddress;
     [mapper stop];
-    [mapper release];
-    return [addr autorelease];
+    return addr;
 }
 
 

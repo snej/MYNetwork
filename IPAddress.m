@@ -48,7 +48,6 @@
     if (self != nil) {
         _ipv4 = [[self class] IPv4FromDottedQuadString: hostname];
         if( ! _ipv4 ) {
-            [self release];
             return [[HostAddress alloc] initWithHostname: hostname port: port];
         }
         _port = port;
@@ -58,7 +57,7 @@
 
 + (IPAddress*) addressWithHostname: (NSString*)hostname port: (UInt16)port
 {
-    return [[[self alloc] initWithHostname: hostname port: port] autorelease];
+    return [[self alloc] initWithHostname: hostname port: port];
 }
 
 
@@ -79,11 +78,10 @@
 
 - (id) initWithSockAddr: (const struct sockaddr*)sockaddr
 {
-    if( sockaddr->sa_family == AF_INET ) {
+    if (sockaddr && sockaddr->sa_family == AF_INET) {
         const struct sockaddr_in *addr_in = (const struct sockaddr_in*)sockaddr;
         return [self initWithIPv4: addr_in->sin_addr.s_addr port: ntohs(addr_in->sin_port)];
     } else {
-        [self release];
         return nil;
     }
 }
@@ -100,7 +98,6 @@
 - (id) initWithData: (NSData*)data
 {
     if (!data) {
-        [self release];
         return nil;
     }
     const struct sockaddr* addr = data.bytes;
@@ -116,14 +113,14 @@
     socklen_t namelen = sizeof(name);
     struct sockaddr *addr = (struct sockaddr*)name;
     if (0 == getpeername(socket, addr, &namelen))
-        return [[[self alloc] initWithSockAddr: addr] autorelease];
+        return [[self alloc] initWithSockAddr: addr];
     else
         return nil;
 }    
 
 - (id) copyWithZone: (NSZone*)zone
 {
-    return [self retain];
+    return self;
 }
 
 - (void)encodeWithCoder:(NSCoder *)coder
@@ -216,7 +213,7 @@
         }
         freeifaddrs(interfaces);
     }
-    return [[[self alloc] initWithIPv4: address port: port] autorelease];
+    return [[self alloc] initWithIPv4: address port: port];
 }
 
 + (IPAddress*) localAddress
@@ -262,7 +259,6 @@ static struct {UInt32 mask, value;} const kPrivateRanges[] = {
     self = [super initWithIPv4: 0 port: port];
     if( self ) {
         if( [hostname length]==0 ) {
-            [self release];
             return nil;
         }
         _hostname = [hostname copy];
@@ -275,7 +271,6 @@ static struct {UInt32 mask, value;} const kPrivateRanges[] = {
                    port: (UInt16)port;
 {
     if( [hostname length]==0 ) {
-        [self release];
         return nil;
     }
     self = [super initWithSockAddr: sockaddr port: port];
@@ -301,16 +296,11 @@ static struct {UInt32 mask, value;} const kPrivateRanges[] = {
     return self;
 }
 
-- (void)dealloc 
-{
-    [_hostname release];
-    [super dealloc];
-}
 
 
 - (NSString*) description
 {
-    NSMutableString *desc = [[_hostname mutableCopy] autorelease];
+    NSMutableString *desc = [_hostname mutableCopy];
     NSString *addr = self.ipv4name;
     if (addr)
         [desc appendFormat: @"(%@)", addr];
@@ -342,7 +332,10 @@ static struct {UInt32 mask, value;} const kPrivateRanges[] = {
 
 - (BOOL) isSameHost: (IPAddress*)addr
 {
-    return [addr isKindOfClass: [HostAddress class]] && [_hostname caseInsensitiveCompare: addr.hostname]==0;
+    if (![addr isKindOfClass: [HostAddress class]])
+        return NO;
+    NSString* addrHost = addr.hostname;
+    return addrHost != nil && [_hostname caseInsensitiveCompare: addrHost]==0;
 }
 
 
@@ -413,7 +406,6 @@ TestCase(IPAddress) {
     CAssertEqual(addr.hostname,@"10.0.1.254");
     CAssertEqual(addr.description,@"10.0.1.254:8080");
     CAssert(addr.isPrivate);
-	[addr release];
     
     addr = [[IPAddress alloc] initWithHostname: @"66.66.0.255" port: 123];
     CAssertEq(addr.class,[IPAddress class]);
@@ -422,7 +414,6 @@ TestCase(IPAddress) {
     CAssertEqual(addr.hostname,@"66.66.0.255");
     CAssertEqual(addr.description,@"66.66.0.255:123");
     CAssert(!addr.isPrivate);
- 	[addr release];
    
     addr = [[IPAddress alloc] initWithHostname: @"www.apple.com" port: 80];
     CAssertEq(addr.class,[HostAddress class]);
@@ -432,7 +423,6 @@ TestCase(IPAddress) {
     CAssertEqual(addr.hostname,@"www.apple.com");
     CAssertEqual(addr.description,@"www.apple.com:80");
     CAssert(!addr.isPrivate);
-	[addr release];
 }
 
 

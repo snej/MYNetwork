@@ -53,12 +53,6 @@ static void browseCallback (DNSServiceRef                       sdRef,
 {
     LogTo(Bonjour,@"DEALLOC MYBonjourBrowser");
     [_myRegistration cancel];
-    [_myRegistration release];
-    [_serviceType release];
-    [_services release];
-    [_addServices release];
-    [_rmvServices release];
-    [super dealloc];
 }
 
 
@@ -76,7 +70,7 @@ static void browseCallback (DNSServiceRef                       sdRef,
                             kDNSServiceFlagsShareConnection, 
                             0,
                             _serviceType.UTF8String, NULL,
-                            &browseCallback, self);
+                            &browseCallback, (__bridge void *)(self));
 }
 
 
@@ -100,14 +94,12 @@ static void browseCallback (DNSServiceRef                       sdRef,
     if ([_myRegistration isSameAsService: service]) {
         // This is an echo of my own registration, so ignore it
         LogTo(Bonjour,@"%@ ignoring echo %@", self,service);
-        [service release];
         return;
     }
     MYBonjourService *existingService = [_services member: service];
     if( existingService ) {
         // Use existing service object instead of creating a new one
-        [service release];
-        service = [existingService retain];
+        service = existingService;
     }
     
     // Add it to the add/remove sets:
@@ -123,7 +115,6 @@ static void browseCallback (DNSServiceRef                       sdRef,
         [removeFrom removeObject: service];
     else
         [addTo addObject: service];
-    [service release];
     
     // Schedule a (single) call to _updateServiceList:
     if (!_pendingUpdate) {
@@ -170,7 +161,7 @@ static void browseCallback (DNSServiceRef        sdRef,
                             const char           *replyDomain,
                             void                 *context)
 {
-    MYBonjourBrowser *browser = context;
+    MYBonjourBrowser *browser = (__bridge MYBonjourBrowser *)(context);
     @try{
         LogTo(Bonjour,@"browseCallback (error=%i, name='%s', intf=%u)", errorCode,serviceName,interfaceIndex);
         if (!errorCode)
@@ -243,8 +234,6 @@ static void browseCallback (DNSServiceRef        sdRef,
     [_browser stop];
     [_browser removeObserver: self forKeyPath: @"services"];
     [_browser removeObserver: self forKeyPath: @"browsing"];
-    [_browser release];
-    [super dealloc];
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
@@ -279,9 +268,9 @@ TestCase(Bonjour) {
     EnableLogTo(Bonjour,YES);
     EnableLogTo(DNS,YES);
     [NSRunLoop currentRunLoop]; // create runloop
-    BonjourTester *tester = [[BonjourTester alloc] init];
+    __unused BonjourTester *tester = [[BonjourTester alloc] init];
     [[NSRunLoop currentRunLoop] runUntilDate: [NSDate dateWithTimeIntervalSinceNow: 1500]];
-    [tester release];
+    tester = nil;
 }
 
 #endif

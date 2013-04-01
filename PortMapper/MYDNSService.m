@@ -30,15 +30,8 @@ static void serviceCallback(CFSocketRef s,
     LogTo(DNS, @"DEALLOC %@ %p", self.class,self);
     if( _serviceRef )
         [self cancel];
-    [super dealloc];
 }
 
-- (void) finalize
-{
-    if( _serviceRef )
-        [self cancel];
-    [super finalize];
-}
 
 
 - (DNSServiceErrorType) error {
@@ -81,7 +74,7 @@ static void serviceCallback(CFSocketRef s,
     _gotResponse = NO;
 
     if (!_usePrivateConnection) {
-        _connection = [[MYDNSConnection sharedConnection] retain];
+        _connection = [MYDNSConnection sharedConnection];
         if (!_connection) {
             self.error = kDNSServiceErr_Unknown;
             return NO;
@@ -93,7 +86,7 @@ static void serviceCallback(CFSocketRef s,
     _error = [self createServiceRef: &_serviceRef];
     if (_error) {
         _serviceRef = NULL;
-        setObj(&_connection,nil);
+        (void)_connection; _connection = nil;
         if (!_error)
             self.error = kDNSServiceErr_Unknown;
         LogTo(DNS,@"%@ failed to open -- err=%i",self,(int)_error);
@@ -130,7 +123,7 @@ static void serviceCallback(CFSocketRef s,
         DNSServiceRefDeallocate(_serviceRef);
         _serviceRef = NULL;
         
-        setObj(&_connection,nil);
+        (void)_connection; _connection = nil;
     }
 }
 
@@ -187,7 +180,6 @@ MYDNSConnection *sSharedConnection;
     DNSServiceErrorType err = DNSServiceCreateConnection(&connectionRef);
     if (err || !connectionRef) {
         Warn(@"MYDNSConnection: DNSServiceCreateConnection failed, err=%i", err);
-        [self release];
         return nil;
     }
     return [self initWithServiceRef: connectionRef];
@@ -202,7 +194,6 @@ MYDNSConnection *sSharedConnection;
         _connectionRef = serviceRef;
         LogTo(DNS,@"INIT %@", self);
         if (![self open]) {
-            [self release];
             return nil;
         }
     }
@@ -213,7 +204,7 @@ MYDNSConnection *sSharedConnection;
 + (MYDNSConnection*) sharedConnection {
     @synchronized(self) {
         if (!sSharedConnection)
-            sSharedConnection = [[[self alloc] init] autorelease];
+            sSharedConnection = [[self alloc] init];
     }
     return sSharedConnection;
 }
@@ -223,13 +214,8 @@ MYDNSConnection *sSharedConnection;
 {
     LogTo(DNS,@"DEALLOC %@", self);
     [self close];
-    [super dealloc];
 }
 
-- (void) finalize {
-    [self close];
-    [super finalize];
-}
 
 
 @synthesize connectionRef=_connectionRef;
@@ -243,7 +229,7 @@ MYDNSConnection *sSharedConnection;
         return YES;        // Already opened
     
     // Wrap a CFSocket around the service's socket:
-    CFSocketContext ctxt = { 0, self, CFRetain, CFRelease, NULL };
+    CFSocketContext ctxt = { 0, (__bridge void *)(self), CFRetain, CFRelease, NULL };
     _socket = CFSocketCreateWithNative(NULL, 
                                                        DNSServiceRefSockFD(_connectionRef), 
                                                        kCFSocketReadCallBack, 
@@ -293,17 +279,17 @@ MYDNSConnection *sSharedConnection;
 
 
 - (BOOL) processResult {
-    NSAutoreleasePool *pool = [NSAutoreleasePool new];
-    LogTo(DNS,@"---serviceCallback----");
-    DNSServiceErrorType err = DNSServiceProcessResult(_connectionRef);
-    if (err) {
-        Warn(@"%@: DNSServiceProcessResult failed, err=%i !!!", self,err);
-        //FIX: Are errors here fatal, meaning I should close the connection?
-        // I've run into infinite loops constantly getting kDNSServiceErr_ServiceNotRunning
-        // or kDNSServiceErr_BadReference ...
+    @autoreleasepool {
+        LogTo(DNS,@"---serviceCallback----");
+        DNSServiceErrorType err = DNSServiceProcessResult(_connectionRef);
+        if (err) {
+            Warn(@"%@: DNSServiceProcessResult failed, err=%i !!!", self,err);
+            //FIX: Are errors here fatal, meaning I should close the connection?
+            // I've run into infinite loops constantly getting kDNSServiceErr_ServiceNotRunning
+            // or kDNSServiceErr_BadReference ...
+        }
+        return !err;
     }
-    [pool drain];
-    return !err;
 }
 
 
@@ -314,7 +300,7 @@ static void serviceCallback(CFSocketRef s,
                             CFSocketCallBackType type,
                             CFDataRef address, const void *data, void *clientCallBackInfo)
 {
-    MYDNSConnection *connection = clientCallBackInfo;
+    MYDNSConnection *connection = (__bridge MYDNSConnection*)clientCallBackInfo;
     [connection processResult];
 }
 

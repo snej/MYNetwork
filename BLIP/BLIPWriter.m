@@ -20,16 +20,11 @@
 @implementation BLIPWriter
 
 
-- (void) dealloc
-{
-    [_outBox release];
-    [super dealloc];
-}
 
 - (void) disconnect
 {
     [_outBox makeObjectsPerformSelector: @selector(_connectionClosed) withObject: nil];
-    setObj(&_outBox,nil);
+    (void)_outBox; _outBox = nil;
     [super disconnect];
 }
 
@@ -104,7 +99,7 @@
 {
     if( _outBox.count > 0 ) {
         // Pop first message in queue:
-        BLIPMessage *msg = [_outBox[0] retain];
+        BLIPMessage *msg = _outBox[0];
         [_outBox removeObjectAtIndex: 0];
         
         // As an optimization, allow message to send a big frame unless there's a higher-priority
@@ -117,7 +112,6 @@
             // add it back so it can send its next frame later:
             [self _queueMessage: msg isNew: NO];
         }
-        [msg release];
     } else {
         LogTo(BLIPVerbose,@"%@: no more work for writer",self);
     }

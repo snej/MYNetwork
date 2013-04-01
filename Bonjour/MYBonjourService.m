@@ -44,7 +44,7 @@ NSString* const kBonjourServiceResolvedAddressesNotification = @"BonjourServiceR
         _name = [serviceName copy];
         _type = [type copy];
         _domain = [domain copy];
-        _fullName = [[[self class] fullNameOfService: _name ofType: _type inDomain: _domain] retain];
+        _fullName = [[self class] fullNameOfService: _name ofType: _type inDomain: _domain];
         _interfaceIndex = interfaceIndex;
     }
     return self;
@@ -52,15 +52,7 @@ NSString* const kBonjourServiceResolvedAddressesNotification = @"BonjourServiceR
 
 - (void) dealloc {
     [_txtQuery stop];
-    [_txtQuery release];
     [_addressLookup stop];
-    [_addressLookup release];
-    [_name release];
-    [_type release];
-    [_domain release];
-    [_fullName release];
-    [_hostname release];
-    [super dealloc];
 }
 
 
@@ -103,7 +95,6 @@ NSString* const kBonjourServiceResolvedAddressesNotification = @"BonjourServiceR
     [self stop];
     
     [_txtQuery stop];
-    [_txtQuery release];
     _txtQuery = nil;
     
     [_addressLookup stop];
@@ -152,7 +143,7 @@ NSString* const kBonjourServiceResolvedAddressesNotification = @"BonjourServiceR
     NSString *str = [[NSString alloc] initWithData: value encoding: NSUTF8StringEncoding];
     if( ! str )
         str = [[NSString alloc] initWithData: value encoding: NSWindowsCP1252StringEncoding];
-    return [str autorelease];
+    return str;
 }
 
 - (void) setTxtData: (NSData*)txtData {
@@ -160,7 +151,7 @@ NSString* const kBonjourServiceResolvedAddressesNotification = @"BonjourServiceR
     if (!$equal(txtRecord,_txtRecord)) {
         LogTo(Bonjour,@"%@ TXT = %@", self,txtRecord);
         [self willChangeValueForKey: @"txtRecord"];
-        setObj(&_txtRecord, txtRecord);
+         _txtRecord = txtRecord;
         [self didChangeValueForKey: @"txtRecord"];
         [self txtRecordChanged];
     }
@@ -209,7 +200,7 @@ static void resolveCallback(DNSServiceRef                       sdRef,
                             const unsigned char                 *txtRecord,
                             void                                *context)
 {
-    MYBonjourService *service = context;
+    MYBonjourService *service = (__bridge MYBonjourService *)(context);
     @try{
         //LogTo(Bonjour, @"resolveCallback for %@ (err=%i)", service,errorCode);
         if (!errorCode) {
@@ -231,7 +222,7 @@ static void resolveCallback(DNSServiceRef                       sdRef,
                              kDNSServiceFlagsShareConnection,
                              _interfaceIndex, 
                              _name.UTF8String, _type.UTF8String, _domain.UTF8String,
-                             &resolveCallback, self);
+                             &resolveCallback, (__bridge void *)(self));
 }
 
 
@@ -249,8 +240,7 @@ static void resolveCallback(DNSServiceRef                       sdRef,
 
 
 - (MYBonjourQuery*) queryForRecord: (UInt16)recordType {
-    MYBonjourQuery *query = [[[MYBonjourQuery alloc] initWithBonjourService: self recordType: recordType]
-                                 autorelease];
+    MYBonjourQuery *query = [[MYBonjourQuery alloc] initWithBonjourService: self recordType: recordType];
     return [query start] ?query :nil;
 }
 

@@ -39,7 +39,7 @@
 /** BLIPRequest extends the -connection property to be settable.
     This allows a request to be created without a connection (i.e. before the connection is created).
     It can later be sent by setting the connection property and calling -send. */
-@property (retain) BLIPConnection *connection;
+@property (strong) BLIPConnection *connection;
 
 /** Sends this request over its connection.
     (Actually, the connection queues it to be sent; this method always returns immediately.)
@@ -88,7 +88,7 @@
 @interface BLIPResponse : BLIPMessage
 {
     @private
-    NSError *_error;
+    //NSError *_error;
     MYTarget *_onComplete;
 }
 
@@ -96,11 +96,11 @@
 - (BOOL) send;
 
 /** The error returned by the peer, or nil if the response is successful. */
-@property (retain) NSError* error;
+@property (strong) NSError* error;
 
 /** Sets a target/action to be called when an incoming response is complete.
     Use this on the response returned from -[BLIPRequest send], to be notified when the response is available. */
-@property (retain) MYTarget *onComplete;
+@property (strong) MYTarget *onComplete;
 
 
 @end

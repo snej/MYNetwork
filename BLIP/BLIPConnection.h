@@ -25,7 +25,7 @@
 }
 
 /** The delegate object that will be called when the connection opens, closes or receives messages. */
-@property (assign) id<BLIPConnectionDelegate> delegate;
+@property (strong) id<BLIPConnectionDelegate> delegate;
 
 /** The connection's request dispatcher. By default it's not configured to do anything; but you
     can add rules to the dispatcher to call specific target methods based on properties of the

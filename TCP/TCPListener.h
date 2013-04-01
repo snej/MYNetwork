@@ -41,7 +41,7 @@
     BOOL _bonjourPublished;
     NSInteger /*NSNetServicesError*/ _bonjourError;
 
-    Class _connectionClass;
+    Class __strong _connectionClass;
 }
 
 /** Initializes a new TCPListener that will listen on the given port when opened.
@@ -50,11 +50,11 @@
 - (id) initWithPort: (UInt16)port;
 
 /** The subclass of TCPConnection that will be instantiated. */
-@property (assign) Class connectionClass;
+@property (strong) Class connectionClass;
 
 /** Delegate object that will be called when interesting things happen to the listener --
     most importantly, when a new incoming connection is accepted. */
-@property (assign) id<TCPListenerDelegate> delegate;
+@property (strong) id<TCPListenerDelegate> delegate;
 
 /** Should the server listen for IPv6 connections (on the same port number)? Defaults to NO. */
 @property BOOL useIPv6;

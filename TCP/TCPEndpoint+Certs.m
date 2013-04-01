@@ -24,19 +24,17 @@
         return @"(null)";
     NSString *desc;
 #if TARGET_OS_IPHONE && !defined(__SEC_TYPES__)
-    CFStringRef summary = NULL;
-    SecCertificateCopySubjectSummary(cert);
+    NSString* summary = CFBridgingRelease(SecCertificateCopySubjectSummary(cert));
     desc = $sprintf(@"Certificate[%@]", summary);
-    if(summary) CFRelease(summary);
 #else
-    CFStringRef name=NULL;
-    CFArrayRef emails=NULL;
-    SecCertificateCopyCommonName(cert, &name);
-    SecCertificateCopyEmailAddresses(cert, &emails);
+    CFStringRef cfName=NULL;
+    CFArrayRef cfEmails=NULL;
+    SecCertificateCopyCommonName(cert, &cfName);
+    SecCertificateCopyEmailAddresses(cert, &cfEmails);
+    NSString* name = CFBridgingRelease(cfName);
+    NSArray* emails = CFBridgingRelease(cfEmails);
     desc = $sprintf(@"Certificate[\"%@\", <%@>]",
-                    name, [(NSArray*)emails componentsJoinedByString: @">, <"]);
-    if(name) CFRelease(name);
-    if(emails) CFRelease(emails);
+                    name, [emails componentsJoinedByString: @">, <"]);
 #endif
     return desc;
 }

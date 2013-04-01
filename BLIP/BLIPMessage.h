@@ -50,7 +50,7 @@ NSError *BLIPMakeError( int errorCode, NSString *message, ... ) __attribute__ ((
 };
 
 /** The BLIPConnection associated with this message. */
-@property (readonly,retain) BLIPConnection *connection;
+@property (readonly,strong) BLIPConnection *connection;
 
 /** This message's serial number in its connection.
     A BLIPRequest's number is initially zero, then assigned when it's sent.
@@ -92,7 +92,7 @@ NSError *BLIPMakeError( int errorCode, NSString *message, ... ) __attribute__ ((
 
 /** An arbitrary object that you can associate with this message for your own purposes.
     The message retains it, but doesn't do anything else with it. */
-@property (retain) id representedObject;
+@property (strong) id representedObject;
 
 #pragma mark PROPERTIES:
 

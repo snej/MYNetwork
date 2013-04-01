@@ -41,7 +41,7 @@
 
 + (BLIPRequest*) requestWithBody: (NSData*)body
 {
-    return [[[self alloc] _initWithConnection: nil body: body properties: nil] autorelease];
+    return [[self alloc] _initWithConnection: nil body: body properties: nil];
 }
 
 + (BLIPRequest*) requestWithBodyString: (NSString*)bodyString {
@@ -51,7 +51,7 @@
 + (BLIPRequest*) requestWithBody: (NSData*)body
                       properties: (NSDictionary*)properties
 {
-    return [[[self alloc] _initWithConnection: nil body: body properties: properties] autorelease];
+    return [[self alloc] _initWithConnection: nil body: body properties: properties];
 }
 
 - (id)mutableCopyWithZone:(NSZone *)zone
@@ -62,15 +62,10 @@
     copy.compressed = self.compressed;
     copy.urgent = self.urgent;
     copy.noReply = self.noReply;
-    return [copy retain];
+    return copy;
 }
 
 
-- (void) dealloc
-{
-    [_response release];
-    [super dealloc];
-}
 
 
 - (BOOL) noReply                            {return (_flags & kBLIP_NoReply) != 0;}
@@ -80,7 +75,7 @@
 - (void) setConnection: (BLIPConnection*)conn
 {
     Assert(_isMine && !_sent,@"Connection can only be set before sending");
-    setObj(&_connection,conn);
+     _connection = conn;
 }
 
 
@@ -177,12 +172,6 @@
     return self;
 }
 
-- (void) dealloc
-{
-    [_error release];
-    [_onComplete release];
-    [super dealloc];
-}
 
 
 - (NSError*) error
@@ -190,7 +179,7 @@
     if( ! (_flags & kBLIP_ERR) )
         return nil;
     
-    NSMutableDictionary *userInfo = [[[self.properties allProperties] mutableCopy] autorelease];
+    NSMutableDictionary *userInfo = [[self.properties allProperties] mutableCopy];
     NSString *domain = userInfo[@"Error-Domain"];
     int code = [userInfo[@"Error-Code"] intValue];
     if( domain==nil || code==0 ) {
@@ -210,8 +199,8 @@
         // Setting this stuff is a PITA because this object might be technically immutable,
         // in which case the standard setters would barf if I called them.
         _flags |= kBLIP_ERR;
-        setObj(&_body,nil);
-        setObj(&_mutableBody,nil);
+        (void)_body; _body = nil;
+        (void)_mutableBody; _mutableBody = nil;
         
         BLIPMutableProperties *errorProps = [self.properties mutableCopy];
         if( ! errorProps )
@@ -224,8 +213,7 @@
         }
         [errorProps setValue: error.domain ofProperty: @"Error-Domain"];
         [errorProps setValue: $sprintf(@"%li",(long)error.code) ofProperty: @"Error-Code"];
-        setObj(&_properties,errorProps);
-        [errorProps release];
+         _properties = errorProps;
         
     } else {
         _flags |= kBLIP_RPY;
@@ -277,7 +265,6 @@
                                   @"Connection closed before response was received");
         // Change incoming response to an error:
         _isMutable = YES;
-        [_properties autorelease];
         _properties = [_properties mutableCopy];
         [self _setError: error];
         _isMutable = NO;

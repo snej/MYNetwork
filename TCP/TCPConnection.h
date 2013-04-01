@@ -59,7 +59,7 @@ typedef enum {
 @property NSTimeInterval openTimeout;
 
 /** The delegate object that will be called when the connection opens, closes or receives messages. */
-@property (assign) id<TCPConnectionDelegate> tcpDelegate;
+@property (strong) id<TCPConnectionDelegate> tcpDelegate;
 
 /** The certificate(s) of the connected peer, if this connection uses SSL.
     The items in the array are SecCertificateRefs; use the Keychain API to work with them. */
@@ -87,7 +87,7 @@ typedef enum {
 + (void) waitTillAllClosed;
 
 /** The IP address of the other peer. */
-@property (readonly,retain) IPAddress *address;
+@property (readonly,strong) IPAddress *address;
 
 /** The TCPListener that created this incoming connection, or nil */
 @property (readonly) TCPListener *server;

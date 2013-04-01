@@ -29,7 +29,6 @@ NSError *BLIPMakeError( int errorCode, NSString *message, ... )
     va_end(args);
     LogTo(BLIP,@"BLIPError #%i: %@",errorCode,message);
     NSDictionary *userInfo = @{NSLocalizedDescriptionKey: message};
-    [message release];
     return [NSError errorWithDomain: BLIPErrorDomain code: errorCode userInfo: userInfo];
 }
 
@@ -42,11 +41,6 @@ NSError *BLIPMakeError( int errorCode, NSString *message, ... )
 @implementation BLIPConnection
 
 
-- (void) dealloc
-{
-    [_dispatcher release];
-    [super dealloc];
-}
 
 - (Class) readerClass                                       {return [BLIPReader class];}
 - (Class) writerClass                                       {return [BLIPWriter class];}
@@ -119,13 +113,13 @@ NSError *BLIPMakeError( int errorCode, NSString *message, ... )
 
 - (BLIPRequest*) request
 {
-    return [[[BLIPRequest alloc] _initWithConnection: self body: nil properties: nil] autorelease];
+    return [[BLIPRequest alloc] _initWithConnection: self body: nil properties: nil];
 }
 
 - (BLIPRequest*) requestWithBody: (NSData*)body
                       properties: (NSDictionary*)properties
 {
-    return [[[BLIPRequest alloc] _initWithConnection: self body: body properties: properties] autorelease];
+    return [[BLIPRequest alloc] _initWithConnection: self body: body properties: properties];
 }
 
 - (BLIPResponse*) sendRequest: (BLIPRequest*)request
@@ -134,7 +128,7 @@ NSError *BLIPMakeError( int errorCode, NSString *message, ... )
         // This was an incoming request that I'm being asked to forward or echo;
         // or it's an outgoing request being sent to multiple connections.
         // Since a particular BLIPRequest can only be sent once, make a copy of it to send:
-        request = [[request mutableCopy] autorelease];
+        request = [request mutableCopy];
     }
     BLIPConnection *itsConnection = request.connection;
     if( itsConnection==nil )
@@ -211,11 +205,6 @@ NSError *BLIPMakeError( int errorCode, NSString *message, ... )
     return self;
 }
 
-- (void) dealloc
-{
-    [_dispatcher release];
-    [super dealloc];
-}
 
 - (BLIPDispatcher*) dispatcher
 {

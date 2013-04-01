@@ -51,7 +51,7 @@ static SecIdentityRef ChooseIdentity( NSString *prompt ) {
     SecIdentitySearchCreate(kc, CSSM_KEYUSE_ANY, &search);
     SecIdentityRef identity;
     while (SecIdentitySearchCopyNext(search, &identity) == noErr) {
-        [identities addObject: (id)identity];
+        [identities addObject: (__bridge id)identity];
 		CFRelease( identity );
 	}
     CFRelease(search);
@@ -96,10 +96,9 @@ static SecIdentityRef GetListenerIdentity(void) {
     if (self != nil) {
         Log(@"** INIT %@",self);
         _pending = [[NSMutableDictionary alloc] init];
-        IPAddress *addr = [[[IPAddress alloc] initWithHostname: kListenerHost port: kListenerPort] autorelease];
+        IPAddress *addr = [[IPAddress alloc] initWithHostname: kListenerHost port: kListenerPort];
         _conn = [[BLIPConnection alloc] initToAddress: addr];
         if( ! _conn ) {
-            [self release];
             return nil;
         }
         if( kClientUsesSSLCert ) {
@@ -119,8 +118,6 @@ static SecIdentityRef GetListenerIdentity(void) {
 {
     Log(@"** %@ closing",self);
     [_conn close];
-    [_conn release];
-    [super dealloc];
 }
 
 - (void) sendAMessage
@@ -198,7 +195,7 @@ static SecIdentityRef GetListenerIdentity(void) {
         Warn(@"** %@ didClose: %@", connection,connection.error);
     else
         Log(@"** %@ didClose", connection);
-    setObj(&_conn,nil);
+    _conn = nil;
     [NSObject cancelPreviousPerformRequestsWithTarget: self];
     CFRunLoopStop(CFRunLoopGetCurrent());
 }
@@ -254,7 +251,6 @@ TestCase(BLIPConnection) {
     [[NSRunLoop currentRunLoop] run];
     
     Log(@"** Runloop stopped");
-    [tester release];
 }
 
 
@@ -298,8 +294,6 @@ TestCase(BLIPConnection) {
 {
     Log(@"%@ closing",self);
     [_listener close];
-    [_listener release];
-    [super dealloc];
 }
 
 - (void) listener: (TCPListener*)listener didAcceptConnection: (TCPConnection*)connection
@@ -343,7 +337,6 @@ TestCase(BLIPConnection) {
         Warn(@"** %@ didClose: %@", connection,connection.error);
     else
         Log(@"** %@ didClose", connection);
-    [connection release];
 }
 - (BOOL) connection: (BLIPConnection*)connection receivedRequest: (BLIPRequest*)request
 {
@@ -396,19 +389,18 @@ TestCase(BLIPListener) {
     EnableLogTo(PortMapper,YES);
     EnableLogTo(Bonjour,YES);
     SecKeychainSetUserInteractionAllowed(true);
-    BLIPTestListener *listener = [[BLIPTestListener alloc] init];
+    __unused BLIPTestListener *listener = [[BLIPTestListener alloc] init];
     
     [[NSRunLoop currentRunLoop] run];
-    
-    [listener release];
+    listener = nil;
 }
 
 
 int main( int argc, const char **argv )
 {
-    NSAutoreleasePool *pool = [NSAutoreleasePool new];
-    RunTestCases(argc, argv);
-    [pool drain];
+    @autoreleasepool {
+        RunTestCases(argc, argv);
+    }
 }
 
 

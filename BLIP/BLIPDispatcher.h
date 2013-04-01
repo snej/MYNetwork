@@ -33,7 +33,7 @@
 /** The inherited parent dispatcher.
     If a message does not match any of this dispatcher's rules, it will next be passed to
     the parent, if there is one. */
-@property (retain) BLIPDispatcher *parent;
+@property (strong) BLIPDispatcher *parent;
 
 /** Convenience method that adds a rule that compares a property against a string. */
 - (void) addTarget: (MYTarget*)target forValueOfProperty: (NSString*)value forKey: (NSString*)key;

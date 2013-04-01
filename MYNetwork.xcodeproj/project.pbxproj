@@ -47,42 +47,42 @@
 		273B457D0FA681EE00276298 /* MYBonjourRegistration.m in Sources */ = {isa = PBXBuildFile; fileRef = 273B457A0FA681EE00276298 /* MYBonjourRegistration.m */; };
 		275E8FBB1709EF830008F577 /* CollectionUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 275E8F961709EF830008F577 /* CollectionUtils.h */; };
 		275E8FBC1709EF830008F577 /* CollectionUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 275E8F961709EF830008F577 /* CollectionUtils.h */; };
-		275E8FBD1709EF830008F577 /* CollectionUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 275E8F971709EF830008F577 /* CollectionUtils.m */; };
-		275E8FBE1709EF830008F577 /* CollectionUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 275E8F971709EF830008F577 /* CollectionUtils.m */; };
+		275E8FBD1709EF830008F577 /* CollectionUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 275E8F971709EF830008F577 /* CollectionUtils.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		275E8FBE1709EF830008F577 /* CollectionUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 275E8F971709EF830008F577 /* CollectionUtils.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		275E8FBF1709EF830008F577 /* ConcurrentOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 275E8F981709EF830008F577 /* ConcurrentOperation.h */; };
 		275E8FC01709EF830008F577 /* ConcurrentOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 275E8F981709EF830008F577 /* ConcurrentOperation.h */; };
-		275E8FC11709EF830008F577 /* ConcurrentOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 275E8F991709EF830008F577 /* ConcurrentOperation.m */; };
-		275E8FC21709EF830008F577 /* ConcurrentOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 275E8F991709EF830008F577 /* ConcurrentOperation.m */; };
+		275E8FC11709EF830008F577 /* ConcurrentOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 275E8F991709EF830008F577 /* ConcurrentOperation.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		275E8FC21709EF830008F577 /* ConcurrentOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 275E8F991709EF830008F577 /* ConcurrentOperation.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		275E8FC31709EF830008F577 /* ExceptionUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 275E8F9A1709EF830008F577 /* ExceptionUtils.h */; };
 		275E8FC41709EF830008F577 /* ExceptionUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 275E8F9A1709EF830008F577 /* ExceptionUtils.h */; };
-		275E8FC51709EF830008F577 /* ExceptionUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 275E8F9B1709EF830008F577 /* ExceptionUtils.m */; };
-		275E8FC61709EF830008F577 /* ExceptionUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 275E8F9B1709EF830008F577 /* ExceptionUtils.m */; };
+		275E8FC51709EF830008F577 /* ExceptionUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 275E8F9B1709EF830008F577 /* ExceptionUtils.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		275E8FC61709EF830008F577 /* ExceptionUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 275E8F9B1709EF830008F577 /* ExceptionUtils.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		275E8FC71709EF830008F577 /* Logging.h in Headers */ = {isa = PBXBuildFile; fileRef = 275E8F9C1709EF830008F577 /* Logging.h */; };
 		275E8FC81709EF830008F577 /* Logging.h in Headers */ = {isa = PBXBuildFile; fileRef = 275E8F9C1709EF830008F577 /* Logging.h */; };
-		275E8FC91709EF830008F577 /* Logging.m in Sources */ = {isa = PBXBuildFile; fileRef = 275E8F9D1709EF830008F577 /* Logging.m */; };
-		275E8FCA1709EF830008F577 /* Logging.m in Sources */ = {isa = PBXBuildFile; fileRef = 275E8F9D1709EF830008F577 /* Logging.m */; };
+		275E8FC91709EF830008F577 /* Logging.m in Sources */ = {isa = PBXBuildFile; fileRef = 275E8F9D1709EF830008F577 /* Logging.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		275E8FCA1709EF830008F577 /* Logging.m in Sources */ = {isa = PBXBuildFile; fileRef = 275E8F9D1709EF830008F577 /* Logging.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		275E8FE71709EF830008F577 /* MYUtilities_Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = 275E8FAE1709EF830008F577 /* MYUtilities_Prefix.pch */; };
 		275E8FE81709EF830008F577 /* MYUtilities_Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = 275E8FAE1709EF830008F577 /* MYUtilities_Prefix.pch */; };
 		275E8FE91709EF830008F577 /* Target.h in Headers */ = {isa = PBXBuildFile; fileRef = 275E8FB11709EF830008F577 /* Target.h */; };
 		275E8FEA1709EF830008F577 /* Target.h in Headers */ = {isa = PBXBuildFile; fileRef = 275E8FB11709EF830008F577 /* Target.h */; };
-		275E8FEB1709EF830008F577 /* Target.m in Sources */ = {isa = PBXBuildFile; fileRef = 275E8FB21709EF830008F577 /* Target.m */; };
-		275E8FEC1709EF830008F577 /* Target.m in Sources */ = {isa = PBXBuildFile; fileRef = 275E8FB21709EF830008F577 /* Target.m */; };
+		275E8FEB1709EF830008F577 /* Target.m in Sources */ = {isa = PBXBuildFile; fileRef = 275E8FB21709EF830008F577 /* Target.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		275E8FEC1709EF830008F577 /* Target.m in Sources */ = {isa = PBXBuildFile; fileRef = 275E8FB21709EF830008F577 /* Target.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		275E8FED1709EF830008F577 /* Test.h in Headers */ = {isa = PBXBuildFile; fileRef = 275E8FB31709EF830008F577 /* Test.h */; };
 		275E8FEE1709EF830008F577 /* Test.h in Headers */ = {isa = PBXBuildFile; fileRef = 275E8FB31709EF830008F577 /* Test.h */; };
-		275E8FEF1709EF830008F577 /* Test.m in Sources */ = {isa = PBXBuildFile; fileRef = 275E8FB41709EF830008F577 /* Test.m */; };
-		275E8FF01709EF830008F577 /* Test.m in Sources */ = {isa = PBXBuildFile; fileRef = 275E8FB41709EF830008F577 /* Test.m */; };
+		275E8FEF1709EF830008F577 /* Test.m in Sources */ = {isa = PBXBuildFile; fileRef = 275E8FB41709EF830008F577 /* Test.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		275E8FF01709EF830008F577 /* Test.m in Sources */ = {isa = PBXBuildFile; fileRef = 275E8FB41709EF830008F577 /* Test.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		275E8FFD1709F0350008F577 /* GTMDefines.h in Headers */ = {isa = PBXBuildFile; fileRef = 275E8FF91709F0350008F577 /* GTMDefines.h */; };
 		275E8FFE1709F0350008F577 /* GTMDefines.h in Headers */ = {isa = PBXBuildFile; fileRef = 275E8FF91709F0350008F577 /* GTMDefines.h */; };
 		275E8FFF1709F0350008F577 /* GTMNSData+zlib.h in Headers */ = {isa = PBXBuildFile; fileRef = 275E8FFA1709F0350008F577 /* GTMNSData+zlib.h */; };
 		275E90001709F0350008F577 /* GTMNSData+zlib.h in Headers */ = {isa = PBXBuildFile; fileRef = 275E8FFA1709F0350008F577 /* GTMNSData+zlib.h */; };
-		275E90011709F0350008F577 /* GTMNSData+zlib.m in Sources */ = {isa = PBXBuildFile; fileRef = 275E8FFB1709F0350008F577 /* GTMNSData+zlib.m */; };
-		275E90021709F0350008F577 /* GTMNSData+zlib.m in Sources */ = {isa = PBXBuildFile; fileRef = 275E8FFB1709F0350008F577 /* GTMNSData+zlib.m */; };
-		275E90031709F29A0008F577 /* CollectionUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 275E8F971709EF830008F577 /* CollectionUtils.m */; };
-		275E90041709F29E0008F577 /* ConcurrentOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 275E8F991709EF830008F577 /* ConcurrentOperation.m */; };
-		275E90051709F2A20008F577 /* ExceptionUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 275E8F9B1709EF830008F577 /* ExceptionUtils.m */; };
-		275E90061709F2A40008F577 /* Logging.m in Sources */ = {isa = PBXBuildFile; fileRef = 275E8F9D1709EF830008F577 /* Logging.m */; };
-		275E90071709F2A80008F577 /* Target.m in Sources */ = {isa = PBXBuildFile; fileRef = 275E8FB21709EF830008F577 /* Target.m */; };
-		275E90081709F2AB0008F577 /* Test.m in Sources */ = {isa = PBXBuildFile; fileRef = 275E8FB41709EF830008F577 /* Test.m */; };
+		275E90011709F0350008F577 /* GTMNSData+zlib.m in Sources */ = {isa = PBXBuildFile; fileRef = 275E8FFB1709F0350008F577 /* GTMNSData+zlib.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		275E90021709F0350008F577 /* GTMNSData+zlib.m in Sources */ = {isa = PBXBuildFile; fileRef = 275E8FFB1709F0350008F577 /* GTMNSData+zlib.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		275E90031709F29A0008F577 /* CollectionUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 275E8F971709EF830008F577 /* CollectionUtils.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		275E90041709F29E0008F577 /* ConcurrentOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 275E8F991709EF830008F577 /* ConcurrentOperation.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		275E90051709F2A20008F577 /* ExceptionUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 275E8F9B1709EF830008F577 /* ExceptionUtils.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		275E90061709F2A40008F577 /* Logging.m in Sources */ = {isa = PBXBuildFile; fileRef = 275E8F9D1709EF830008F577 /* Logging.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		275E90071709F2A80008F577 /* Target.m in Sources */ = {isa = PBXBuildFile; fileRef = 275E8FB21709EF830008F577 /* Target.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		275E90081709F2AB0008F577 /* Test.m in Sources */ = {isa = PBXBuildFile; fileRef = 275E8FB41709EF830008F577 /* Test.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		2777C9110F7602A7007F8D30 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2777C9100F7602A7007F8D30 /* Security.framework */; };
 		2779048B0DE9204300C6D295 /* BLIPEchoClient.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2779048A0DE9204300C6D295 /* BLIPEchoClient.xib */; };
 		277905240DE9E5BC00C6D295 /* BLIPEchoServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 277903D60DE8EE4800C6D295 /* BLIPEchoServer.m */; };
@@ -1045,6 +1045,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.6.8;
 				PRODUCT_NAME = MYNetwork;
 			};
@@ -1054,6 +1055,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.6.8;
 				PRODUCT_NAME = MYNetwork;
 			};
@@ -1063,6 +1065,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				ONLY_ACTIVE_ARCH = YES;
@@ -1140,7 +1143,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
-				GCC_ENABLE_OBJC_GC = supported;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				GCC_ENABLE_OBJC_GC = unsupported;
 				INSTALL_PATH = /usr/local/lib;
 				MACOSX_DEPLOYMENT_TARGET = 10.6.8;
 				PRODUCT_NAME = MYNetwork;
@@ -1151,7 +1155,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
-				GCC_ENABLE_OBJC_GC = supported;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				GCC_ENABLE_OBJC_GC = unsupported;
 				INSTALL_PATH = /usr/local/lib;
 				MACOSX_DEPLOYMENT_TARGET = 10.6.8;
 				PRODUCT_NAME = MYNetwork;
@@ -1163,16 +1168,13 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
 				COPY_PHASE_STRIP = NO;
 				DSTROOT = /tmp/MYNetwork.dst;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
@@ -1191,6 +1193,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
 				COPY_PHASE_STRIP = YES;
 				DSTROOT = /tmp/MYNetwork.dst;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -1299,6 +1302,7 @@
 				275E900C1709F3DC0008F577 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		2779042B0DE91C7A00C6D295 /* Build configuration list for PBXNativeTarget "BLIP Echo Client" */ = {
 			isa = XCConfigurationList;

@@ -31,7 +31,7 @@
 {
     self = [super init];
     if (self != nil) {
-        _connection = [connection retain];
+        _connection = connection;
         _isMine = isMine;
         _flags = flags;
         _number = msgNo;
@@ -51,12 +51,6 @@
 - (void) dealloc
 {
     LogTo(BLIPVerbose,@"DEALLOC %@",self);
-    [_properties release];
-    [_encodedBody release];
-    [_mutableBody release];
-    [_body release];
-    [_connection release];
-    [super dealloc];
 }
 
 
@@ -118,7 +112,7 @@
 - (NSData*) body
 {
     if( ! _body && _isMine )
-        return [[_mutableBody copy] autorelease];
+        return [_mutableBody copy];
     else
         return _body;
 }
@@ -139,7 +133,7 @@
             [_mutableBody appendData: data];
         else
             _mutableBody = [data mutableCopy];
-        setObj(&_body,nil);
+        (void)_body; _body = nil;
     }
 }
 
@@ -154,7 +148,7 @@
 {
     NSData *body = self.body;
     if( body )
-        return [[[NSString alloc] initWithData: body encoding: NSUTF8StringEncoding] autorelease];
+        return [[NSString alloc] initWithData: body encoding: NSUTF8StringEncoding];
     else
         return nil;
 }
@@ -204,7 +198,6 @@
 
     BLIPProperties *oldProps = _properties;
     _properties = [oldProps copy];
-    [oldProps release];
     
     _encodedBody = [_properties.encodedData mutableCopy];
     Assert(_encodedBody.length>=2);
@@ -293,7 +286,7 @@
     if( ! _properties ) {
         // Try to extract the properties:
         ssize_t usedLength;
-        setObj(&_properties, [BLIPProperties propertiesWithEncodedData: _encodedBody usedLength: &usedLength]);
+         _properties = [BLIPProperties propertiesWithEncodedData: _encodedBody usedLength: &usedLength];
         if( _properties ) {
             [_encodedBody replaceBytesInRange: NSMakeRange(0,usedLength)
                                     withBytes: NULL length: 0];
@@ -317,7 +310,7 @@
         } else {
             _body = [_encodedBody copy];
         }
-        setObj(&_encodedBody,nil);
+        (void)_encodedBody; _encodedBody = nil;
         self.propertiesAvailable = self.complete = YES;
     }
     return YES;

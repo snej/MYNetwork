@@ -29,7 +29,7 @@ NSString* const TCPErrorDomain = @"TCP";
 
 @interface TCPConnection ()
 @property TCPConnectionStatus status;
-@property (retain) IPAddress *address;
+@property (strong) IPAddress *address;
 - (BOOL) _checkIfClosed;
 - (void) _closed;
 @end
@@ -54,7 +54,6 @@ static NSMutableArray *sAllConnections;
         if( !input || !output ) {
             LogTo(TCP,@"Failed to create %@: addr=%@, in=%@, out=%@",
                   self.class,address,input,output);
-            [self release];
             return nil;
         }
         _address = [address copy];
@@ -69,20 +68,12 @@ static NSMutableArray *sAllConnections;
 
 - (id) initToAddress: (IPAddress*)address
 {
-    NSInputStream *input = nil;
-    NSOutputStream *output = nil;
-#if TARGET_OS_IPHONE
-    // +getStreamsToHost: is missing for some stupid reason on iPhone. Grrrrrrrrrr.
-    CFStreamCreatePairWithSocketToHost(NULL, (CFStringRef)address.hostname, address.port,
-                                       (CFReadStreamRef*)&input, (CFWriteStreamRef*)&output);
-    if( input )  [NSMakeCollectable(input) autorelease];
-    if( output ) [NSMakeCollectable(output) autorelease];
-#else
-    [NSStream getStreamsToHost: [NSHost hostWithAddress: address.ipv4name]
-                          port: address.port 
-                   inputStream: &input 
-                  outputStream: &output];
-#endif
+    CFReadStreamRef cfInput;
+    CFWriteStreamRef cfOutput;
+    CFStreamCreatePairWithSocketToHost(NULL, (__bridge CFStringRef)address.hostname, address.port,
+                                       &cfInput, &cfOutput);
+    NSInputStream *input = CFBridgingRelease(cfInput);
+    NSOutputStream *output = CFBridgingRelease(cfOutput);
     return [self _initWithAddress: address inputStream: input outputStream: output];
 }
 
@@ -95,7 +86,7 @@ static NSMutableArray *sAllConnections;
     if( [service getInputStream: &input outputStream: &output] ) {
         NSArray *addresses = service.addresses;
         if( addresses.count > 0 )
-            address = [[[IPAddress alloc] initWithSockAddr: [addresses[0] bytes]] autorelease];
+            address = [[IPAddress alloc] initWithSockAddr: [addresses[0] bytes]];
     } else {
         input = nil;
         output = nil;
@@ -108,7 +99,6 @@ static NSMutableArray *sAllConnections;
     NSNetService *netService = [[NSNetService alloc] initWithDomain: service.domain
                                                                type: service.type name: service.name];
     self = [self initToNetService: netService];
-    [netService release];
     return self;
 }
 
@@ -119,15 +109,13 @@ static NSMutableArray *sAllConnections;
     CFReadStreamRef readStream = NULL;
     CFWriteStreamRef writeStream = NULL;
     CFStreamCreatePairWithSocket(kCFAllocatorDefault, socket, &readStream, &writeStream);
-	if( readStream )  [NSMakeCollectable(readStream) autorelease];
-    if( writeStream ) [NSMakeCollectable(writeStream) autorelease];
 	
     self = [self _initWithAddress: [IPAddress addressOfSocket: socket] 
-                      inputStream: (NSInputStream*)readStream
-                     outputStream: (NSOutputStream*)writeStream];
+                      inputStream: (NSInputStream*)CFBridgingRelease(readStream)
+                     outputStream: (NSOutputStream*)CFBridgingRelease(writeStream)];
     if( self ) {
         _isIncoming = YES;
-        _server = [listener retain];
+        _server = listener;
         CFReadStreamSetProperty(readStream, kCFStreamPropertyShouldCloseNativeSocket, kCFBooleanTrue);
         CFWriteStreamSetProperty(writeStream, kCFStreamPropertyShouldCloseNativeSocket, kCFBooleanTrue);
     }
@@ -138,10 +126,6 @@ static NSMutableArray *sAllConnections;
 - (void) dealloc
 {
     LogTo(TCP,@"DEALLOC %@",self);
-    [_reader release];
-    [_writer release];
-    [_address release];
-    [super dealloc];
 }
 
 
@@ -247,7 +231,6 @@ static NSMutableArray *sAllConnections;
     } else if( _status == kTCP_Open ) {
         LogTo(TCP,@"%@ closing",self);
         self.status = kTCP_Closing;
-        [self retain];
         [self _beginClose];
         if( ! [self _checkIfClosed] ) {
             if( timeout <= 0.0 )
@@ -256,7 +239,6 @@ static NSMutableArray *sAllConnections;
                 [self performSelector: @selector(_closeTimeoutExpired)
                            withObject: nil afterDelay: timeout];
         }
-        [self release];
     }
 }
 
@@ -304,7 +286,7 @@ static NSMutableArray *sAllConnections;
 // called by my streams when they close (after my -close is called)
 - (void) _closed
 {
-    [[self retain] autorelease];
+    MYDeferDealloc(self);  // don't let me be dealloced during this
     if( _status != kTCP_Closed && _status != kTCP_Disconnected ) {
         LogTo(TCP,@"%@ is now closed",self);
         TCPConnectionStatus prevStatus = _status;
@@ -325,7 +307,6 @@ static NSMutableArray *sAllConnections;
     NSArray *connections = [sAllConnections copy];
     for( TCPConnection *conn in connections )
         [conn closeWithTimeout: timeout];
-    [connections release];
 }
 
 + (void) waitTillAllClosed
@@ -366,7 +347,7 @@ static NSMutableArray *sAllConnections;
                 if( ! certs && ! _isIncoming )
                     allow = NO; // Server MUST have a cert!
                 else {
-                    SecCertificateRef cert = certs.count ?(SecCertificateRef)certs[0] :NULL;
+                    SecCertificateRef cert = certs.count ?(__bridge SecCertificateRef)certs[0] :NULL;
                     if ([TCPEndpoint respondsToSelector: @selector(describeCert:)])
                         LogTo(TCP,@"%@: Peer cert = %@",self,[TCPEndpoint describeCert: cert]);
                     if( [_delegate respondsToSelector: @selector(connection:authorizeSSLPeer:)] )
@@ -392,8 +373,8 @@ static NSMutableArray *sAllConnections;
 {
     LogTo(TCP,@"%@ got %@ on %@",self,error,stream.class);
     Assert(error);
-    [[self retain] autorelease];
-    setObj(&_error,error);
+    MYDeferDealloc(self);  // don't let me be dealloced during this
+     _error = error;
     [_reader disconnect];
     [_writer disconnect];
     [self _closed];
@@ -428,11 +409,11 @@ static NSMutableArray *sAllConnections;
 - (void) _streamDisconnected: (TCPStream*)stream
 {
     LogTo(TCP,@"%@: disconnected %@",self,stream);
-    if( stream == _reader )
-        setObj(&_reader,nil);
-    else if( stream == _writer )
-        setObj(&_writer,nil);
-    else
+    if( stream == _reader ) {
+        (void)_reader; _reader = nil;
+    } else if( stream == _writer ) {
+        (void)_writer; _writer = nil;
+    } else
         return;
     if( !_reader.isOpen && !_writer.isOpen )
         [self _closed];

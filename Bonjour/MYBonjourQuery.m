@@ -54,11 +54,6 @@ static NSString* kRecordTypeNames[] = {
     return self;
 }
 
-- (void) dealloc
-{
-    [_recordData release];
-    [super dealloc];
-}
 
 
 - (NSString*) description
@@ -105,8 +100,7 @@ static void queryCallback( DNSServiceRef                       DNSServiceRef,
                            uint32_t                            ttl,
                            void                                *context)
 {
-    MYBonjourQuery *query = context;
-    [query retain];
+    MYBonjourQuery *query = (__bridge MYBonjourQuery *)(context);
     @try{
         //LogTo(Bonjour, @"queryCallback for %@ (err=%i)", context,errorCode);
         if (!errorCode)
@@ -117,7 +111,6 @@ static void queryCallback( DNSServiceRef                       DNSServiceRef,
                                  flags: flags];
     }catchAndReport(@"MYBonjourResolver query callback");
     [query gotResponse: errorCode];
-    [query release];
 }
 
 
@@ -129,7 +122,7 @@ static void queryCallback( DNSServiceRef                       DNSServiceRef,
                                      _bonjourService.interfaceIndex, 
                                      fullName,
                                      _recordType, kDNSServiceClass_IN, 
-                                     &queryCallback, self);
+                                     &queryCallback, (__bridge void *)(self));
     else
         return kDNSServiceErr_NoSuchName;
 }

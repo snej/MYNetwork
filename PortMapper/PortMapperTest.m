@@ -52,7 +52,6 @@
         } else {
             // MYPortMapper failed -- this is unlikely, but be graceful:
             Log(@"!! Error: MYPortMapper wouldn't start: %i",_mapper.error);
-            [self release];
             return nil;
         }
     }
@@ -79,8 +78,6 @@
 - (void) dealloc
 {
     [_mapper stop];
-    [_mapper release];
-    [super dealloc];
 }
 
 
@@ -101,13 +98,13 @@ TestCase(MYPortMapper) {
     Log(@"** Public address is %@", addr);
 
     // Start up the test class to create a mapping:
-    MYPortMapperTest *test = [[MYPortMapperTest alloc] init];
+    __unused MYPortMapperTest *test = [[MYPortMapperTest alloc] init];
     
     // Now let the runloop run forever...
     Log(@"Running the runloop forever...");
     [[NSRunLoop currentRunLoop] run];
-        
-    [test release];
+
+    test = nil;
 }
 
 #endif //DEBUG

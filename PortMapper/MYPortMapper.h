@@ -70,12 +70,12 @@
 
 /** The known public IPv4 address/port, once it's been determined.
     This property is KV observable. */
-@property (readonly,retain) IPAddress* publicAddress;
+@property (readonly,strong) IPAddress* publicAddress;
 
 /** The current local address/port, as of the time the port mapping was last updated.
     The address part is of the main interface; the port is the specified local port.
     This property is KV observable. */
-@property (readonly,retain) IPAddress* localAddress;
+@property (readonly,strong) IPAddress* localAddress;
 
 /** Returns YES if a non-null port mapping is in effect: 
     that is, if the public address differs from the local one. */

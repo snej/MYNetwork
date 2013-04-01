@@ -64,7 +64,6 @@ static void TCPListenerAcceptCallBack(CFSocketRef socket, CFSocketCallBackType t
 {
     [self close];
     LogTo(TCP,@"DEALLOC %@",self);
-    [super dealloc];
 }
 
 
@@ -106,7 +105,7 @@ static CFSocketRef closeSocket( CFSocketRef socket ) {
                       address: (struct sockaddr*)address
                         error: (NSError**)error
 {
-    CFSocketContext socketCtxt = {0, self, NULL, NULL, NULL};
+    CFSocketContext socketCtxt = {0, (__bridge void *)(self), NULL, NULL, NULL};
     CFSocketRef socket = CFSocketCreate(kCFAllocatorDefault, PF_INET, SOCK_STREAM, IPPROTO_TCP,
                                         kCFSocketAcceptCallBack, &TCPListenerAcceptCallBack, &socketCtxt);
     if( ! socket ) 
@@ -116,7 +115,7 @@ static CFSocketRef closeSocket( CFSocketRef socket ) {
     setsockopt(CFSocketGetNative(socket), SOL_SOCKET, SO_REUSEADDR, (void *)&yes, sizeof(yes));
     
     NSData *addressData = [NSData dataWithBytes:address length:address->sa_len];
-    if (kCFSocketSuccess != CFSocketSetAddress(socket, (CFDataRef)addressData)) {
+    if (kCFSocketSuccess != CFSocketSetAddress(socket, (__bridge CFDataRef)addressData)) {
         getLastCFSocketError(error);
         CFSocketInvalidate(socket);
         CFRelease(socket);
@@ -164,7 +163,7 @@ static CFSocketRef closeSocket( CFSocketRef socket ) {
     
     if (0 == _port) {
         // now that the binding was successful, we get the port number 
-        NSData *addr = [NSMakeCollectable( CFSocketCopyAddress(_ipv4socket) ) autorelease];
+        NSData *addr = CFBridgingRelease( CFSocketCopyAddress(_ipv4socket) );
         const struct sockaddr_in *addr4 = addr.bytes;
         self.port = ntohs(addr4->sin_port);
     }
@@ -254,7 +253,7 @@ static CFSocketRef closeSocket( CFSocketRef socket ) {
 
 static void TCPListenerAcceptCallBack(CFSocketRef socket, CFSocketCallBackType type, CFDataRef address, const void *data, void *info) 
 {
-    TCPListener *server = (TCPListener *)info;
+    TCPListener *server = (__bridge TCPListener *)info;
     if (kCFSocketAcceptCallBack == type) { 
         CFSocketNativeHandle nativeSocketHandle = *(CFSocketNativeHandle *)data;
         BOOL accepted = NO;
@@ -295,7 +294,6 @@ static void TCPListenerAcceptCallBack(CFSocketRef socket, CFSocketCallBackType t
 {
     if( _netService ) {
         [_netService stop];
-        [_netService release];
         _netService = nil;
         self.bonjourPublished = NO;
     }
@@ -310,7 +308,7 @@ static void TCPListenerAcceptCallBack(CFSocketRef socket, CFSocketCallBackType t
 {
     if( ! $equal(name,_bonjourServiceName) ) {
         [self _closeBonjour];
-        setObj(&_bonjourServiceName,name);
+         _bonjourServiceName = name;
         [self _openBonjour];
     }
 }
@@ -323,8 +321,10 @@ static void TCPListenerAcceptCallBack(CFSocketRef socket, CFSocketCallBackType t
 
 - (void) setBonjourTXTRecord: (NSDictionary*)txt
 {
-    if( ifSetObj(&_bonjourTXTRecord,txt) )
+    if( !$equal(_bonjourTXTRecord,txt) ) {
+         _bonjourTXTRecord = [txt copy];
         [self _updateTXTRecord];
+    }
 }
 
 - (void) _updateTXTRecord
@@ -354,7 +354,6 @@ static void TCPListenerAcceptCallBack(CFSocketRef socket, CFSocketCallBackType t
 {
     self.bonjourError = [errorDict[NSNetServicesErrorCode] intValue];
     LogTo(TCP,@"%@: Failed to advertise %@: error %li",self,sender,(long)self.bonjourError);
-    [_netService release];
     _netService = nil;
 }
 
@@ -362,7 +361,6 @@ static void TCPListenerAcceptCallBack(CFSocketRef socket, CFSocketCallBackType t
 {
     LogTo(TCP,@"%@: Stopped advertising %@",self,sender);
     self.bonjourPublished = NO;
-    [_netService release];
     _netService = nil;
 }
 
