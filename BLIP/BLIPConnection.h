@@ -8,6 +8,7 @@
 
 #import "TCPConnection.h"
 #import "TCPListener.h"
+#import "BLIPMessage.h"
 @class BLIPRequest, BLIPResponse, BLIPDispatcher;
 @protocol BLIPConnectionDelegate;
 
@@ -17,7 +18,7 @@
     Incoming connections are usually set up by a BLIPListener and passed to the listener's
     delegate.
     Most of the API is inherited from TCPConnection. */
-@interface BLIPConnection : TCPConnection
+@interface BLIPConnection : TCPConnection <BLIPMessageSender>
 
 /** The delegate object that will be called when the connection opens, closes or receives messages. */
 @property (weak) id<BLIPConnectionDelegate> delegate;

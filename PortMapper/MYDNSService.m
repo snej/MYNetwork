@@ -93,7 +93,7 @@ static void serviceCallback(CFSocketRef s,
     _error = [self createServiceRef: &_serviceRef];
     if (_error) {
         _serviceRef = NULL;
-        (void)_connection; _connection = nil;
+        _connection = nil;
         if (!_error)
             self.error = kDNSServiceErr_Unknown;
         LogTo(DNS,@"%@ failed to open -- err=%i",self,(int)_error);
@@ -130,7 +130,7 @@ static void serviceCallback(CFSocketRef s,
         DNSServiceRefDeallocate(_serviceRef);
         _serviceRef = NULL;
         
-        (void)_connection; _connection = nil;
+        _connection = nil;
     }
 }
 

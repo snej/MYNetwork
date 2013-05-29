@@ -67,7 +67,7 @@
         _currentDataPos += written;
     } else {
         LogTo(TCPVerbose,@"%@ wrote %li bytes, released %p", self,(long)written,_currentData);
-        (void)_currentData; _currentData = nil;
+        _currentData = nil;
     }
 }
 

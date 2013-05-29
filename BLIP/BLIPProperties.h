@@ -29,6 +29,9 @@
 /** Property value lookup. (Case-sensitive, like NSDictionary, but unlike RFC822.) */
 - (NSString*) valueOfProperty: (NSString*)prop;
 
+/** Same as -valueOfProperty:. Enables "[]" access in Xcode 4.4+ */
+- (NSString*)objectForKeyedSubscript:(NSString*)key;
+
 /** Returns all the properties/values as a dictionary. */
 @property (readonly) NSDictionary* allProperties;
 
@@ -50,6 +53,9 @@
 
 /** Sets the value of a property. A nil value is allowed, and removes the property. */
 - (void) setValue: (NSString*)value ofProperty: (NSString*)prop;
+
+/** Same as -setValue:ofProperty:. Enables "[]" access in Xcode 4.4+ */
+- (void) setObject: (NSString*)value forKeyedSubscript:(NSString*)key;
 
 /** Sets the receiver's key/value pairs from the given NSDictionary.
     All previously existing properties are removed first. */

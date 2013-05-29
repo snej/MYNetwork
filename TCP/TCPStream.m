@@ -115,11 +115,11 @@ static NSError* fixStreamError( NSError *error );
         LogTo(TCP,@"Disconnect %@",self);
         _stream.delegate = nil;
         [_stream close];
-        (void)_stream; _stream = nil;
+        _stream = nil;
     }
     if( _conn ) {
         [_conn _streamDisconnected: self];
-        (void)_conn; _conn = nil;
+        _conn = nil;
     }
 }
 

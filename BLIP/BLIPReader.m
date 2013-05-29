@@ -53,7 +53,7 @@
         [response _connectionClosed];
         [_conn tellDelegate: @selector(connection:receivedResponse:) withObject: response];
     }
-    (void)_pendingResponses; _pendingResponses = nil;
+    _pendingResponses = nil;
     [super disconnect];
 }
 
@@ -86,7 +86,7 @@
 {
     [self _receivedFrameWithHeader: &_curHeader body: _curBody];
     memset(&_curHeader,0,sizeof(_curHeader));
-    (void)_curBody; _curBody = nil;
+    _curBody = nil;
     _curBytesRead = 0;
 }
 
@@ -190,7 +190,7 @@
                                                (unsigned int)header->number,
                                                (unsigned)_numRequestsReceived+1)];
             
-            if( ! [request _receivedFrameWithHeader: header body: body] )
+            if( ! [request _receivedFrameWithFlags: header->flags body: body] )
                 return [self _gotError: BLIPMakeError(kBLIPError_BadFrame, 
                                                @"Couldn't parse message frame")];
             
@@ -207,7 +207,7 @@
                     [_pendingResponses removeObjectForKey: key];
                 }
                 
-                if( ! [response _receivedFrameWithHeader: header body: body] ) {
+                if( ! [response _receivedFrameWithFlags: header->flags body: body] ) {
                     return [self _gotError: BLIPMakeError(kBLIPError_BadFrame, 
                                                           @"Couldn't parse response frame")];
                 } else if( complete ) 

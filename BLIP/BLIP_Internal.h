@@ -44,11 +44,20 @@ typedef struct {
 
 #define kBLIPFrameHeaderMagicNumber 0x9B34F206
 
+
+/** Header of a BLIP frame encapsulated in a WebSocket message. */
+typedef struct {
+    UInt32           number;        // serial number of MSG
+    BLIPMessageFlags flags;         // encodes frame type, "more" flag, and other delivery options
+} BLIPWebSocketFrameHeader;
+
+#define kBLIPWebSocketFrameHeaderSize 6
+
 #define kBLIPProfile_Hi  @"Hi"      // Used for Profile header in meta greeting message
 #define kBLIPProfile_Bye @"Bye"     // Used for Profile header in meta close-request message
 
 
-@interface BLIPConnection ()
+@interface BLIPConnection () <BLIPMessageSender>
 - (void) _dispatchRequest: (BLIPRequest*)request;
 - (void) _dispatchResponse: (BLIPResponse*)response;
 @end
@@ -57,7 +66,7 @@ typedef struct {
 @interface BLIPMessage ()
 {
     @protected
-    BLIPConnection *_connection;
+    id<BLIPMessageSender> _connection;
     UInt16 _flags;
     UInt32 _number;
     BLIPProperties *_properties;
@@ -76,21 +85,22 @@ typedef struct {
 
 
 @interface BLIPMessage ()
-- (id) _initWithConnection: (BLIPConnection*)connection
+- (id) _initWithConnection: (id<BLIPMessageSender>)connection
                     isMine: (BOOL)isMine
                      flags: (BLIPMessageFlags)flags
                     number: (UInt32)msgNo
                       body: (NSData*)body;
 - (BOOL) _writeFrameTo: (BLIPWriter*)writer maxSize: (UInt16)maxSize;
+- (NSData*) nextWebSocketFrameWithMaxSize: (UInt16)maxSize moreComing: (BOOL*)outMoreComing;
 @property (readonly) NSInteger _bytesWritten;
 - (void) _assignedNumber: (UInt32)number;
-- (BOOL) _receivedFrameWithHeader: (const BLIPFrameHeader*)header body: (NSData*)body;
+- (BOOL) _receivedFrameWithFlags: (BLIPMessageFlags)flags body: (NSData*)body;
 - (void) _connectionClosed;
 @end
 
 
 @interface BLIPRequest ()
-- (id) _initWithConnection: (BLIPConnection*)connection
+- (id) _initWithConnection: (id<BLIPMessageSender>)connection
                       body: (NSData*)body 
                 properties: (NSDictionary*)properties;
 @end
@@ -98,4 +108,7 @@ typedef struct {
 
 @interface BLIPResponse ()
 - (id) _initWithRequest: (BLIPRequest*)request;
+#if DEBUG
+- (id) _initIncomingWithProperties: (BLIPProperties*)properties body: (NSData*)body;
+#endif
 @end

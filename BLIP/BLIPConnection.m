@@ -19,20 +19,6 @@
 #import "Target.h"
 
 
-NSString* const BLIPErrorDomain = @"BLIP";
-
-NSError *BLIPMakeError( int errorCode, NSString *message, ... )
-{
-    va_list args;
-    va_start(args,message);
-    message = [[NSString alloc] initWithFormat: message arguments: args];
-    va_end(args);
-    LogTo(BLIP,@"BLIPError #%i: %@",errorCode,message);
-    NSDictionary *userInfo = @{NSLocalizedDescriptionKey: message};
-    return [NSError errorWithDomain: BLIPErrorDomain code: errorCode userInfo: userInfo];
-}
-
-
 @interface BLIPConnection ()
 - (void) _handleCloseRequest: (BLIPRequest*)request;
 @end
@@ -139,6 +125,20 @@ NSError *BLIPMakeError( int errorCode, NSString *message, ... )
     else
         Assert(itsConnection==self,@"%@ is already assigned to a different BLIPConnection",request);
     return [request send];
+}
+
+
+- (BOOL) _sendRequest: (BLIPRequest*)q response: (BLIPResponse*)response {
+    BLIPWriter *writer = (BLIPWriter*)self.writer;
+    Assert(writer,@"%@'s connection has no writer (already closed?)",self);
+    return [writer sendRequest: q response: response];
+}
+
+
+- (BOOL) _sendResponse: (BLIPResponse*)response {
+    BLIPWriter *writer = (BLIPWriter*)self.writer;
+    Assert(writer,@"%@'s connection has no writer (already closed?)",self);
+    return [writer sendMessage: response];
 }
 
 

@@ -28,7 +28,7 @@
 - (void) disconnect
 {
     [_outBox makeObjectsPerformSelector: @selector(_connectionClosed) withObject: nil];
-    (void)_outBox; _outBox = nil;
+    _outBox = nil;
     [super disconnect];
 }
 

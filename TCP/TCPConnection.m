@@ -420,9 +420,9 @@ static NSMutableArray *sAllConnections;
 {
     LogTo(TCP,@"%@: disconnected %@",self,stream);
     if( stream == _reader ) {
-        (void)_reader; _reader = nil;
+        _reader = nil;
     } else if( stream == _writer ) {
-        (void)_writer; _writer = nil;
+        _writer = nil;
     } else
         return;
     if( !_reader.isOpen && !_writer.isOpen )

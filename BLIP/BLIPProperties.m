@@ -94,6 +94,7 @@ static const char* kAbbreviations[] = {
 }
 
 - (NSString*) valueOfProperty: (NSString*)prop  {return nil;}
+- (NSString*)objectForKeyedSubscript:(NSString*)key {return nil;}
 - (NSDictionary*) allProperties                 {return @{};}
 - (NSUInteger) count                            {return 0;}
 - (NSUInteger) dataLength                       {return sizeof(UInt16);}
@@ -194,6 +195,11 @@ static const char* kAbbreviations[] = {
     return nil;
 }
 
+- (NSString*)objectForKeyedSubscript:(NSString*)key
+{
+    return [self valueOfProperty: key];
+}
+
 
 - (NSDictionary*) allProperties
 {
@@ -269,6 +275,11 @@ static const char* kAbbreviations[] = {
     return _properties[prop];
 }
 
+- (NSString*)objectForKeyedSubscript:(NSString*)key
+{
+    return _properties[key];
+}
+
 - (NSDictionary*) allProperties
 {
     return _properties;
@@ -313,6 +324,11 @@ static void appendStr( NSMutableData *data, NSString *str ) {
         _properties[prop] = value;
     else
         [_properties removeObjectForKey: prop];
+}
+
+- (void) setObject: (NSString*)value forKeyedSubscript:(NSString*)key
+{
+    [self setValue: value ofProperty: key];
 }
 
 

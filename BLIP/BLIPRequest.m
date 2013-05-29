@@ -8,8 +8,6 @@
 
 #import "BLIPRequest.h"
 #import "BLIP_Internal.h"
-#import "BLIPWriter.h"
-#import "BLIPReader.h"
 
 #import "Target.h"
 #import "Logging.h"
@@ -23,7 +21,7 @@
 }
 
 
-- (id) _initWithConnection: (BLIPConnection*)connection
+- (id) _initWithConnection: (id<BLIPMessageSender>)connection
                       body: (NSData*)body 
                 properties: (NSDictionary*)properties
 {
@@ -88,7 +86,7 @@
     Assert(!_sent,@"%@ was already sent",self);
     [self _encode];
     BLIPResponse *response = self.response;
-    if( [(BLIPWriter*)_connection.writer sendRequest: self response: response] )
+    if( [_connection _sendRequest: self response: response] )
         self.sent = YES;
     else
         response = nil;
@@ -179,6 +177,23 @@
 }
 
 
+#if DEBUG
+// For testing only
+- (id) _initIncomingWithProperties: (BLIPProperties*)properties body: (NSData*)body {
+    self = [self _initWithConnection: nil
+                              isMine: NO
+                               flags: kBLIP_MSG
+                              number: 0
+                                body: nil];
+    if (self != nil ) {
+        _body = [body copy];
+        _isMutable = NO;
+        _properties = properties;
+    }
+    return self;
+}
+#endif
+
 
 - (NSError*) error
 {
@@ -205,8 +220,8 @@
         // Setting this stuff is a PITA because this object might be technically immutable,
         // in which case the standard setters would barf if I called them.
         _flags |= kBLIP_ERR;
-        (void)_body; _body = nil;
-        (void)_mutableBody; _mutableBody = nil;
+        _body = nil;
+        _mutableBody = nil;
         
         BLIPMutableProperties *errorProps = [self.properties mutableCopy];
         if( ! errorProps )
@@ -238,10 +253,8 @@
 {
     Assert(_connection,@"%@ has no connection to send over",self);
     Assert(!_sent,@"%@ was already sent",self);
-    BLIPWriter *writer = (BLIPWriter*)_connection.writer;
-    Assert(writer,@"%@'s connection has no writer (already closed?)",self);
     [self _encode];
-    BOOL sent = self.sent = [writer sendMessage: self];
+    BOOL sent = self.sent = [_connection _sendResponse: self];
     Assert(sent);
     return sent;
 }

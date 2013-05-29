@@ -8,7 +8,6 @@
 
 #import "BLIPMessage.h"
 #import "BLIP_Internal.h"
-#import "BLIPReader.h"
 #import "BLIPWriter.h"
 
 #import "Logging.h"
@@ -18,6 +17,20 @@
 
 // From Google Toolbox For Mac <http://code.google.com/p/google-toolbox-for-mac/>
 #import "GTMNSData+zlib.h"
+
+
+NSString* const BLIPErrorDomain = @"BLIP";
+
+NSError *BLIPMakeError( int errorCode, NSString *message, ... )
+{
+    va_list args;
+    va_start(args,message);
+    message = [[NSString alloc] initWithFormat: message arguments: args];
+    va_end(args);
+    LogTo(BLIP,@"BLIPError #%i: %@",errorCode,message);
+    NSDictionary *userInfo = @{NSLocalizedDescriptionKey: message};
+    return [NSError errorWithDomain: BLIPErrorDomain code: errorCode userInfo: userInfo];
+}
 
 
 @implementation BLIPMessage
@@ -133,7 +146,7 @@
             [_mutableBody appendData: data];
         else
             _mutableBody = [data mutableCopy];
-        (void)_body; _body = nil;
+        _body = nil;
     }
 }
 
@@ -180,6 +193,17 @@
 {
     [self.mutableProperties setValue: value ofProperty: property];
 }
+
+- (NSString*)objectForKeyedSubscript:(NSString*)key
+{
+    return [_properties valueOfProperty: key];
+}
+
+- (void) setObject: (NSString*)value forKeyedSubscript:(NSString*)key
+{
+    [self.mutableProperties setValue: value ofProperty: key];
+}
+
 
 - (NSString*) contentType               {return [_properties valueOfProperty: @"Content-Type"];}
 - (void) setContentType: (NSString*)t   {[self setValue: t ofProperty: @"Content-Type"];}
@@ -263,13 +287,50 @@
 }
 
 
-- (BOOL) _receivedFrameWithHeader: (const BLIPFrameHeader*)header body: (NSData*)body
+- (NSData*) nextWebSocketFrameWithMaxSize: (UInt16)maxSize moreComing: (BOOL*)outMoreComing {
+    Assert(_number!=0);
+    Assert(_isMine);
+    Assert(_encodedBody);
+    if( _bytesWritten==0 )
+        LogTo(BLIP,@"Now sending %@",self);
+    ssize_t lengthToWrite = _encodedBody.length - _bytesWritten;
+    if( lengthToWrite <= 0 && _bytesWritten > 0 )
+        return NO; // done
+    Assert(maxSize > kBLIPWebSocketFrameHeaderSize);
+    maxSize -= kBLIPWebSocketFrameHeaderSize;
+    UInt16 flags = _flags;
+    if( lengthToWrite > maxSize ) {
+        lengthToWrite = maxSize;
+        flags |= kBLIP_MoreComing;
+        LogTo(BLIPVerbose,@"%@ pushing frame, bytes %lu-%lu", self, (long)_bytesWritten, _bytesWritten+lengthToWrite);
+    } else {
+        flags &= ~kBLIP_MoreComing;
+        LogTo(BLIPVerbose,@"%@ pushing frame, bytes %lu-%lu (finished)", self, (long)_bytesWritten, _bytesWritten+lengthToWrite);
+    }
+
+    NSMutableData* frame = [NSMutableData dataWithLength: kBLIPWebSocketFrameHeaderSize + lengthToWrite];
+    BLIPWebSocketFrameHeader* header = frame.mutableBytes;
+    header->number = NSSwapHostIntToBig(_number);
+    header->flags = NSSwapHostShortToBig(flags);
+
+    // Then write the body:
+    if( lengthToWrite > 0 ) {
+        memcpy((char*)frame.mutableBytes + kBLIPWebSocketFrameHeaderSize,
+               (UInt8*)_encodedBody.bytes + _bytesWritten,
+               lengthToWrite);
+        _bytesWritten += lengthToWrite;
+    }
+    *outMoreComing = (flags & kBLIP_MoreComing) != 0;
+    return frame;
+}
+
+
+- (BOOL) _receivedFrameWithFlags: (BLIPMessageFlags)flags body: (NSData*)body
 {
     Assert(!_isMine);
-    AssertEq(header->number,_number);
     Assert(_flags & kBLIP_MoreComing);
     
-    BLIPMessageType frameType = (header->flags & kBLIP_TypeMask), curType = (_flags & kBLIP_TypeMask);
+    BLIPMessageType frameType = (flags & kBLIP_TypeMask), curType = (_flags & kBLIP_TypeMask);
     if( frameType != curType ) {
         Assert(curType==kBLIP_RPY && frameType==kBLIP_ERR && _mutableBody.length==0,
                @"Incoming frame's type %i doesn't match %@",frameType,self);
@@ -290,12 +351,12 @@
         if( _properties ) {
             [_encodedBody replaceBytesInRange: NSMakeRange(0,usedLength)
                                     withBytes: NULL length: 0];
+            self.propertiesAvailable = YES;
         } else if( usedLength < 0 )
             return NO;
-        self.propertiesAvailable = YES;
     }
     
-    if( ! (header->flags & kBLIP_MoreComing) ) {
+    if( ! (flags & kBLIP_MoreComing) ) {
         // After last frame, decode the data:
         _flags &= ~kBLIP_MoreComing;
         if( ! _properties )
@@ -310,7 +371,7 @@
         } else {
             _body = [_encodedBody copy];
         }
-        (void)_encodedBody; _encodedBody = nil;
+        _encodedBody = nil;
         self.propertiesAvailable = self.complete = YES;
     }
     return YES;

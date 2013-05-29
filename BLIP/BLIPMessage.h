@@ -7,7 +7,14 @@
 //
 
 #import <Foundation/Foundation.h>
-@class BLIPConnection, BLIPProperties, BLIPMutableProperties;
+@class BLIPProperties, BLIPMutableProperties, BLIPRequest, BLIPResponse;
+
+
+@protocol BLIPMessageSender <NSObject>
+- (BOOL) _sendRequest: (BLIPRequest*)q response: (BLIPResponse*)response;
+- (BOOL) _sendResponse: (BLIPResponse*)response;
+@property (readonly) NSError* error;
+@end
 
 
 /** NSError domain and codes for BLIP */
@@ -36,8 +43,8 @@ NSError *BLIPMakeError( int errorCode, NSString *message, ... ) __attribute__ ((
 /** Abstract superclass for <a href=".#blipdesc">BLIP</a> requests and responses. */
 @interface BLIPMessage : NSObject
 
-/** The BLIPConnection associated with this message. */
-@property (readonly,strong) BLIPConnection *connection;
+/** The BLIPConnection or BLIPWebSocket associated with this message. */
+@property (readonly,strong) id<BLIPMessageSender> connection;
 
 /** This message's serial number in its connection.
     A BLIPRequest's number is initially zero, then assigned when it's sent.
@@ -99,8 +106,14 @@ NSError *BLIPMakeError( int errorCode, NSString *message, ... ) __attribute__ ((
 /** A shortcut to get the value of a property. */
 - (NSString*) valueOfProperty: (NSString*)property;
 
+/** Same as -valueOfProperty:. Enables "[]" access in Xcode 4.4+ */
+- (NSString*)objectForKeyedSubscript:(NSString*)key;
+
 /** A shortcut to set the value of a property. A nil value deletes that property. */
 - (void) setValue: (NSString*)value ofProperty: (NSString*)property;
+
+/** Same as -setValue:ofProperty:. Enables "[]" access in Xcode 4.4+ */
+- (void) setObject: (NSString*)value forKeyedSubscript:(NSString*)key;
 
 /** Similar to -description, but also shows the properties and their values. */
 @property (readonly) NSString* descriptionWithProperties;
