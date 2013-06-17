@@ -6,7 +6,10 @@
 //  Copyright 2008 Jens Alfke. All rights reserved.
 //
 
+// SecureTransport.h is missing on old iPhone versions
+#ifdef __IPHONE_5_0
 #import <Security/SecureTransport.h>
+#endif
 
 #import "TCP_Internal.h"
 #import "IPAddress.h"
@@ -17,8 +20,8 @@
 #import "ExceptionUtils.h"
 
 
-#if TARGET_OS_IPHONE && !defined(__SEC_TYPES__) && !defined(__IPHONE_6_0)
-// SecureTransport.h is missing on iPhone, with its SSL constants:
+#if TARGET_OS_IPHONE && !defined(__SEC_TYPES__) && !defined(__IPHONE_5_0)
+// Since SecureTransport.h is missing on old iPhone versions declare this error explicitly
 enum{
     errSSLClosedAbort 			= -9806,	/* connection closed via error */
 };
