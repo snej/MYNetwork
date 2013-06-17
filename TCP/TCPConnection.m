@@ -6,11 +6,6 @@
 //  Copyright 2008 Jens Alfke. All rights reserved.
 //
 
-// SecureTransport.h is missing on old iPhone versions
-#ifdef __IPHONE_5_0
-#import <Security/SecureTransport.h>
-#endif
-
 #import "TCP_Internal.h"
 #import "IPAddress.h"
 #import "MYBonjourService.h"
@@ -18,6 +13,12 @@
 #import "Logging.h"
 #import "Test.h"
 #import "ExceptionUtils.h"
+
+// SecureTransport.h is missing on old iPhone versions. Add it if it's available
+#import <Availability.h>
+#if TARGET_OS_IPHONE && !defined(__SEC_TYPES__) && defined(__IPHONE_5_0)
+#import <Security/SecureTransport.h>
+#endif
 
 
 #if TARGET_OS_IPHONE && !defined(__SEC_TYPES__) && !defined(__IPHONE_5_0)
