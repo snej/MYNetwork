@@ -26,7 +26,7 @@
 
 /** The index of the network interface to use, or zero (the default) for any interface.
     You usually don't need to set this. */
-@property UInt16 interfaceIndex;
+@property uint32_t interfaceIndex;
 
 /** The resulting address(es) of the host, as HostAddress objects. */
 @property (readonly) NSSet *addresses;
