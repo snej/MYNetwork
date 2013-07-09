@@ -24,7 +24,7 @@
 {
     MYBonjourService *_service;
     NSString *_hostname;
-    UInt16 _interfaceIndex;
+    uint32_t _interfaceIndex;
     NSMutableSet *_addresses;
     UInt16 _port;
     CFAbsoluteTime _expires;
