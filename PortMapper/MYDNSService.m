@@ -127,9 +127,9 @@ static void serviceCallback(CFSocketRef s,
 {
     if( _serviceRef ) {
         LogTo(DNS,@"Stopped %@",self);
-        DNSServiceRefDeallocate(_serviceRef);
+        if (_serviceRef != [_connection connectionRef])
+            DNSServiceRefDeallocate(_serviceRef);
         _serviceRef = NULL;
-        
         _connection = nil;
     }
 }
