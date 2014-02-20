@@ -54,7 +54,7 @@ NSString* const TCPErrorDomain = @"TCP";
 }
 
 
-static NSMutableArray *sAllConnections;
+static NSMutableArray *sAllConnections = NULL;
 
 
 - (Class) readerClass   {return [TCPReader class];}
@@ -65,6 +65,12 @@ static NSMutableArray *sAllConnections;
             inputStream: (NSInputStream*)input
            outputStream: (NSOutputStream*)output
 {
+    static dispatch_once_t predicate;
+	dispatch_once(&predicate, ^{
+		sAllConnections = [[NSMutableArray alloc] init];
+	});
+
+    
     self = [super init];
     if (self != nil) {
         if( !input || !output ) {
