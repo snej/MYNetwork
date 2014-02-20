@@ -29,7 +29,7 @@
 @interface TCPStream ()
 {
     @protected
-    TCPConnection *_conn;
+    __weak TCPConnection *_conn;
     NSStream *_stream;
     BOOL _shouldClose;
 }

@@ -94,8 +94,8 @@ typedef enum {
 @property (readonly) NSString* actualSecurityLevel;
 
 
-@property (readonly) TCPReader *reader;
-@property (readonly) TCPWriter *writer;
+@property (strong,readonly) TCPReader *reader;
+@property (strong,readonly) TCPWriter *writer;
 
 
 // protected:
