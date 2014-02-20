@@ -176,7 +176,7 @@
                 }
             } else if( header->number == _numRequestsReceived+1 ) {
                 // Next new request:
-                request = [[BLIPRequest alloc] _initWithConnection: _blipConn
+                request = [[[_blipConn requestClass] alloc] _initWithConnection: _blipConn
                                                          isMine: NO
                                                           flags: header->flags | kBLIP_MoreComing
                                                          number: header->number

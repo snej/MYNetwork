@@ -33,6 +33,7 @@
 
 - (Class) readerClass                                       {return [BLIPReader class];}
 - (Class) writerClass                                       {return [BLIPWriter class];}
+- (Class) requestClass                                      {return [BLIPRequest class];}
 
 - (id<BLIPConnectionDelegate>) delegate                     {return (id)_delegate;}
 - (void) setDelegate: (id<BLIPConnectionDelegate>)delegate  {_delegate = delegate;}
@@ -102,13 +103,13 @@
 
 - (BLIPRequest*) request
 {
-    return [[BLIPRequest alloc] _initWithConnection: self body: nil properties: nil];
+    return [[[self requestClass] alloc] _initWithConnection: self body: nil properties: nil];
 }
 
 - (BLIPRequest*) requestWithBody: (NSData*)body
                       properties: (NSDictionary*)properties
 {
-    return [[BLIPRequest alloc] _initWithConnection: self body: body properties: properties];
+    return [[[self requestClass] alloc] _initWithConnection: self body: body properties: properties];
 }
 
 - (BLIPResponse*) sendRequest: (BLIPRequest*)request
