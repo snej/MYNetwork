@@ -75,6 +75,11 @@
 /** Shortcut to respond to this message with an error indicating that an exception occurred. */
 - (void) respondWithException: (NSException*)exception;
 
+/** Specifies the class of object to be used for responses
+ Subclasses may override, but MUST be a subclass of BLIPResponse
+ */
+- (Class) responseClass;
+
 @end
 
 

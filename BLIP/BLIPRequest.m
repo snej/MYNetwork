@@ -67,7 +67,7 @@
 }
 
 
-
+- (Class) responseClass                     {return [BLIPResponse class]; }
 
 - (BOOL) noReply                            {return (_flags & kBLIP_NoReply) != 0;}
 - (void) setNoReply: (BOOL)noReply          {[self _setFlag: kBLIP_NoReply value: noReply];}
@@ -97,7 +97,11 @@
 - (BLIPResponse*) response
 {
     if( ! _response && ! self.noReply )
-        _response = [[BLIPResponse alloc] _initWithRequest: self];
+    {
+        [self willChangeValueForKey:@"repliedTo"];
+        _response = [[[self responseClass] alloc] _initWithRequest: self];
+        [self didChangeValueForKey:@"repliedTo"];
+    }
     return _response;
 }
 

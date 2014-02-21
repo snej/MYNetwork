@@ -980,7 +980,7 @@
 		08FB7793FE84155DC02AAC07 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0430;
+				LastUpgradeCheck = 0500;
 			};
 			buildConfigurationList = 1DEB927808733DD40010E9CD /* Build configuration list for PBXProject "MYNetwork" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -1577,6 +1577,7 @@
 				2710C580175510DC00CA10BF /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		275E900A1709F3DC0008F577 /* Build configuration list for PBXAggregateTarget "All" */ = {
 			isa = XCConfigurationList;
