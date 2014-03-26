@@ -3,4 +3,4 @@
 	url = git://github.com/snej/MYUtilities.git
 [submodule "vendor/SocketRocket"]
 	path = vendor/SocketRocket
-	url = git://github.com/snej/SocketRocket.git
+	url = git://github.com/nanonation/SocketRocket.git
