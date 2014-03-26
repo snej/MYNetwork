@@ -294,6 +294,9 @@ MYDNSConnection *sSharedConnection;
             //FIX: Are errors here fatal, meaning I should close the connection?
             // I've run into infinite loops constantly getting kDNSServiceErr_ServiceNotRunning
             // or kDNSServiceErr_BadReference ...
+            
+            // I've run into the same thing. Closing connection here. MDN 2014-03-16
+            [self close];
         }
         return !err;
     }
