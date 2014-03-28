@@ -57,7 +57,8 @@ NSString* const kTCPPropertySSLClientSideAuthentication = @"kTCPPropertySSLClien
 {
     if( [_delegate respondsToSelector: selector] ) {
         @try{
-            objc_msgSend(_delegate, selector, self, param);
+            void (*action)(id, SEL, id, id) = (void (*)(id, SEL, id, id)) objc_msgSend;
+            action(_delegate, selector, self, param);
             //formerly [_delegate performSelector: selector withObject: self withObject: param];
             // but the compiler doesn't like that with ARC
         }catchAndReport(@"%@ delegate",self.class);
