@@ -396,6 +396,9 @@ static NSMutableArray *sAllConnections = NULL;
     LogTo(TCP,@"%@ got %@ on %@",self,error,stream.class);
     Assert(error);
     MYDeferDealloc(self);  // don't let me be dealloced during this
+    id s = self;
+    id r = _reader;
+    id w = _writer;
      _error = error;
     [_reader disconnect];
     [_writer disconnect];
