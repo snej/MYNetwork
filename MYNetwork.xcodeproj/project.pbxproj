@@ -505,7 +505,6 @@
 		08FB7794FE84155DC02AAC07 /* MYNetwork */ = {
 			isa = PBXGroup;
 			children = (
-				2710C599175517BD00CA10BF /* CoreFoundation.framework */,
 				270462C30DE4A65B003D9D3F /* BLIP Overview.txt */,
 				277903830DE8C2DD00C6D295 /* maindocs.h */,
 				270460F00DE49030003D9D3F /* MYNetwork */,
@@ -612,20 +611,13 @@
 		2710C56E175510DB00CA10BF /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				2710C56F175510DB00CA10BF /* Cocoa.framework */,
-				2710C571175510DC00CA10BF /* Other Frameworks */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		2710C571175510DC00CA10BF /* Other Frameworks */ = {
-			isa = PBXGroup;
-			children = (
 				2710C572175510DC00CA10BF /* AppKit.framework */,
+				2710C56F175510DB00CA10BF /* Cocoa.framework */,
 				2710C573175510DC00CA10BF /* CoreData.framework */,
+				2710C599175517BD00CA10BF /* CoreFoundation.framework */,
 				2710C574175510DC00CA10BF /* Foundation.framework */,
 			);
-			name = "Other Frameworks";
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		2710C5A11756731100CA10BF /* WebSocket */ = {
@@ -980,7 +972,7 @@
 		08FB7793FE84155DC02AAC07 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0510;
+				LastUpgradeCheck = 0620;
 			};
 			buildConfigurationList = 1DEB927808733DD40010E9CD /* Build configuration list for PBXProject "MYNetwork" */;
 			compatibilityVersion = "Xcode 3.2";
