@@ -6,9 +6,6 @@
 //  Copyright 2008 Jens Alfke. All rights reserved.
 //
 
-#import "TCPConnection.h"
-#import "TCPListener.h"
-#import "BLIPMessage.h"
 @class BLIPRequest, BLIPResponse, BLIPDispatcher;
 @protocol BLIPConnectionDelegate;
 

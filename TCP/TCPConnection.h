@@ -6,7 +6,6 @@
 //  Copyright 2008 Jens Alfke. All rights reserved.
 //
 
-#import "TCPEndpoint.h"
 #import <Security/Security.h>
 @class IPAddress;
 @class TCPReader, TCPWriter, TCPListener, MYBonjourService;

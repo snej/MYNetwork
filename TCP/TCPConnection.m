@@ -403,6 +403,9 @@ static NSMutableArray *sAllConnections = NULL;
     [_reader disconnect];
     [_writer disconnect];
     [self _closed];
+    s = nil;
+    r = nil;
+    w = nil;
 }
 
 - (void) _streamGotEOF: (TCPStream*)stream

@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "BLIPMessage.h"
+
 @class BLIPRequest, BLIPResponse, BLIPDispatcher;
 @protocol BLIPWebSocketDelegate;
 

@@ -6,7 +6,6 @@
 //
 //
 
-#import "BLIPRequest.h"
 
 /** Methods for converting a BLIPRequest to and from an HTTP NSURLRequest. */
 @interface BLIPRequest (HTTP)

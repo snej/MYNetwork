@@ -62,39 +62,20 @@
 		27375DFB0FC9FB5C0033F8F5 /* TCPEndpoint+Certs.m in Sources */ = {isa = PBXBuildFile; fileRef = 27375DFA0FC9FB5C0033F8F5 /* TCPEndpoint+Certs.m */; };
 		27375DFC0FC9FB5C0033F8F5 /* TCPEndpoint+Certs.m in Sources */ = {isa = PBXBuildFile; fileRef = 27375DFA0FC9FB5C0033F8F5 /* TCPEndpoint+Certs.m */; };
 		27375DFD0FC9FB5C0033F8F5 /* TCPEndpoint+Certs.m in Sources */ = {isa = PBXBuildFile; fileRef = 27375DFA0FC9FB5C0033F8F5 /* TCPEndpoint+Certs.m */; };
-		273B457B0FA681EE00276298 /* MYBonjourRegistration.h in Headers */ = {isa = PBXBuildFile; fileRef = 273B45790FA681EE00276298 /* MYBonjourRegistration.h */; };
 		273B457C0FA681EE00276298 /* MYBonjourRegistration.m in Sources */ = {isa = PBXBuildFile; fileRef = 273B457A0FA681EE00276298 /* MYBonjourRegistration.m */; };
 		273B457D0FA681EE00276298 /* MYBonjourRegistration.m in Sources */ = {isa = PBXBuildFile; fileRef = 273B457A0FA681EE00276298 /* MYBonjourRegistration.m */; };
-		275E8FBB1709EF830008F577 /* CollectionUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 275E8F961709EF830008F577 /* CollectionUtils.h */; };
-		275E8FBC1709EF830008F577 /* CollectionUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 275E8F961709EF830008F577 /* CollectionUtils.h */; };
 		275E8FBD1709EF830008F577 /* CollectionUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 275E8F971709EF830008F577 /* CollectionUtils.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		275E8FBE1709EF830008F577 /* CollectionUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 275E8F971709EF830008F577 /* CollectionUtils.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		275E8FBF1709EF830008F577 /* ConcurrentOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 275E8F981709EF830008F577 /* ConcurrentOperation.h */; };
-		275E8FC01709EF830008F577 /* ConcurrentOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 275E8F981709EF830008F577 /* ConcurrentOperation.h */; };
 		275E8FC11709EF830008F577 /* ConcurrentOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 275E8F991709EF830008F577 /* ConcurrentOperation.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		275E8FC21709EF830008F577 /* ConcurrentOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 275E8F991709EF830008F577 /* ConcurrentOperation.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		275E8FC31709EF830008F577 /* ExceptionUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 275E8F9A1709EF830008F577 /* ExceptionUtils.h */; };
-		275E8FC41709EF830008F577 /* ExceptionUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 275E8F9A1709EF830008F577 /* ExceptionUtils.h */; };
 		275E8FC51709EF830008F577 /* ExceptionUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 275E8F9B1709EF830008F577 /* ExceptionUtils.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		275E8FC61709EF830008F577 /* ExceptionUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 275E8F9B1709EF830008F577 /* ExceptionUtils.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		275E8FC71709EF830008F577 /* Logging.h in Headers */ = {isa = PBXBuildFile; fileRef = 275E8F9C1709EF830008F577 /* Logging.h */; };
-		275E8FC81709EF830008F577 /* Logging.h in Headers */ = {isa = PBXBuildFile; fileRef = 275E8F9C1709EF830008F577 /* Logging.h */; };
 		275E8FC91709EF830008F577 /* Logging.m in Sources */ = {isa = PBXBuildFile; fileRef = 275E8F9D1709EF830008F577 /* Logging.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		275E8FCA1709EF830008F577 /* Logging.m in Sources */ = {isa = PBXBuildFile; fileRef = 275E8F9D1709EF830008F577 /* Logging.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		275E8FE71709EF830008F577 /* MYUtilities_Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = 275E8FAE1709EF830008F577 /* MYUtilities_Prefix.pch */; };
-		275E8FE81709EF830008F577 /* MYUtilities_Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = 275E8FAE1709EF830008F577 /* MYUtilities_Prefix.pch */; };
-		275E8FE91709EF830008F577 /* Target.h in Headers */ = {isa = PBXBuildFile; fileRef = 275E8FB11709EF830008F577 /* Target.h */; };
-		275E8FEA1709EF830008F577 /* Target.h in Headers */ = {isa = PBXBuildFile; fileRef = 275E8FB11709EF830008F577 /* Target.h */; };
 		275E8FEB1709EF830008F577 /* Target.m in Sources */ = {isa = PBXBuildFile; fileRef = 275E8FB21709EF830008F577 /* Target.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		275E8FEC1709EF830008F577 /* Target.m in Sources */ = {isa = PBXBuildFile; fileRef = 275E8FB21709EF830008F577 /* Target.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		275E8FED1709EF830008F577 /* Test.h in Headers */ = {isa = PBXBuildFile; fileRef = 275E8FB31709EF830008F577 /* Test.h */; };
-		275E8FEE1709EF830008F577 /* Test.h in Headers */ = {isa = PBXBuildFile; fileRef = 275E8FB31709EF830008F577 /* Test.h */; };
 		275E8FEF1709EF830008F577 /* Test.m in Sources */ = {isa = PBXBuildFile; fileRef = 275E8FB41709EF830008F577 /* Test.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		275E8FF01709EF830008F577 /* Test.m in Sources */ = {isa = PBXBuildFile; fileRef = 275E8FB41709EF830008F577 /* Test.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		275E8FFD1709F0350008F577 /* GTMDefines.h in Headers */ = {isa = PBXBuildFile; fileRef = 275E8FF91709F0350008F577 /* GTMDefines.h */; };
-		275E8FFE1709F0350008F577 /* GTMDefines.h in Headers */ = {isa = PBXBuildFile; fileRef = 275E8FF91709F0350008F577 /* GTMDefines.h */; };
-		275E8FFF1709F0350008F577 /* GTMNSData+zlib.h in Headers */ = {isa = PBXBuildFile; fileRef = 275E8FFA1709F0350008F577 /* GTMNSData+zlib.h */; };
-		275E90001709F0350008F577 /* GTMNSData+zlib.h in Headers */ = {isa = PBXBuildFile; fileRef = 275E8FFA1709F0350008F577 /* GTMNSData+zlib.h */; };
 		275E90011709F0350008F577 /* GTMNSData+zlib.m in Sources */ = {isa = PBXBuildFile; fileRef = 275E8FFB1709F0350008F577 /* GTMNSData+zlib.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		275E90021709F0350008F577 /* GTMNSData+zlib.m in Sources */ = {isa = PBXBuildFile; fileRef = 275E8FFB1709F0350008F577 /* GTMNSData+zlib.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		275E90031709F29A0008F577 /* CollectionUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 275E8F971709EF830008F577 /* CollectionUtils.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -106,18 +87,10 @@
 		275E9019170A24100008F577 /* GTMNSData+zlib.m in Sources */ = {isa = PBXBuildFile; fileRef = 275E8FFB1709F0350008F577 /* GTMNSData+zlib.m */; };
 		275E9021170A30290008F577 /* base64.c in Sources */ = {isa = PBXBuildFile; fileRef = 275E901B170A30290008F577 /* base64.c */; };
 		275E9022170A30290008F577 /* base64.c in Sources */ = {isa = PBXBuildFile; fileRef = 275E901B170A30290008F577 /* base64.c */; };
-		275E9023170A30290008F577 /* base64.h in Headers */ = {isa = PBXBuildFile; fileRef = 275E901C170A30290008F577 /* base64.h */; };
-		275E9024170A30290008F577 /* base64.h in Headers */ = {isa = PBXBuildFile; fileRef = 275E901C170A30290008F577 /* base64.h */; };
-		275E9025170A30290008F577 /* NSData+SRB64Additions.h in Headers */ = {isa = PBXBuildFile; fileRef = 275E901D170A30290008F577 /* NSData+SRB64Additions.h */; };
-		275E9026170A30290008F577 /* NSData+SRB64Additions.h in Headers */ = {isa = PBXBuildFile; fileRef = 275E901D170A30290008F577 /* NSData+SRB64Additions.h */; };
 		275E9027170A30290008F577 /* NSData+SRB64Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 275E901E170A30290008F577 /* NSData+SRB64Additions.m */; };
 		275E9028170A30290008F577 /* NSData+SRB64Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 275E901E170A30290008F577 /* NSData+SRB64Additions.m */; };
-		275E9029170A30290008F577 /* SRWebSocket.h in Headers */ = {isa = PBXBuildFile; fileRef = 275E901F170A30290008F577 /* SRWebSocket.h */; };
-		275E902A170A30290008F577 /* SRWebSocket.h in Headers */ = {isa = PBXBuildFile; fileRef = 275E901F170A30290008F577 /* SRWebSocket.h */; };
 		275E902B170A30290008F577 /* SRWebSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 275E9020170A30290008F577 /* SRWebSocket.m */; };
 		275E902C170A30290008F577 /* SRWebSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 275E9020170A30290008F577 /* SRWebSocket.m */; };
-		275E902F170A307F0008F577 /* BLIPWebSocket.h in Headers */ = {isa = PBXBuildFile; fileRef = 275E902D170A307E0008F577 /* BLIPWebSocket.h */; };
-		275E9030170A307F0008F577 /* BLIPWebSocket.h in Headers */ = {isa = PBXBuildFile; fileRef = 275E902D170A307E0008F577 /* BLIPWebSocket.h */; };
 		275E9031170A307F0008F577 /* BLIPWebSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 275E902E170A307E0008F577 /* BLIPWebSocket.m */; };
 		275E9032170A307F0008F577 /* BLIPWebSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 275E902E170A307E0008F577 /* BLIPWebSocket.m */; };
 		275E9035170A68F00008F577 /* BLIPWebSocketTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 275E9034170A68F00008F577 /* BLIPWebSocketTest.m */; };
@@ -125,13 +98,9 @@
 		275E9037170A6C680008F577 /* SRWebSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 275E9020170A30290008F577 /* SRWebSocket.m */; };
 		275E9038170A6C6F0008F577 /* base64.c in Sources */ = {isa = PBXBuildFile; fileRef = 275E901B170A30290008F577 /* base64.c */; };
 		275E9039170A6C740008F577 /* NSData+SRB64Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 275E901E170A30290008F577 /* NSData+SRB64Additions.m */; };
-		275E903C171C5E8F0008F577 /* BLIPRequest+HTTP.h in Headers */ = {isa = PBXBuildFile; fileRef = 275E903A171C5E8F0008F577 /* BLIPRequest+HTTP.h */; };
-		275E903D171C5E8F0008F577 /* BLIPRequest+HTTP.h in Headers */ = {isa = PBXBuildFile; fileRef = 275E903A171C5E8F0008F577 /* BLIPRequest+HTTP.h */; };
 		275E903E171C5E8F0008F577 /* BLIPRequest+HTTP.m in Sources */ = {isa = PBXBuildFile; fileRef = 275E903B171C5E8F0008F577 /* BLIPRequest+HTTP.m */; };
 		275E903F171C5E8F0008F577 /* BLIPRequest+HTTP.m in Sources */ = {isa = PBXBuildFile; fileRef = 275E903B171C5E8F0008F577 /* BLIPRequest+HTTP.m */; };
 		275E9040171CAEED0008F577 /* BLIPRequest+HTTP.m in Sources */ = {isa = PBXBuildFile; fileRef = 275E903B171C5E8F0008F577 /* BLIPRequest+HTTP.m */; };
-		275E9043171CC29D0008F577 /* BLIPHTTPProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = 275E9041171CC29C0008F577 /* BLIPHTTPProtocol.h */; };
-		275E9044171CC29D0008F577 /* BLIPHTTPProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = 275E9041171CC29C0008F577 /* BLIPHTTPProtocol.h */; };
 		275E9045171CC29D0008F577 /* BLIPHTTPProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = 275E9042171CC29C0008F577 /* BLIPHTTPProtocol.m */; };
 		275E9046171CC29D0008F577 /* BLIPHTTPProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = 275E9042171CC29C0008F577 /* BLIPHTTPProtocol.m */; };
 		275E904E171CD6D40008F577 /* BLIPHTTPTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 275E904D171CD6D40008F577 /* BLIPHTTPTest.m */; };
@@ -139,13 +108,10 @@
 		2779048B0DE9204300C6D295 /* BLIPEchoClient.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2779048A0DE9204300C6D295 /* BLIPEchoClient.xib */; };
 		277905240DE9E5BC00C6D295 /* BLIPEchoServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 277903D60DE8EE4800C6D295 /* BLIPEchoServer.m */; };
 		2779053B0DE9EDAA00C6D295 /* BLIPTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 270460FE0DE49030003D9D3F /* BLIPTest.m */; settings = {COMPILER_FLAGS = "-Wno-deprecated-declarations"; }; };
-		2780F20C0FA194BD00C0FB83 /* MYDNSService.h in Headers */ = {isa = PBXBuildFile; fileRef = 2780F20A0FA194BD00C0FB83 /* MYDNSService.h */; };
 		2780F20D0FA194BD00C0FB83 /* MYDNSService.m in Sources */ = {isa = PBXBuildFile; fileRef = 2780F20B0FA194BD00C0FB83 /* MYDNSService.m */; };
 		2780F20E0FA194BD00C0FB83 /* MYDNSService.m in Sources */ = {isa = PBXBuildFile; fileRef = 2780F20B0FA194BD00C0FB83 /* MYDNSService.m */; };
-		2780F4380FA28F4400C0FB83 /* MYBonjourQuery.h in Headers */ = {isa = PBXBuildFile; fileRef = 2780F4360FA28F4400C0FB83 /* MYBonjourQuery.h */; };
 		2780F4390FA28F4400C0FB83 /* MYBonjourQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = 2780F4370FA28F4400C0FB83 /* MYBonjourQuery.m */; };
 		2780F43A0FA28F4400C0FB83 /* MYBonjourQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = 2780F4370FA28F4400C0FB83 /* MYBonjourQuery.m */; };
-		2780F4A10FA2C59000C0FB83 /* MYAddressLookup.h in Headers */ = {isa = PBXBuildFile; fileRef = 2780F49F0FA2C59000C0FB83 /* MYAddressLookup.h */; };
 		2780F4A20FA2C59000C0FB83 /* MYAddressLookup.m in Sources */ = {isa = PBXBuildFile; fileRef = 2780F4A00FA2C59000C0FB83 /* MYAddressLookup.m */; };
 		2780F4A30FA2C59000C0FB83 /* MYAddressLookup.m in Sources */ = {isa = PBXBuildFile; fileRef = 2780F4A00FA2C59000C0FB83 /* MYAddressLookup.m */; };
 		278C1A3D0F9F687800954AE1 /* PortMapperTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 278C1A340F9F687800954AE1 /* PortMapperTest.m */; };
@@ -425,6 +391,7 @@
 		27F87B6615577C1A00F0A416 /* MainWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainWindow.xib; sourceTree = "<group>"; };
 		27F87B6715577C1A00F0A416 /* MYNetwork_iPhone_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MYNetwork_iPhone_Prefix.pch; sourceTree = "<group>"; };
 		27F87B7715577E1100F0A416 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS5.1.sdk/System/Library/Frameworks/CFNetwork.framework; sourceTree = DEVELOPER_DIR; };
+		633C6C661B744003008C6438 /* PrefixHeader.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PrefixHeader.pch; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -552,6 +519,7 @@
 		270460F00DE49030003D9D3F /* MYNetwork */ = {
 			isa = PBXGroup;
 			children = (
+				633C6C661B744003008C6438 /* PrefixHeader.pch */,
 				279DDCCB0F9E381500D75D91 /* MYNetwork.h */,
 				2780F5710FA2E38100C0FB83 /* Addressing */,
 				278C1A320F9F687800954AE1 /* PortMapper */,
@@ -794,25 +762,6 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2780F20C0FA194BD00C0FB83 /* MYDNSService.h in Headers */,
-				2780F4380FA28F4400C0FB83 /* MYBonjourQuery.h in Headers */,
-				2780F4A10FA2C59000C0FB83 /* MYAddressLookup.h in Headers */,
-				273B457B0FA681EE00276298 /* MYBonjourRegistration.h in Headers */,
-				275E8FBB1709EF830008F577 /* CollectionUtils.h in Headers */,
-				275E8FBF1709EF830008F577 /* ConcurrentOperation.h in Headers */,
-				275E8FC31709EF830008F577 /* ExceptionUtils.h in Headers */,
-				275E8FC71709EF830008F577 /* Logging.h in Headers */,
-				275E8FE71709EF830008F577 /* MYUtilities_Prefix.pch in Headers */,
-				275E8FE91709EF830008F577 /* Target.h in Headers */,
-				275E8FED1709EF830008F577 /* Test.h in Headers */,
-				275E8FFD1709F0350008F577 /* GTMDefines.h in Headers */,
-				275E8FFF1709F0350008F577 /* GTMNSData+zlib.h in Headers */,
-				275E9023170A30290008F577 /* base64.h in Headers */,
-				275E9025170A30290008F577 /* NSData+SRB64Additions.h in Headers */,
-				275E9029170A30290008F577 /* SRWebSocket.h in Headers */,
-				275E902F170A307F0008F577 /* BLIPWebSocket.h in Headers */,
-				275E903C171C5E8F0008F577 /* BLIPRequest+HTTP.h in Headers */,
-				275E9043171CC29D0008F577 /* BLIPHTTPProtocol.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -820,21 +769,6 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				275E8FBC1709EF830008F577 /* CollectionUtils.h in Headers */,
-				275E8FC01709EF830008F577 /* ConcurrentOperation.h in Headers */,
-				275E8FC41709EF830008F577 /* ExceptionUtils.h in Headers */,
-				275E8FC81709EF830008F577 /* Logging.h in Headers */,
-				275E8FE81709EF830008F577 /* MYUtilities_Prefix.pch in Headers */,
-				275E8FEA1709EF830008F577 /* Target.h in Headers */,
-				275E8FEE1709EF830008F577 /* Test.h in Headers */,
-				275E8FFE1709F0350008F577 /* GTMDefines.h in Headers */,
-				275E90001709F0350008F577 /* GTMNSData+zlib.h in Headers */,
-				275E9024170A30290008F577 /* base64.h in Headers */,
-				275E9026170A30290008F577 /* NSData+SRB64Additions.h in Headers */,
-				275E902A170A30290008F577 /* SRWebSocket.h in Headers */,
-				275E9030170A307F0008F577 /* BLIPWebSocket.h in Headers */,
-				275E903D171C5E8F0008F577 /* BLIPRequest+HTTP.h in Headers */,
-				275E9044171CC29D0008F577 /* BLIPHTTPProtocol.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -896,9 +830,9 @@
 			productReference = 2779052D0DE9E5BC00C6D295 /* BLIPEchoServer */;
 			productType = "com.apple.product-type.tool";
 		};
-		279E8F9D0F9FDD0800608D8D /* Library */ = {
+		279E8F9D0F9FDD0800608D8D /* Mac Blip Library */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 279E8FCC0F9FDD8900608D8D /* Build configuration list for PBXNativeTarget "Library" */;
+			buildConfigurationList = 279E8FCC0F9FDD8900608D8D /* Build configuration list for PBXNativeTarget "Mac Blip Library" */;
 			buildPhases = (
 				279E8F9A0F9FDD0800608D8D /* Headers */,
 				279E8F9B0F9FDD0800608D8D /* Sources */,
@@ -908,14 +842,14 @@
 			);
 			dependencies = (
 			);
-			name = Library;
+			name = "Mac Blip Library";
 			productName = Library;
 			productReference = 279E8F9E0F9FDD0800608D8D /* libMYNetwork.a */;
 			productType = "com.apple.product-type.library.static";
 		};
-		27F87B161557764300F0A416 /* iOS Library */ = {
+		27F87B161557764300F0A416 /* iOS Blip Library */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 27F87B211557764300F0A416 /* Build configuration list for PBXNativeTarget "iOS Library" */;
+			buildConfigurationList = 27F87B211557764300F0A416 /* Build configuration list for PBXNativeTarget "iOS Blip Library" */;
 			buildPhases = (
 				27F87B131557764300F0A416 /* Sources */,
 				27F87B141557764300F0A416 /* Frameworks */,
@@ -925,7 +859,7 @@
 			);
 			dependencies = (
 			);
-			name = "iOS Library";
+			name = "iOS Blip Library";
 			productName = MYNetwork;
 			productReference = 27F87B171557764300F0A416 /* libMYNetwork.a */;
 			productType = "com.apple.product-type.library.static";
@@ -948,9 +882,9 @@
 			productReference = 27F87B4515577BCA00F0A416 /* BLIP Echo.app */;
 			productType = "com.apple.product-type.application";
 		};
-		8DD76F960486AA7600D96B5E /* SelfTest */ = {
+		8DD76F960486AA7600D96B5E /* Blip SelfTest */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 1DEB927408733DD40010E9CD /* Build configuration list for PBXNativeTarget "SelfTest" */;
+			buildConfigurationList = 1DEB927408733DD40010E9CD /* Build configuration list for PBXNativeTarget "Blip SelfTest" */;
 			buildPhases = (
 				8DD76F990486AA7600D96B5E /* Sources */,
 				8DD76F9B0486AA7600D96B5E /* Frameworks */,
@@ -960,7 +894,7 @@
 			);
 			dependencies = (
 			);
-			name = SelfTest;
+			name = "Blip SelfTest";
 			productInstallPath = "$(HOME)/bin";
 			productName = MYNetwork;
 			productReference = 270461720DE49340003D9D3F /* MYNetwork */;
@@ -985,9 +919,9 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				279E8F9D0F9FDD0800608D8D /* Library */,
-				27F87B161557764300F0A416 /* iOS Library */,
-				8DD76F960486AA7600D96B5E /* SelfTest */,
+				279E8F9D0F9FDD0800608D8D /* Mac Blip Library */,
+				27F87B161557764300F0A416 /* iOS Blip Library */,
+				8DD76F960486AA7600D96B5E /* Blip SelfTest */,
 				277904250DE91C7900C6D295 /* BLIP Echo Client */,
 				2779050F0DE9E5BC00C6D295 /* BLIP Echo Server */,
 				27F87B4415577BCA00F0A416 /* iOS BLIP Echo */,
@@ -1210,17 +1144,17 @@
 /* Begin PBXTargetDependency section */
 		275E900E1709F3E30008F577 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 279E8F9D0F9FDD0800608D8D /* Library */;
+			target = 279E8F9D0F9FDD0800608D8D /* Mac Blip Library */;
 			targetProxy = 275E900D1709F3E30008F577 /* PBXContainerItemProxy */;
 		};
 		275E90101709F3E50008F577 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 27F87B161557764300F0A416 /* iOS Library */;
+			target = 27F87B161557764300F0A416 /* iOS Blip Library */;
 			targetProxy = 275E900F1709F3E50008F577 /* PBXContainerItemProxy */;
 		};
 		275E90121709F3E70008F577 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 8DD76F960486AA7600D96B5E /* SelfTest */;
+			target = 8DD76F960486AA7600D96B5E /* Blip SelfTest */;
 			targetProxy = 275E90111709F3E70008F577 /* PBXContainerItemProxy */;
 		};
 		275E90141709F3E80008F577 /* PBXTargetDependency */ = {
@@ -1240,17 +1174,17 @@
 		};
 		279E8FD60F9FDDD900608D8D /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 279E8F9D0F9FDD0800608D8D /* Library */;
+			target = 279E8F9D0F9FDD0800608D8D /* Mac Blip Library */;
 			targetProxy = 279E8FD50F9FDDD900608D8D /* PBXContainerItemProxy */;
 		};
 		279E8FF90F9FDECD00608D8D /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 279E8F9D0F9FDD0800608D8D /* Library */;
+			target = 279E8F9D0F9FDD0800608D8D /* Mac Blip Library */;
 			targetProxy = 279E8FF80F9FDECD00608D8D /* PBXContainerItemProxy */;
 		};
 		27F87B7215577C4100F0A416 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 27F87B161557764300F0A416 /* iOS Library */;
+			target = 27F87B161557764300F0A416 /* iOS Blip Library */;
 			targetProxy = 27F87B7115577C4100F0A416 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -1405,6 +1339,7 @@
 			buildSettings = {
 				CLANG_ENABLE_OBJC_ARC = YES;
 				GCC_ENABLE_OBJC_GC = unsupported;
+				GCC_PREFIX_HEADER = PrefixHeader.pch;
 				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
 				INSTALL_PATH = /usr/local/lib;
 				PRODUCT_NAME = MYNetwork;
@@ -1416,6 +1351,7 @@
 			buildSettings = {
 				CLANG_ENABLE_OBJC_ARC = YES;
 				GCC_ENABLE_OBJC_GC = unsupported;
+				GCC_PREFIX_HEADER = PrefixHeader.pch;
 				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
 				INSTALL_PATH = /usr/local/lib;
 				PRODUCT_NAME = MYNetwork;
@@ -1433,6 +1369,7 @@
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = PrefixHeader.pch;
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
@@ -1456,6 +1393,7 @@
 				DSTROOT = /tmp/MYNetwork.dst;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = PrefixHeader.pch;
 				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
@@ -1534,7 +1472,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		1DEB927408733DD40010E9CD /* Build configuration list for PBXNativeTarget "SelfTest" */ = {
+		1DEB927408733DD40010E9CD /* Build configuration list for PBXNativeTarget "Blip SelfTest" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				1DEB927508733DD40010E9CD /* Debug */,
@@ -1588,7 +1526,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		279E8FCC0F9FDD8900608D8D /* Build configuration list for PBXNativeTarget "Library" */ = {
+		279E8FCC0F9FDD8900608D8D /* Build configuration list for PBXNativeTarget "Mac Blip Library" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				279E8F9F0F9FDD0900608D8D /* Debug */,
@@ -1597,7 +1535,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		27F87B211557764300F0A416 /* Build configuration list for PBXNativeTarget "iOS Library" */ = {
+		27F87B211557764300F0A416 /* Build configuration list for PBXNativeTarget "iOS Blip Library" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				27F87B221557764300F0A416 /* Debug */,

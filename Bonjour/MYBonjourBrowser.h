@@ -6,7 +6,6 @@
 //  Copyright 2008 Jens Alfke. All rights reserved.
 //
 
-#import "MYDNSService.h"
 @class MYBonjourRegistration;
 
 
