@@ -4,3 +4,6 @@
 [submodule "vendor/SocketRocket"]
 	path = vendor/SocketRocket
 	url = git://github.com/nanonation/SocketRocket.git
+[submodule "vendor/CocoaAsyncSocket"]
+	path = vendor/CocoaAsyncSocket
+	url = git://github.com/nanonation/CocoaAsyncSocket.git
