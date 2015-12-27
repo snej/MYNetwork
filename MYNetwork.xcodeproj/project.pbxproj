@@ -26,13 +26,9 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
-		1C17B7C11C03BA24004350C3 /* GCDAsyncSocket.h in Headers */ = {isa = PBXBuildFile; fileRef = 1C17B7BD1C03BA24004350C3 /* GCDAsyncSocket.h */; };
 		1C17B7C21C03BA24004350C3 /* GCDAsyncSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C17B7BE1C03BA24004350C3 /* GCDAsyncSocket.m */; };
-		1C17B7C31C03BA24004350C3 /* GCDAsyncUdpSocket.h in Headers */ = {isa = PBXBuildFile; fileRef = 1C17B7BF1C03BA24004350C3 /* GCDAsyncUdpSocket.h */; };
 		1C17B7C41C03BA24004350C3 /* GCDAsyncUdpSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C17B7C01C03BA24004350C3 /* GCDAsyncUdpSocket.m */; };
-		1C17B7CB1C03BFCD004350C3 /* AsyncSocket.h in Headers */ = {isa = PBXBuildFile; fileRef = 1C17B7C71C03BFCD004350C3 /* AsyncSocket.h */; };
 		1C17B7CC1C03BFCD004350C3 /* AsyncSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C17B7C81C03BFCD004350C3 /* AsyncSocket.m */; };
-		1C17B7CD1C03BFCD004350C3 /* AsyncUdpSocket.h in Headers */ = {isa = PBXBuildFile; fileRef = 1C17B7C91C03BFCD004350C3 /* AsyncUdpSocket.h */; };
 		1C17B7CE1C03BFCD004350C3 /* AsyncUdpSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C17B7CA1C03BFCD004350C3 /* AsyncUdpSocket.m */; };
 		1C17B7DF1C03C459004350C3 /* DDAbstractDatabaseLogger.h in Headers */ = {isa = PBXBuildFile; fileRef = 1C17B7D41C03C459004350C3 /* DDAbstractDatabaseLogger.h */; };
 		1C17B7E01C03C459004350C3 /* DDAbstractDatabaseLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C17B7D51C03C459004350C3 /* DDAbstractDatabaseLogger.m */; };
@@ -873,12 +869,8 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1C17B7CB1C03BFCD004350C3 /* AsyncSocket.h in Headers */,
 				1C17B7F01C03C468004350C3 /* DDContextFilterLogFormatter.h in Headers */,
 				1C17B7F21C03C468004350C3 /* DDDispatchQueueLogFormatter.h in Headers */,
-				1C17B7C11C03BA24004350C3 /* GCDAsyncSocket.h in Headers */,
-				1C17B7CD1C03BFCD004350C3 /* AsyncUdpSocket.h in Headers */,
-				1C17B7C31C03BA24004350C3 /* GCDAsyncUdpSocket.h in Headers */,
 				1C17B7DF1C03C459004350C3 /* DDAbstractDatabaseLogger.h in Headers */,
 				1C17B7F41C03C468004350C3 /* DDMultiFormatter.h in Headers */,
 				1C17B7E11C03C459004350C3 /* DDASLLogger.h in Headers */,
