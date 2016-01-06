@@ -92,7 +92,10 @@ static NSError* fixStreamError( NSError *error );
 - (NSArray*) peerSSLCerts
 {
     Assert(self.isOpen);
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
     return [self propertyForKey: kCFStreamPropertySSLPeerCertificates];
+#pragma clang diagnostic pop
 }
 
 
