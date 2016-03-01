@@ -445,6 +445,7 @@
 		27F87B6715577C1A00F0A416 /* MYNetwork_iPhone_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MYNetwork_iPhone_Prefix.pch; sourceTree = "<group>"; };
 		27F87B7715577E1100F0A416 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS5.1.sdk/System/Library/Frameworks/CFNetwork.framework; sourceTree = DEVELOPER_DIR; };
 		633C6C661B744003008C6438 /* PrefixHeader.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PrefixHeader.pch; sourceTree = "<group>"; };
+		63FE28561C86562900B0B3C7 /* BLIP_Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLIP_Private.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -649,6 +650,7 @@
 				270460FF0DE49030003D9D3F /* BLIPWriter.h */,
 				270461000DE49030003D9D3F /* BLIPWriter.m */,
 				270460F70DE49030003D9D3F /* BLIP_Internal.h */,
+				63FE28561C86562900B0B3C7 /* BLIP_Private.h */,
 				2710C5A11756731100CA10BF /* WebSocket */,
 			);
 			indentWidth = 4;
