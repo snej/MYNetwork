@@ -212,6 +212,16 @@
 		27F87B6F15577C1A00F0A416 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27F87B6615577C1A00F0A416 /* MainWindow.xib */; };
 		27F87B7015577C3900F0A416 /* libMYNetwork.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 27F87B171557764300F0A416 /* libMYNetwork.a */; };
 		27F87B7815577E1100F0A416 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27F87B7715577E1100F0A416 /* CFNetwork.framework */; };
+		63FE28651C8738F200B0B3C7 /* BLIPFileRequest.h in Headers */ = {isa = PBXBuildFile; fileRef = 63FE28611C8738F200B0B3C7 /* BLIPFileRequest.h */; };
+		63FE28661C8738F200B0B3C7 /* BLIPFileRequest.h in Headers */ = {isa = PBXBuildFile; fileRef = 63FE28611C8738F200B0B3C7 /* BLIPFileRequest.h */; };
+		63FE28671C8738F200B0B3C7 /* BLIPFileRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 63FE28621C8738F200B0B3C7 /* BLIPFileRequest.m */; };
+		63FE28681C8738F200B0B3C7 /* BLIPFileRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 63FE28621C8738F200B0B3C7 /* BLIPFileRequest.m */; };
+		63FE28691C8738F200B0B3C7 /* BLIPFileResponse.h in Headers */ = {isa = PBXBuildFile; fileRef = 63FE28631C8738F200B0B3C7 /* BLIPFileResponse.h */; };
+		63FE286A1C8738F200B0B3C7 /* BLIPFileResponse.h in Headers */ = {isa = PBXBuildFile; fileRef = 63FE28631C8738F200B0B3C7 /* BLIPFileResponse.h */; };
+		63FE286B1C8738F200B0B3C7 /* BLIPFileResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 63FE28641C8738F200B0B3C7 /* BLIPFileResponse.m */; };
+		63FE286C1C8738F200B0B3C7 /* BLIPFileResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 63FE28641C8738F200B0B3C7 /* BLIPFileResponse.m */; };
+		63FE28731C873C1400B0B3C7 /* BLIPFileRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 63FE28621C8738F200B0B3C7 /* BLIPFileRequest.m */; };
+		63FE28741C873C1C00B0B3C7 /* BLIPFileResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 63FE28641C8738F200B0B3C7 /* BLIPFileResponse.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -445,6 +455,10 @@
 		27F87B6715577C1A00F0A416 /* MYNetwork_iPhone_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MYNetwork_iPhone_Prefix.pch; sourceTree = "<group>"; };
 		27F87B7715577E1100F0A416 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS5.1.sdk/System/Library/Frameworks/CFNetwork.framework; sourceTree = DEVELOPER_DIR; };
 		633C6C661B744003008C6438 /* PrefixHeader.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PrefixHeader.pch; sourceTree = "<group>"; };
+		63FE28611C8738F200B0B3C7 /* BLIPFileRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLIPFileRequest.h; sourceTree = "<group>"; };
+		63FE28621C8738F200B0B3C7 /* BLIPFileRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLIPFileRequest.m; sourceTree = "<group>"; };
+		63FE28631C8738F200B0B3C7 /* BLIPFileResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLIPFileResponse.h; sourceTree = "<group>"; };
+		63FE28641C8738F200B0B3C7 /* BLIPFileResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLIPFileResponse.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -638,6 +652,10 @@
 				270460F40DE49030003D9D3F /* BLIPConnection.m */,
 				270460F50DE49030003D9D3F /* BLIPDispatcher.h */,
 				270460F60DE49030003D9D3F /* BLIPDispatcher.m */,
+				63FE28611C8738F200B0B3C7 /* BLIPFileRequest.h */,
+				63FE28621C8738F200B0B3C7 /* BLIPFileRequest.m */,
+				63FE28631C8738F200B0B3C7 /* BLIPFileResponse.h */,
+				63FE28641C8738F200B0B3C7 /* BLIPFileResponse.m */,
 				270460F80DE49030003D9D3F /* BLIPMessage.h */,
 				270460F90DE49030003D9D3F /* BLIPMessage.m */,
 				27D5EC050DE5FEDE00CD84FA /* BLIPRequest.h */,
@@ -870,6 +888,8 @@
 				1C17B7E31C03C459004350C3 /* DDFileLogger.h in Headers */,
 				1C17B7E51C03C459004350C3 /* DDLog.h in Headers */,
 				1C17B7E71C03C459004350C3 /* DDLog+LOGV.h in Headers */,
+				63FE28691C8738F200B0B3C7 /* BLIPFileResponse.h in Headers */,
+				63FE28651C8738F200B0B3C7 /* BLIPFileRequest.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -877,6 +897,8 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				63FE286A1C8738F200B0B3C7 /* BLIPFileResponse.h in Headers */,
+				63FE28661C8738F200B0B3C7 /* BLIPFileRequest.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1014,7 +1036,7 @@
 		08FB7793FE84155DC02AAC07 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0640;
+				LastUpgradeCheck = 0720;
 			};
 			buildConfigurationList = 1DEB927808733DD40010E9CD /* Build configuration list for PBXProject "MYNetwork" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -1121,6 +1143,7 @@
 				279E8FA30F9FDD2600608D8D /* BLIPMessage.m in Sources */,
 				279E8FA40F9FDD2600608D8D /* BLIPProperties.m in Sources */,
 				279E8FA50F9FDD2600608D8D /* BLIPReader.m in Sources */,
+				63FE286B1C8738F200B0B3C7 /* BLIPFileResponse.m in Sources */,
 				1C17B7E41C03C459004350C3 /* DDFileLogger.m in Sources */,
 				279E8FA60F9FDD2600608D8D /* BLIPRequest.m in Sources */,
 				279E8FA70F9FDD2600608D8D /* BLIPWriter.m in Sources */,
@@ -1151,6 +1174,7 @@
 				275E8FEF1709EF830008F577 /* Test.m in Sources */,
 				1C17B7C41C03BA24004350C3 /* GCDAsyncUdpSocket.m in Sources */,
 				275E90011709F0350008F577 /* GTMNSData+zlib.m in Sources */,
+				63FE28671C8738F200B0B3C7 /* BLIPFileRequest.m in Sources */,
 				275E9021170A30290008F577 /* base64.c in Sources */,
 				275E9027170A30290008F577 /* NSData+SRB64Additions.m in Sources */,
 				275E902B170A30290008F577 /* SRWebSocket.m in Sources */,
@@ -1173,6 +1197,7 @@
 				27F87B271557769300F0A416 /* MYPortMapper.m in Sources */,
 				27F87B281557769300F0A416 /* PortMapperTest.m in Sources */,
 				27F87B291557769300F0A416 /* MYBonjourBrowser.m in Sources */,
+				63FE28681C8738F200B0B3C7 /* BLIPFileRequest.m in Sources */,
 				27F87B2A1557769300F0A416 /* MYBonjourService.m in Sources */,
 				27F87B2B1557769300F0A416 /* MYBonjourQuery.m in Sources */,
 				27F87B2C1557769300F0A416 /* MYBonjourRegistration.m in Sources */,
@@ -1199,6 +1224,7 @@
 				275E8FEC1709EF830008F577 /* Target.m in Sources */,
 				275E8FF01709EF830008F577 /* Test.m in Sources */,
 				275E90021709F0350008F577 /* GTMNSData+zlib.m in Sources */,
+				63FE286C1C8738F200B0B3C7 /* BLIPFileResponse.m in Sources */,
 				1C17B8001C03C620004350C3 /* DDFileLogger.m in Sources */,
 				275E9022170A30290008F577 /* base64.c in Sources */,
 				275E9028170A30290008F577 /* NSData+SRB64Additions.m in Sources */,
@@ -1231,6 +1257,7 @@
 				270461130DE49030003D9D3F /* BLIPConnection.m in Sources */,
 				270461140DE49030003D9D3F /* BLIPDispatcher.m in Sources */,
 				270461150DE49030003D9D3F /* BLIPMessage.m in Sources */,
+				63FE28741C873C1C00B0B3C7 /* BLIPFileResponse.m in Sources */,
 				270461160DE49030003D9D3F /* BLIPProperties.m in Sources */,
 				270461170DE49030003D9D3F /* BLIPReader.m in Sources */,
 				270461190DE49030003D9D3F /* BLIPWriter.m in Sources */,
@@ -1260,6 +1287,7 @@
 				275E90051709F2A20008F577 /* ExceptionUtils.m in Sources */,
 				275E90061709F2A40008F577 /* Logging.m in Sources */,
 				275E90071709F2A80008F577 /* Target.m in Sources */,
+				63FE28731C873C1400B0B3C7 /* BLIPFileRequest.m in Sources */,
 				275E90081709F2AB0008F577 /* Test.m in Sources */,
 				275E9019170A24100008F577 /* GTMNSData+zlib.m in Sources */,
 				275E9035170A68F00008F577 /* BLIPWebSocketTest.m in Sources */,
@@ -1339,6 +1367,7 @@
 		1DEB927908733DD40010E9CD /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ENABLE_TESTABILITY = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
@@ -1383,6 +1412,7 @@
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				INFOPLIST_FILE = "BLIP/Demo/BLIPWebSocket-Info.plist";
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.mooseyard.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = framework;
 			};
@@ -1407,6 +1437,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				INFOPLIST_FILE = "BLIP/Demo/BLIPWebSocket-Info.plist";
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.mooseyard.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = framework;
 			};
@@ -1430,9 +1461,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
+				GCC_PREFIX_HEADER = PrefixHeader.pch;
 				INFOPLIST_FILE = "BLIP/Demo/BLIP Echo Client-Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
-				MACOSX_DEPLOYMENT_TARGET = 10.6.8;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				PRODUCT_BUNDLE_IDENTIFIER = com.mooseyard.BLIPEchoClient;
 				PRODUCT_NAME = "BLIP Echo Client";
 			};
 			name = Debug;
@@ -1441,9 +1474,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
+				GCC_PREFIX_HEADER = PrefixHeader.pch;
 				INFOPLIST_FILE = "BLIP/Demo/BLIP Echo Client-Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
-				MACOSX_DEPLOYMENT_TARGET = 10.6.8;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				PRODUCT_BUNDLE_IDENTIFIER = com.mooseyard.BLIPEchoClient;
 				PRODUCT_NAME = "BLIP Echo Client";
 			};
 			name = Release;
@@ -1451,7 +1486,8 @@
 		2779052B0DE9E5BC00C6D295 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				MACOSX_DEPLOYMENT_TARGET = 10.6.8;
+				GCC_PREFIX_HEADER = PrefixHeader.pch;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				PRODUCT_NAME = BLIPEchoServer;
 			};
 			name = Debug;
@@ -1459,7 +1495,8 @@
 		2779052C0DE9E5BC00C6D295 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				MACOSX_DEPLOYMENT_TARGET = 10.6.8;
+				GCC_PREFIX_HEADER = PrefixHeader.pch;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				PRODUCT_NAME = BLIPEchoServer;
 			};
 			name = Release;
@@ -1468,6 +1505,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_OBJC_ARC = YES;
+				COMBINE_HIDPI_IMAGES = YES;
 				GCC_ENABLE_OBJC_GC = unsupported;
 				GCC_PREFIX_HEADER = PrefixHeader.pch;
 				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
@@ -1480,6 +1518,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_OBJC_ARC = YES;
+				COMBINE_HIDPI_IMAGES = YES;
 				GCC_ENABLE_OBJC_GC = unsupported;
 				GCC_PREFIX_HEADER = PrefixHeader.pch;
 				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
@@ -1564,6 +1603,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = iPhone/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.mooseyard.BLIPEcho-iOS";
 				PRODUCT_NAME = "BLIP Echo";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1591,6 +1631,7 @@
 				INFOPLIST_FILE = iPhone/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.mooseyard.BLIPEcho-iOS";
 				PRODUCT_NAME = "BLIP Echo";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";

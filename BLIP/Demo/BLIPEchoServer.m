@@ -6,8 +6,11 @@
 //  Copyright 2008 Jens Alfke. All rights reserved.
 //
 
-#import "BLIPEchoServer.h"
+#import <Foundation/Foundation.h>
 #import "MYNetwork.h"
+#import "TCPListener.h"
+#import "BLIPConnection.h"
+#import "BLIPEchoServer.h"
 
 
 @implementation BLIPEchoServer
