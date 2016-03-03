@@ -6,6 +6,7 @@
 //  Copyright 2008 Jens Alfke. All rights reserved.
 //
 
+#import "BLIPMessage.h"
 #import "BLIPConnection.h"
 #import "BLIPDispatcher.h"
 #import "BLIPRequest.h"

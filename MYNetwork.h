@@ -7,8 +7,12 @@
  *
  */
 
-#import "BLIP.h"
+#import "MYDNSService.h"
 #import "MYBonjourBrowser.h"
 #import "MYBonjourService.h"
+#import "TCPEndpoint.h"
+#import "TCPListener.h"
+#import "TCPConnection.h"
+#import "BLIP.h"
 #import "IPAddress.h"
 #import "MYPortMapper.h"
