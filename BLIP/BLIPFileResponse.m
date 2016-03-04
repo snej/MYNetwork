@@ -10,23 +10,34 @@
 #import "Logging.h"
 #import "BLIP_Internal.h"
 
+#import <CommonCrypto/CommonDigest.h>
+
 @interface BLIPResponse (Private)
 - (BOOL)_receivedFrameWithFlags:(BLIPMessageFlags)flags body:(NSData*)body;
 @end;
 
 @interface BLIPFileResponse ()
-
+{
+    BOOL _receivedMD5ctxInited;
+    CC_MD5_CTX _receivedMD5ctx;
+}
 - (NSString*)mungedPath;
 
 @end
 
+
 @implementation BLIPFileResponse
 {
     NSOutputStream* _stream;
-    
+ 
     // BLIPMessage (Friend)
-    
+ 
     // BLIPResponse (Friend)
+}
+
+- (void)dealloc
+{
+    LogTo(BLIPVerbose,@"DEALLOC");
 }
 
 // As soon as properties are available, check for BodyIsFile. If true, write out data rec'd up to this point, then continue writing all
@@ -60,10 +71,17 @@
         }
         else
         {
+            if (!self->_receivedMD5ctxInited)
+            {
+                CC_MD5_Init(&self->_receivedMD5ctx);
+                self->_receivedMD5ctxInited = YES;
+            }
+            
             self->_stream = [NSOutputStream outputStreamToFileAtPath:[self mungedPath] append:NO];
             [self->_stream open];
             // by the time this branch is reached, the properties have already been stripped from _encodedbody.
             [self->_stream write:[_encodedBody bytes] maxLength:_encodedBody.length];
+            CC_MD5_Update(&self->_receivedMD5ctx, [_encodedBody bytes], (unsigned int)[_encodedBody length]);
         }
     }
     
@@ -78,7 +96,7 @@
         _flags = (_flags & ~kBLIP_TypeMask) | frameType;
     }
     
-    if (self->_stream)
+    if (self->_stream && (body.length > 0))
     {
         NSInteger result = [self->_stream write:[body bytes] maxLength:body.length];
         if (result < 0)
@@ -87,6 +105,7 @@
             [self->_stream close];
             return NO;
         }
+        CC_MD5_Update(&self->_receivedMD5ctx, [body bytes], (unsigned int)[body length]);
     }
     
     if( ! (flags & kBLIP_MoreComing) ) {
@@ -114,21 +133,27 @@
         }
         _encodedBody = nil;
         
-        NSError* fileMoveError;
+        unsigned char digest[CC_MD5_DIGEST_LENGTH];
+        CC_MD5_Final(digest, &self->_receivedMD5ctx);
+        self.receivedFileMD5hash = [NSString stringWithFormat: @"%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x",
+                                    digest[0], digest[1],
+                                    digest[2], digest[3],
+                                    digest[4], digest[5],
+                                    digest[6], digest[7],
+                                    digest[8], digest[9],
+                                    digest[10], digest[11],
+                                    digest[12], digest[13],
+                                    digest[14], digest[15]];
+
+        NSFileManager* fileManager = [[NSFileManager alloc] init];
         
-        if ([[NSFileManager defaultManager] fileExistsAtPath:self.path])
-        {
-            [[NSFileManager defaultManager] removeItemAtPath:self.path error:nil];
-        }
+        if ([fileManager fileExistsAtPath:self.path])
+            [fileManager removeItemAtPath:self.path error:nil];
         
-        [[NSFileManager defaultManager] moveItemAtPath:[self mungedPath]
-                                               toPath:self.path
-                                                error:&fileMoveError];
-        if (fileMoveError)
-        {
-            LogTo(BLIP,@"%@: Error moving temp file from %@ to %@: %@", self, [self mungedPath], self.path, fileMoveError);
-            return NO;
-        }
+        NSError* error = NULL;
+        if (![fileManager moveItemAtPath:[self mungedPath] toPath:self.path error:&error])
+            LogTo(BLIP,@"%@: Error moving temp file from %@ to %@: %@", self, [self mungedPath], self.path, error);
+        
         self.propertiesAvailable = self.complete = YES;
     }
     return YES;

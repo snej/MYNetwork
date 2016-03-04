@@ -7,7 +7,6 @@
 
 @interface BLIPFileRequest : BLIPRequest
 
-@property (strong, nonatomic) NSString* expectedHash;
 @property (strong, nonatomic) NSString* outFilePath;
 @property (strong, nonatomic) NSString* inFilePath;
 
@@ -17,7 +16,6 @@
 
 + (instancetype)pullRequestWithProperties:(NSDictionary*)properties
                           destinationPath:(NSString*)destinationPath
-                             expectedHash:(NSString*)hash
                           completionBlock:(void (^)(BLIPResponse* response))completionBlock;
 
 @end

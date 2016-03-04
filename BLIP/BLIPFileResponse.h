@@ -7,7 +7,7 @@
 
 @interface BLIPFileResponse : BLIPResponse
 
-@property (strong, nonatomic) NSString* expectedHash;
+@property (strong, nonatomic) NSString* receivedFileMD5hash;
 @property (strong, nonatomic) NSString* path;
 @property (copy, nonatomic) void (^completionBlock)(BLIPResponse* response);
 

@@ -43,13 +43,11 @@
                                                     number:0
                                                outFilePath:filePath
                                                 inFilePath:nil
-                                                      hash:nil
                                            completionBlock:completionBlock];
 }
 
 + (BLIPFileRequest*)pullRequestWithProperties:(NSDictionary *)properties
                                  destinationPath:(NSString *)destinationPath
-                                    expectedHash:(NSString *)hash
                                  completionBlock:(void (^)(BLIPResponse *))completionBlock
 {
     return [[BLIPFileRequest alloc] _initWithConnection:nil
@@ -59,7 +57,6 @@
                                                     number:0
                                                outFilePath:nil
                                                 inFilePath:destinationPath
-                                                      hash:hash
                                            completionBlock:completionBlock];
 }
 
@@ -72,7 +69,6 @@
     if ([copy isKindOfClass:[BLIPFileRequest class]])
     {
         BLIPFileRequest* r = (BLIPFileRequest*)copy;
-        r.expectedHash = self.expectedHash;
         r.outFilePath = self.outFilePath;
         r.inFilePath = self.inFilePath;
     }
@@ -103,7 +99,6 @@
         {
             BLIPFileResponse* resp = (BLIPFileResponse*)_response;
             resp.path = self.inFilePath;
-            resp.expectedHash = self.expectedHash;
         }
         [self didChangeValueForKey:@"repliedTo"];
     }
@@ -158,7 +153,6 @@
                     number: (UInt32)msgNo
                outFilePath: (NSString*)outPath
                 inFilePath: (NSString*)inPath
-                      hash: (NSString*)hash
            completionBlock: (void (^)(BLIPResponse *))completionBlock
 {
     self = [super init];
@@ -175,7 +169,6 @@
             _encodedProperties = nil;
             _outFilePath = outPath;
             _inFilePath = inPath;
-            _expectedHash = hash;
             _completionBlock = completionBlock;
             if (properties)
             {
