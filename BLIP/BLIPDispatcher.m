@@ -36,13 +36,11 @@
 @synthesize parent=_parent;
 
 
-#if ! TARGET_OS_IPHONE
 - (void) addTarget: (MYTarget*)target forPredicate: (NSPredicate*)predicate
 {
     [_targets addObject: target];
     [_predicates addObject: predicate];
 }
-#endif
 
 
 - (void) removeTarget: (MYTarget*)target
@@ -57,29 +55,16 @@
 
 - (void) addTarget: (MYTarget*)target forValueOfProperty: (NSString*)value forKey: (NSString*)key
 {
-#if TARGET_OS_IPHONE
-    Assert(target);
-    [_predicates addObject: $array(key,value)];
-    [_targets addObject: target];
-#else
-    [self addTarget: target 
-       forPredicate: [NSComparisonPredicate predicateWithLeftExpression: [NSExpression expressionForKeyPath: key]
-                                                        rightExpression: [NSExpression expressionForConstantValue: value]
-                                                               modifier: NSDirectPredicateModifier
-                                                                   type: NSEqualToPredicateOperatorType
-                                                                options: 0]];
-#endif
+    [self addTarget:target forPredicate:[NSComparisonPredicate predicateWithLeftExpression: [NSExpression expressionForKeyPath: key]
+                                                                           rightExpression: [NSExpression expressionForConstantValue: value]
+                                                                                  modifier: NSDirectPredicateModifier
+                                                                                      type: NSEqualToPredicateOperatorType
+                                                                                   options: 0]];
 }
 
 
 static BOOL testPredicate( id predicate, NSDictionary *properties ) {
-#if TARGET_OS_IPHONE
-    NSString *key = [predicate objectAtIndex: 0];
-    NSString *value = [predicate objectAtIndex: 1];
-    return $equal( [properties objectForKey: key], value );
-#else
     return [(NSPredicate*)predicate evaluateWithObject: properties];
-#endif
 }
 
 
