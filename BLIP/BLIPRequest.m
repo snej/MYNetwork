@@ -100,6 +100,7 @@
     {
         [self willChangeValueForKey:@"repliedTo"];
         _response = [[[self responseClass] alloc] _initWithRequest: self];
+        _response.onPropertiesAvailable = self.onPropertiesAvailable;
         [self didChangeValueForKey:@"repliedTo"];
     }
     return _response;

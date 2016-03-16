@@ -103,6 +103,8 @@ NSError *BLIPMakeError( int errorCode, NSString *message, ... ) __attribute__ ((
 /** The value of the "Profile" property, which by convention identifies the purpose of the message. */
 @property (copy) NSString *profile;
 
+@property (strong) void (^onPropertiesAvailable)(BLIPProperties*);
+
 /** A shortcut to get the value of a property. */
 - (NSString*) valueOfProperty: (NSString*)property;
 

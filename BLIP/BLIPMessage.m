@@ -352,6 +352,8 @@ NSError *BLIPMakeError( int errorCode, NSString *message, ... )
             [_encodedBody replaceBytesInRange: NSMakeRange(0,usedLength)
                                     withBytes: NULL length: 0];
             self.propertiesAvailable = YES;
+            if (self.onPropertiesAvailable)
+                self.onPropertiesAvailable(self.properties);
         } else if( usedLength < 0 )
             return NO;
     }
@@ -372,7 +374,13 @@ NSError *BLIPMakeError( int errorCode, NSString *message, ... )
             _body = [_encodedBody copy];
         }
         _encodedBody = nil;
-        self.propertiesAvailable = self.complete = YES;
+        self.complete = YES;
+        if (!self.propertiesAvailable)
+        {
+            self.propertiesAvailable = YES;
+            if (self.onPropertiesAvailable)
+                self.onPropertiesAvailable(self.properties);
+        }
     }
     return YES;
 }

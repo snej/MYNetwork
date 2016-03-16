@@ -91,18 +91,10 @@
 
 - (BLIPResponse*) response
 {
-    if( ! self->_response && ! self.noReply )
-    {
-        [self willChangeValueForKey:@"repliedTo"];
-        _response = [[[self responseClass] alloc] _initWithRequest: self];
-        if ([_response isKindOfClass:[BLIPFileResponse class]])
-        {
-            BLIPFileResponse* resp = (BLIPFileResponse*)_response;
-            resp.path = self.inFilePath;
-        }
-        [self didChangeValueForKey:@"repliedTo"];
-    }
-    return _response;
+    BLIPResponse* response = [super response];
+    if ([response isKindOfClass:[BLIPFileResponse class]])
+        ((BLIPFileResponse*)response).path = self.inFilePath;
+    return response;
 }
 
 #pragma mark - BLIPMessage overrides
