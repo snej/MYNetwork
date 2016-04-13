@@ -40,16 +40,16 @@
     return self;
 }
 
-+ (BLIPRequest*) requestWithBody: (NSData*)body
++ (instancetype) requestWithBody: (NSData*)body
 {
     return [[self alloc] _initWithConnection: nil body: body properties: nil];
 }
 
-+ (BLIPRequest*) requestWithBodyString: (NSString*)bodyString {
++ (instancetype) requestWithBodyString: (NSString*)bodyString {
     return [self requestWithBody: [bodyString dataUsingEncoding: NSUTF8StringEncoding]];
 }
 
-+ (BLIPRequest*) requestWithBody: (NSData*)body
++ (instancetype) requestWithBody: (NSData*)body
                       properties: (NSDictionary*)properties
 {
     return [[self alloc] _initWithConnection: nil body: body properties: properties];

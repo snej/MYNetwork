@@ -11,3 +11,5 @@
 #import "BLIPDispatcher.h"
 #import "BLIPRequest.h"
 #import "BLIPProperties.h"
+#import "BLIPFileRequest.h"
+#import "BLIPFileResponse.h"
