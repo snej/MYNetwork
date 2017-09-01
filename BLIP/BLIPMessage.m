@@ -295,7 +295,7 @@ NSError *BLIPMakeError( int errorCode, NSString *message, ... )
         LogTo(BLIP,@"Now sending %@",self);
     ssize_t lengthToWrite = _encodedBody.length - _bytesWritten;
     if( lengthToWrite <= 0 && _bytesWritten > 0 )
-        return NO; // done
+        return NULL; // done
     Assert(maxSize > kBLIPWebSocketFrameHeaderSize);
     maxSize -= kBLIPWebSocketFrameHeaderSize;
     UInt16 flags = _flags;

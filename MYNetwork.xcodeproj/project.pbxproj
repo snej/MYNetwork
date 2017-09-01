@@ -80,7 +80,6 @@
 		2710C5921755115100CA10BF /* SRWebSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 275E9020170A30290008F577 /* SRWebSocket.m */; };
 		2710C5931755116900CA10BF /* CollectionUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 275E8F971709EF830008F577 /* CollectionUtils.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		2710C5941755116900CA10BF /* Logging.m in Sources */ = {isa = PBXBuildFile; fileRef = 275E8F9D1709EF830008F577 /* Logging.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		2710C5951755116900CA10BF /* Test.m in Sources */ = {isa = PBXBuildFile; fileRef = 275E8FB41709EF830008F577 /* Test.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		2710C5961755176800CA10BF /* ExceptionUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 275E8F9B1709EF830008F577 /* ExceptionUtils.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		2710C5971755178A00CA10BF /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2777C9100F7602A7007F8D30 /* Security.framework */; };
 		2710C5981755179200CA10BF /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2710C574175510DC00CA10BF /* Foundation.framework */; };
@@ -212,6 +211,53 @@
 		27F87B6F15577C1A00F0A416 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27F87B6615577C1A00F0A416 /* MainWindow.xib */; };
 		27F87B7015577C3900F0A416 /* libMYNetwork.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 27F87B171557764300F0A416 /* libMYNetwork.a */; };
 		27F87B7815577E1100F0A416 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27F87B7715577E1100F0A416 /* CFNetwork.framework */; };
+		63A16A161F59CE89000E69F1 /* IPAddress.m in Sources */ = {isa = PBXBuildFile; fileRef = 270461020DE49030003D9D3F /* IPAddress.m */; };
+		63A16A171F59CEF0000E69F1 /* MYDNSService.m in Sources */ = {isa = PBXBuildFile; fileRef = 2780F20B0FA194BD00C0FB83 /* MYDNSService.m */; };
+		63A16A181F59CEF0000E69F1 /* MYAddressLookup.m in Sources */ = {isa = PBXBuildFile; fileRef = 2780F4A00FA2C59000C0FB83 /* MYAddressLookup.m */; };
+		63A16A191F59CEF0000E69F1 /* MYPortMapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 278C1A360F9F687800954AE1 /* MYPortMapper.m */; };
+		63A16A1A1F59CEF0000E69F1 /* PortMapperTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 278C1A340F9F687800954AE1 /* PortMapperTest.m */; };
+		63A16A1B1F59CEF0000E69F1 /* MYBonjourBrowser.m in Sources */ = {isa = PBXBuildFile; fileRef = 278C1B9F0F9F92EA00954AE1 /* MYBonjourBrowser.m */; };
+		63A16A1C1F59CEF0000E69F1 /* MYBonjourService.m in Sources */ = {isa = PBXBuildFile; fileRef = 278C1BA10F9F92EA00954AE1 /* MYBonjourService.m */; };
+		63A16A1D1F59CEF0000E69F1 /* MYBonjourQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = 2780F4370FA28F4400C0FB83 /* MYBonjourQuery.m */; };
+		63A16A1E1F59CEF0000E69F1 /* MYBonjourRegistration.m in Sources */ = {isa = PBXBuildFile; fileRef = 273B457A0FA681EE00276298 /* MYBonjourRegistration.m */; };
+		63A16A1F1F59CEF0000E69F1 /* TCPConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 2704610A0DE49030003D9D3F /* TCPConnection.m */; };
+		63A16A201F59CEF0000E69F1 /* TCPEndpoint.m in Sources */ = {isa = PBXBuildFile; fileRef = 2704610C0DE49030003D9D3F /* TCPEndpoint.m */; };
+		63A16A211F59CEF0000E69F1 /* TCPEndpoint+Certs.m in Sources */ = {isa = PBXBuildFile; fileRef = 27375DFA0FC9FB5C0033F8F5 /* TCPEndpoint+Certs.m */; };
+		63A16A221F59CEF0000E69F1 /* TCPListener.m in Sources */ = {isa = PBXBuildFile; fileRef = 2704610E0DE49030003D9D3F /* TCPListener.m */; };
+		63A16A231F59CEF0000E69F1 /* TCPStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 270461100DE49030003D9D3F /* TCPStream.m */; };
+		63A16A241F59CEF0000E69F1 /* TCPWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = 270461120DE49030003D9D3F /* TCPWriter.m */; };
+		63A16A251F59CEF0000E69F1 /* BLIPConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 270460F40DE49030003D9D3F /* BLIPConnection.m */; };
+		63A16A261F59CEF0000E69F1 /* BLIPDispatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 270460F60DE49030003D9D3F /* BLIPDispatcher.m */; };
+		63A16A271F59CEF0000E69F1 /* BLIPFileRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 63FE28621C8738F200B0B3C7 /* BLIPFileRequest.m */; };
+		63A16A281F59CEF0000E69F1 /* BLIPFileResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 63FE28641C8738F200B0B3C7 /* BLIPFileResponse.m */; };
+		63A16A291F59CEF0000E69F1 /* BLIPMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 270460F90DE49030003D9D3F /* BLIPMessage.m */; };
+		63A16A2A1F59CEF0000E69F1 /* BLIPRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 27D5EC060DE5FEDE00CD84FA /* BLIPRequest.m */; };
+		63A16A2B1F59CEF0000E69F1 /* BLIPProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 270460FB0DE49030003D9D3F /* BLIPProperties.m */; };
+		63A16A2C1F59CEF0000E69F1 /* BLIPReader.m in Sources */ = {isa = PBXBuildFile; fileRef = 270460FD0DE49030003D9D3F /* BLIPReader.m */; };
+		63A16A2D1F59CEF0000E69F1 /* BLIPWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = 270461000DE49030003D9D3F /* BLIPWriter.m */; };
+		63A16A2E1F59CEF0000E69F1 /* BLIPWebSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 275E902E170A307E0008F577 /* BLIPWebSocket.m */; };
+		63A16A2F1F59CEF0000E69F1 /* BLIPHTTPProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = 275E9042171CC29C0008F577 /* BLIPHTTPProtocol.m */; };
+		63A16A301F59CEF0000E69F1 /* BLIPRequest+HTTP.m in Sources */ = {isa = PBXBuildFile; fileRef = 275E903B171C5E8F0008F577 /* BLIPRequest+HTTP.m */; };
+		63A16A311F59CEF0000E69F1 /* DDContextFilterLogFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C17B7EB1C03C468004350C3 /* DDContextFilterLogFormatter.m */; };
+		63A16A321F59CEF0000E69F1 /* DDDispatchQueueLogFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C17B7ED1C03C468004350C3 /* DDDispatchQueueLogFormatter.m */; };
+		63A16A331F59CEF0000E69F1 /* DDMultiFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C17B7EF1C03C468004350C3 /* DDMultiFormatter.m */; };
+		63A16A341F59CEF0000E69F1 /* DDAbstractDatabaseLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C17B7D51C03C459004350C3 /* DDAbstractDatabaseLogger.m */; };
+		63A16A361F59CEF0000E69F1 /* DDFileLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C17B7D91C03C459004350C3 /* DDFileLogger.m */; };
+		63A16A371F59CEF0000E69F1 /* DDLog.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C17B7DB1C03C459004350C3 /* DDLog.m */; };
+		63A16A381F59CEF0000E69F1 /* AsyncSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C17B7C81C03BFCD004350C3 /* AsyncSocket.m */; };
+		63A16A391F59CEF0000E69F1 /* AsyncUdpSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C17B7CA1C03BFCD004350C3 /* AsyncUdpSocket.m */; };
+		63A16A3A1F59CEF0000E69F1 /* GCDAsyncSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C17B7BE1C03BA24004350C3 /* GCDAsyncSocket.m */; };
+		63A16A3B1F59CEF0000E69F1 /* GCDAsyncUdpSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C17B7C01C03BA24004350C3 /* GCDAsyncUdpSocket.m */; };
+		63A16A3C1F59CEF0000E69F1 /* NSData+SRB64Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 275E901E170A30290008F577 /* NSData+SRB64Additions.m */; };
+		63A16A3D1F59CEF0000E69F1 /* SRWebSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 275E9020170A30290008F577 /* SRWebSocket.m */; };
+		63A16A3E1F59CEF0000E69F1 /* CollectionUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 275E8F971709EF830008F577 /* CollectionUtils.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		63A16A3F1F59CEF0000E69F1 /* ConcurrentOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 275E8F991709EF830008F577 /* ConcurrentOperation.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		63A16A401F59CEF0000E69F1 /* ExceptionUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 275E8F9B1709EF830008F577 /* ExceptionUtils.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		63A16A411F59CEF0000E69F1 /* Logging.m in Sources */ = {isa = PBXBuildFile; fileRef = 275E8F9D1709EF830008F577 /* Logging.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		63A16A421F59CEF0000E69F1 /* Target.m in Sources */ = {isa = PBXBuildFile; fileRef = 275E8FB21709EF830008F577 /* Target.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		63A16A441F59CEF0000E69F1 /* GTMNSData+zlib.m in Sources */ = {isa = PBXBuildFile; fileRef = 275E8FFB1709F0350008F577 /* GTMNSData+zlib.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		63A16A491F59D0CC000E69F1 /* Test.m in Sources */ = {isa = PBXBuildFile; fileRef = 275E8FB41709EF830008F577 /* Test.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		63A16A561F59DA72000E69F1 /* base64.c in Sources */ = {isa = PBXBuildFile; fileRef = 275E901B170A30290008F577 /* base64.c */; };
 		63FE28651C8738F200B0B3C7 /* BLIPFileRequest.h in Headers */ = {isa = PBXBuildFile; fileRef = 63FE28611C8738F200B0B3C7 /* BLIPFileRequest.h */; };
 		63FE28661C8738F200B0B3C7 /* BLIPFileRequest.h in Headers */ = {isa = PBXBuildFile; fileRef = 63FE28611C8738F200B0B3C7 /* BLIPFileRequest.h */; };
 		63FE28671C8738F200B0B3C7 /* BLIPFileRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 63FE28621C8738F200B0B3C7 /* BLIPFileRequest.m */; };
@@ -299,6 +345,15 @@
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 1;
+		};
+		63A16A0B1F59CE26000E69F1 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "include/$(PRODUCT_NAME)";
+			dstSubfolderSpec = 16;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
 		};
 		8DD76F9E0486AA7600D96B5E /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
@@ -455,6 +510,7 @@
 		27F87B6715577C1A00F0A416 /* MYNetwork_iPhone_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MYNetwork_iPhone_Prefix.pch; sourceTree = "<group>"; };
 		27F87B7715577E1100F0A416 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS5.1.sdk/System/Library/Frameworks/CFNetwork.framework; sourceTree = DEVELOPER_DIR; };
 		633C6C661B744003008C6438 /* PrefixHeader.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PrefixHeader.pch; sourceTree = "<group>"; };
+		63A16A0D1F59CE26000E69F1 /* libMYNetwork.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libMYNetwork.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		63FE28611C8738F200B0B3C7 /* BLIPFileRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLIPFileRequest.h; sourceTree = "<group>"; };
 		63FE28621C8738F200B0B3C7 /* BLIPFileRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLIPFileRequest.m; sourceTree = "<group>"; };
 		63FE28631C8738F200B0B3C7 /* BLIPFileResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLIPFileResponse.h; sourceTree = "<group>"; };
@@ -521,6 +577,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		63A16A0A1F59CE26000E69F1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		8DD76F9B0486AA7600D96B5E /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -579,6 +642,7 @@
 				27F87B171557764300F0A416 /* libMYNetwork.a */,
 				27F87B4515577BCA00F0A416 /* BLIP Echo.app */,
 				2710C56D175510DB00CA10BF /* BLIPWebSocket.framework */,
+				63A16A0D1F59CE26000E69F1 /* libMYNetwork.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1012,6 +1076,23 @@
 			productReference = 27F87B4515577BCA00F0A416 /* BLIP Echo.app */;
 			productType = "com.apple.product-type.application";
 		};
+		63A16A0C1F59CE26000E69F1 /* tvOS Blip Library */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 63A16A151F59CE26000E69F1 /* Build configuration list for PBXNativeTarget "tvOS Blip Library" */;
+			buildPhases = (
+				63A16A091F59CE26000E69F1 /* Sources */,
+				63A16A0A1F59CE26000E69F1 /* Frameworks */,
+				63A16A0B1F59CE26000E69F1 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "tvOS Blip Library";
+			productName = "tvOS Blip Library";
+			productReference = 63A16A0D1F59CE26000E69F1 /* libMYNetwork.a */;
+			productType = "com.apple.product-type.library.static";
+		};
 		8DD76F960486AA7600D96B5E /* Blip SelfTest */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 1DEB927408733DD40010E9CD /* Build configuration list for PBXNativeTarget "Blip SelfTest" */;
@@ -1036,7 +1117,14 @@
 		08FB7793FE84155DC02AAC07 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0720;
+				LastUpgradeCheck = 0900;
+				TargetAttributes = {
+					63A16A0C1F59CE26000E69F1 = {
+						CreatedOnToolsVersion = 9.0;
+						DevelopmentTeam = GY4T77MGR9;
+						ProvisioningStyle = Automatic;
+					};
+				};
 			};
 			buildConfigurationList = 1DEB927808733DD40010E9CD /* Build configuration list for PBXProject "MYNetwork" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -1051,6 +1139,7 @@
 			targets = (
 				279E8F9D0F9FDD0800608D8D /* Mac Blip Library */,
 				27F87B161557764300F0A416 /* iOS Blip Library */,
+				63A16A0C1F59CE26000E69F1 /* tvOS Blip Library */,
 				8DD76F960486AA7600D96B5E /* Blip SelfTest */,
 				277904250DE91C7900C6D295 /* BLIP Echo Client */,
 				2779050F0DE9E5BC00C6D295 /* BLIP Echo Server */,
@@ -1106,7 +1195,6 @@
 				2710C5961755176800CA10BF /* ExceptionUtils.m in Sources */,
 				2710C5941755116900CA10BF /* Logging.m in Sources */,
 				2710C59C1755180900CA10BF /* Target.m in Sources */,
-				2710C5951755116900CA10BF /* Test.m in Sources */,
 				2710C5901755115100CA10BF /* base64.c in Sources */,
 				2710C5911755115100CA10BF /* NSData+SRB64Additions.m in Sources */,
 				2710C5921755115100CA10BF /* SRWebSocket.m in Sources */,
@@ -1247,6 +1335,60 @@
 				27F87B6815577C1A00F0A416 /* HelloWorldAppDelegate.m in Sources */,
 				27F87B6915577C1A00F0A416 /* MyViewController.m in Sources */,
 				27F87B6E15577C1A00F0A416 /* main.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		63A16A091F59CE26000E69F1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				63A16A491F59D0CC000E69F1 /* Test.m in Sources */,
+				63A16A3C1F59CEF0000E69F1 /* NSData+SRB64Additions.m in Sources */,
+				63A16A371F59CEF0000E69F1 /* DDLog.m in Sources */,
+				63A16A301F59CEF0000E69F1 /* BLIPRequest+HTTP.m in Sources */,
+				63A16A401F59CEF0000E69F1 /* ExceptionUtils.m in Sources */,
+				63A16A201F59CEF0000E69F1 /* TCPEndpoint.m in Sources */,
+				63A16A561F59DA72000E69F1 /* base64.c in Sources */,
+				63A16A381F59CEF0000E69F1 /* AsyncSocket.m in Sources */,
+				63A16A2C1F59CEF0000E69F1 /* BLIPReader.m in Sources */,
+				63A16A1B1F59CEF0000E69F1 /* MYBonjourBrowser.m in Sources */,
+				63A16A1D1F59CEF0000E69F1 /* MYBonjourQuery.m in Sources */,
+				63A16A441F59CEF0000E69F1 /* GTMNSData+zlib.m in Sources */,
+				63A16A281F59CEF0000E69F1 /* BLIPFileResponse.m in Sources */,
+				63A16A341F59CEF0000E69F1 /* DDAbstractDatabaseLogger.m in Sources */,
+				63A16A311F59CEF0000E69F1 /* DDContextFilterLogFormatter.m in Sources */,
+				63A16A261F59CEF0000E69F1 /* BLIPDispatcher.m in Sources */,
+				63A16A2D1F59CEF0000E69F1 /* BLIPWriter.m in Sources */,
+				63A16A1F1F59CEF0000E69F1 /* TCPConnection.m in Sources */,
+				63A16A361F59CEF0000E69F1 /* DDFileLogger.m in Sources */,
+				63A16A1E1F59CEF0000E69F1 /* MYBonjourRegistration.m in Sources */,
+				63A16A3D1F59CEF0000E69F1 /* SRWebSocket.m in Sources */,
+				63A16A291F59CEF0000E69F1 /* BLIPMessage.m in Sources */,
+				63A16A411F59CEF0000E69F1 /* Logging.m in Sources */,
+				63A16A391F59CEF0000E69F1 /* AsyncUdpSocket.m in Sources */,
+				63A16A2B1F59CEF0000E69F1 /* BLIPProperties.m in Sources */,
+				63A16A171F59CEF0000E69F1 /* MYDNSService.m in Sources */,
+				63A16A231F59CEF0000E69F1 /* TCPStream.m in Sources */,
+				63A16A221F59CEF0000E69F1 /* TCPListener.m in Sources */,
+				63A16A3E1F59CEF0000E69F1 /* CollectionUtils.m in Sources */,
+				63A16A331F59CEF0000E69F1 /* DDMultiFormatter.m in Sources */,
+				63A16A321F59CEF0000E69F1 /* DDDispatchQueueLogFormatter.m in Sources */,
+				63A16A2A1F59CEF0000E69F1 /* BLIPRequest.m in Sources */,
+				63A16A2F1F59CEF0000E69F1 /* BLIPHTTPProtocol.m in Sources */,
+				63A16A251F59CEF0000E69F1 /* BLIPConnection.m in Sources */,
+				63A16A1C1F59CEF0000E69F1 /* MYBonjourService.m in Sources */,
+				63A16A241F59CEF0000E69F1 /* TCPWriter.m in Sources */,
+				63A16A181F59CEF0000E69F1 /* MYAddressLookup.m in Sources */,
+				63A16A421F59CEF0000E69F1 /* Target.m in Sources */,
+				63A16A211F59CEF0000E69F1 /* TCPEndpoint+Certs.m in Sources */,
+				63A16A161F59CE89000E69F1 /* IPAddress.m in Sources */,
+				63A16A191F59CEF0000E69F1 /* MYPortMapper.m in Sources */,
+				63A16A271F59CEF0000E69F1 /* BLIPFileRequest.m in Sources */,
+				63A16A2E1F59CEF0000E69F1 /* BLIPWebSocket.m in Sources */,
+				63A16A3A1F59CEF0000E69F1 /* GCDAsyncSocket.m in Sources */,
+				63A16A3B1F59CEF0000E69F1 /* GCDAsyncUdpSocket.m in Sources */,
+				63A16A1A1F59CEF0000E69F1 /* PortMapperTest.m in Sources */,
+				63A16A3F1F59CEF0000E69F1 /* ConcurrentOperation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1640,6 +1782,122 @@
 			};
 			name = Release;
 		};
+		63A16A131F59CE26000E69F1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = GY4T77MGR9;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = PrefixHeader.pch;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = MYNetwork;
+				SDKROOT = appletvos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 11.0;
+			};
+			name = Debug;
+		};
+		63A16A141F59CE26000E69F1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = GY4T77MGR9;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = PrefixHeader.pch;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = MYNetwork;
+				SDKROOT = appletvos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 11.0;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -1720,6 +1978,15 @@
 			buildConfigurations = (
 				27F87B5815577BCB00F0A416 /* Debug */,
 				27F87B5915577BCB00F0A416 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		63A16A151F59CE26000E69F1 /* Build configuration list for PBXNativeTarget "tvOS Blip Library" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				63A16A131F59CE26000E69F1 /* Debug */,
+				63A16A141F59CE26000E69F1 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
