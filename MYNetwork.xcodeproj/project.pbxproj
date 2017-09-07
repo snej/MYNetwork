@@ -258,6 +258,7 @@
 		63A16A441F59CEF0000E69F1 /* GTMNSData+zlib.m in Sources */ = {isa = PBXBuildFile; fileRef = 275E8FFB1709F0350008F577 /* GTMNSData+zlib.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		63A16A491F59D0CC000E69F1 /* Test.m in Sources */ = {isa = PBXBuildFile; fileRef = 275E8FB41709EF830008F577 /* Test.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		63A16A561F59DA72000E69F1 /* base64.c in Sources */ = {isa = PBXBuildFile; fileRef = 275E901B170A30290008F577 /* base64.c */; };
+		63E740691F5F6A98006A8C7B /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 63E740681F5F6A98006A8C7B /* Default-568h@2x.png */; };
 		63FE28651C8738F200B0B3C7 /* BLIPFileRequest.h in Headers */ = {isa = PBXBuildFile; fileRef = 63FE28611C8738F200B0B3C7 /* BLIPFileRequest.h */; };
 		63FE28661C8738F200B0B3C7 /* BLIPFileRequest.h in Headers */ = {isa = PBXBuildFile; fileRef = 63FE28611C8738F200B0B3C7 /* BLIPFileRequest.h */; };
 		63FE28671C8738F200B0B3C7 /* BLIPFileRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 63FE28621C8738F200B0B3C7 /* BLIPFileRequest.m */; };
@@ -511,6 +512,7 @@
 		27F87B7715577E1100F0A416 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS5.1.sdk/System/Library/Frameworks/CFNetwork.framework; sourceTree = DEVELOPER_DIR; };
 		633C6C661B744003008C6438 /* PrefixHeader.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PrefixHeader.pch; sourceTree = "<group>"; };
 		63A16A0D1F59CE26000E69F1 /* libMYNetwork.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libMYNetwork.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		63E740681F5F6A98006A8C7B /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		63FE28611C8738F200B0B3C7 /* BLIPFileRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLIPFileRequest.h; sourceTree = "<group>"; };
 		63FE28621C8738F200B0B3C7 /* BLIPFileRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLIPFileRequest.m; sourceTree = "<group>"; };
 		63FE28631C8738F200B0B3C7 /* BLIPFileResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLIPFileResponse.h; sourceTree = "<group>"; };
@@ -602,6 +604,7 @@
 		08FB7794FE84155DC02AAC07 /* MYNetwork */ = {
 			isa = PBXGroup;
 			children = (
+				63E740681F5F6A98006A8C7B /* Default-568h@2x.png */,
 				270462C30DE4A65B003D9D3F /* BLIP Overview.txt */,
 				277903830DE8C2DD00C6D295 /* maindocs.h */,
 				270460F00DE49030003D9D3F /* MYNetwork */,
@@ -1173,6 +1176,7 @@
 				27F87B6A15577C1A00F0A416 /* Default.png in Resources */,
 				27F87B6B15577C1A00F0A416 /* HelloWorld.xib in Resources */,
 				27F87B6C15577C1A00F0A416 /* Icon.png in Resources */,
+				63E740691F5F6A98006A8C7B /* Default-568h@2x.png in Resources */,
 				27F87B6F15577C1A00F0A416 /* MainWindow.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
