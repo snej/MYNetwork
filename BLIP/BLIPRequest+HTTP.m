@@ -60,7 +60,7 @@
 - (void) setHTTPResponse: (NSHTTPURLResponse*)httpResponse
                 withBody: (NSData*)httpBody
 {
-    int status = httpResponse.statusCode;
+    int status = (int)httpResponse.statusCode;
     NSString* statusDesc = [NSHTTPURLResponse localizedStringForStatusCode: status];
     CFHTTPMessageRef msg = CFHTTPMessageCreateResponse(NULL,
                                                        status,

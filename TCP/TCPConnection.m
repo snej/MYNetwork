@@ -54,7 +54,7 @@ NSString* const TCPErrorDomain = @"TCP";
 }
 
 
-static NSMutableArray *sAllConnections;
+static NSMutableArray *sAllConnections = NULL;
 
 
 - (Class) readerClass   {return [TCPReader class];}
@@ -65,6 +65,12 @@ static NSMutableArray *sAllConnections;
             inputStream: (NSInputStream*)input
            outputStream: (NSOutputStream*)output
 {
+    static dispatch_once_t predicate;
+	dispatch_once(&predicate, ^{
+		sAllConnections = [[NSMutableArray alloc] init];
+	});
+
+    
     self = [super init];
     if (self != nil) {
         if( !input || !output ) {
@@ -390,10 +396,16 @@ static NSMutableArray *sAllConnections;
     LogTo(TCP,@"%@ got %@ on %@",self,error,stream.class);
     Assert(error);
     MYDeferDealloc(self);  // don't let me be dealloced during this
+    id s = self;
+    id r = _reader;
+    id w = _writer;
      _error = error;
     [_reader disconnect];
     [_writer disconnect];
     [self _closed];
+    s = nil;
+    r = nil;
+    w = nil;
 }
 
 - (void) _streamGotEOF: (TCPStream*)stream

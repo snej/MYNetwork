@@ -6,9 +6,6 @@
 //  Copyright 2008 Jens Alfke. All rights reserved.
 //
 
-#import "TCPConnection.h"
-#import "TCPListener.h"
-#import "BLIPMessage.h"
 @class BLIPRequest, BLIPResponse, BLIPDispatcher;
 @protocol BLIPConnectionDelegate;
 
@@ -50,6 +47,11 @@
     This method will assign it to this connection before sending it.
     The request's matching response object will be returned, or nil if the request couldn't be sent. */
 - (BLIPResponse*) sendRequest: (BLIPRequest*)request;
+
+/** Specifies the class of object to be used for requests
+    Subclasses may override, but MUST be a subclass of BLIPRequest
+ */
+- (Class) requestClass;
 @end
 
 

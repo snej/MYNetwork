@@ -6,8 +6,6 @@
 //  Copyright 2008 Jens Alfke. All rights reserved.
 //
 
-#import "TCPStream.h"
-#import "BLIP_Internal.h"
 @class BLIPResponse;
 
 

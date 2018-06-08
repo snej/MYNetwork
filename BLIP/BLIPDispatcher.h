@@ -33,10 +33,8 @@
 /** Convenience method that adds a rule that compares a property against a string. */
 - (void) addTarget: (MYTarget*)target forValueOfProperty: (NSString*)value forKey: (NSString*)key;
 
-#if ! TARGET_OS_IPHONE      /* NSPredicate is not available on iPhone, unfortunately */
 /** Adds a new rule, to call a given target method if a given predicate matches the message. */
-- (void) addTarget: (MYTarget*)target forPredicate: (NSPredicate*)predicate;
-#endif
+- (void)addTarget: (MYTarget*)target forPredicate:(NSPredicate*)predicate;
 
 /** Removes all rules with the given target method. */
 - (void) removeTarget: (MYTarget*)target;

@@ -1,6 +1,9 @@
 [submodule "vendor/MYUtilities"]
 	path = vendor/MYUtilities
-	url = git://github.com/snej/MYUtilities.git
+url=git://github.com/nanonation/MYUtilities.git
 [submodule "vendor/SocketRocket"]
 	path = vendor/SocketRocket
-	url = git://github.com/snej/SocketRocket.git
+	url = git://github.com/nanonation/SocketRocket.git
+[submodule "vendor/CocoaAsyncSocket"]
+	path = vendor/CocoaAsyncSocket
+	url = git://github.com/nanonation/CocoaAsyncSocket.git

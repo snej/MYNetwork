@@ -5,7 +5,6 @@
 //  Created by Jens Alfke on 5/10/08.
 //  Copyright 2008 Jens Alfke. All rights reserved.
 
-#import "TCPEndpoint.h"
 @class TCPConnection, IPAddress;
 @protocol TCPListenerDelegate;
 

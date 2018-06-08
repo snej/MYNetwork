@@ -6,7 +6,6 @@
 //  Copyright 2008 Jens Alfke. All rights reserved.
 //
 
-#import "BLIPMessage.h"
 @class BLIPResponse, MYTarget;
 
 
@@ -18,18 +17,18 @@
     The request is not associated with any BLIPConnection yet, so you must either set its
     connection property before calling -send, or pass the request as a parameter to
     -[BLIPConnection sendRequest:]. */
-+ (BLIPRequest*) requestWithBody: (NSData*)body;
++ (instancetype) requestWithBody: (NSData*)body;
 
 /** Creates an outgoing request.
     This is just like requestWithBody: except that you supply a string. */
-+ (BLIPRequest*) requestWithBodyString: (NSString*)bodyString;
++ (instancetype) requestWithBodyString: (NSString*)bodyString;
 
 /** Creates an outgoing request.
     The body or properties may be nil.
     The request is not associated with any BLIPConnection yet, so you must either set its
     connection property before calling -send, or pass the request as a parameter to
     -[BLIPConnection sendRequest:]. */
-+ (BLIPRequest*) requestWithBody: (NSData*)body
++ (instancetype) requestWithBody: (NSData*)body
                       properties: (NSDictionary*)properties;
 
 /** BLIPRequest extends the -connection property to be settable.
@@ -74,6 +73,11 @@
 
 /** Shortcut to respond to this message with an error indicating that an exception occurred. */
 - (void) respondWithException: (NSException*)exception;
+
+/** Specifies the class of object to be used for responses
+ Subclasses may override, but MUST be a subclass of BLIPResponse
+ */
+- (Class) responseClass;
 
 @end
 

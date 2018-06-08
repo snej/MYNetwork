@@ -40,16 +40,16 @@
     return self;
 }
 
-+ (BLIPRequest*) requestWithBody: (NSData*)body
++ (instancetype) requestWithBody: (NSData*)body
 {
     return [[self alloc] _initWithConnection: nil body: body properties: nil];
 }
 
-+ (BLIPRequest*) requestWithBodyString: (NSString*)bodyString {
++ (instancetype) requestWithBodyString: (NSString*)bodyString {
     return [self requestWithBody: [bodyString dataUsingEncoding: NSUTF8StringEncoding]];
 }
 
-+ (BLIPRequest*) requestWithBody: (NSData*)body
++ (instancetype) requestWithBody: (NSData*)body
                       properties: (NSDictionary*)properties
 {
     return [[self alloc] _initWithConnection: nil body: body properties: properties];
@@ -67,7 +67,7 @@
 }
 
 
-
+- (Class) responseClass                     {return [BLIPResponse class]; }
 
 - (BOOL) noReply                            {return (_flags & kBLIP_NoReply) != 0;}
 - (void) setNoReply: (BOOL)noReply          {[self _setFlag: kBLIP_NoReply value: noReply];}
@@ -97,7 +97,12 @@
 - (BLIPResponse*) response
 {
     if( ! _response && ! self.noReply )
-        _response = [[BLIPResponse alloc] _initWithRequest: self];
+    {
+        [self willChangeValueForKey:@"repliedTo"];
+        _response = [[[self responseClass] alloc] _initWithRequest: self];
+        _response.onPropertiesAvailable = self.onPropertiesAvailable;
+        [self didChangeValueForKey:@"repliedTo"];
+    }
     return _response;
 }
 

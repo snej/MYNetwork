@@ -92,7 +92,10 @@ static NSError* fixStreamError( NSError *error );
 - (NSArray*) peerSSLCerts
 {
     Assert(self.isOpen);
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
     return [self propertyForKey: kCFStreamPropertySSLPeerCertificates];
+#pragma clang diagnostic pop
 }
 
 
@@ -119,7 +122,7 @@ static NSError* fixStreamError( NSError *error );
     }
     if( _conn ) {
         [_conn _streamDisconnected: self];
-        _conn = nil;
+//      _conn = nil; // this was line was the source of a strange sporadic console message/crash... I have yet to figure out exactly why, but commenting this line out doesn't seem to cause a leak or crash
     }
 }
 

@@ -48,7 +48,7 @@ NSString* const kTCPPropertySSLClientSideAuthentication = @"kTCPPropertySSLClien
     self.SSLProperties = $mdict(
              {(id)kCFStreamSSLLevel, NSStreamSocketSecurityLevelTLSv1},
              {kTCPPropertySSLCertificates, $array((__bridge id)identity)},
-             {kTCPPropertySSLAllowsAnyRoot, $true},
+             {(id)kCFStreamSSLValidatesCertificateChain, $false},
              {kTCPPropertySSLPeerName, [NSNull null]},
              {kTCPPropertySSLClientSideAuthentication, $object(kTCPAlwaysAuthenticate)});
 }
