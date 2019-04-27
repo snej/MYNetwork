@@ -236,8 +236,8 @@ MYDNSConnection *sSharedConnection;
         return YES;        // Already opened
     
     // Wrap a CFSocket around the service's socket:
-    CFSocketContext ctxt = { 0, (__bridge void *)(self), CFRetain, CFRelease, NULL };
-    _socket = CFSocketCreateWithNative(NULL, 
+    CFSocketContext ctxt = { 0, (__bridge void *)(self), NULL, NULL, NULL };
+    _socket = CFSocketCreateWithNative(NULL,
                                                        DNSServiceRefSockFD(_connectionRef), 
                                                        kCFSocketReadCallBack, 
                                                        &serviceCallback, &ctxt);
